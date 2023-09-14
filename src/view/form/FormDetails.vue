@@ -8,24 +8,25 @@
               <div class="MenuBtn" @click="addBasicComponents('SortText','Your Question','please input your answer in here')"> <i class="fa fa-text-width" /> Sort Text</div>
               <div class="MenuBtn" @click="addBasicComponents('LongText','Your Question','please input your answer in here')"> <i class="fa fa-text-height" /> Long Text</div>
               <div class="MenuBtn" @click="addRadio('eRadio','Your Question','value-2')"> <i class="fa fa-dot-circle-o" /> Radio</div>
-              <div class="MenuBtn"> <i class="fa fa-check-square" /> CheckBox</div>
-              <div class="MenuBtn"> <i class="fa fa-minus" /> Divider</div>
-              <div class="MenuBtn"> <i class="fa fa-star-half-o" /> Score</div>
-              <div class="MenuBtn"> <i class="fa fa-map-marker" /> Address</div>
-              <div class="MenuBtn"> <i class="fa fa-file-image-o" /> Picture</div>
-              <div class="MenuBtn"> <i class="fa fa-calendar" /> Date</div>
-              <div class="MenuBtn"> <i class="fa fa-calendar-o" /> DateTime</div>
-              <div class="MenuBtn"> <i class="fa fa-caret-square-o-down" /> Selector</div>
-              <div class="MenuBtn"> <i class="fa fa-toggle-off" /> Switch</div>
+              <div class="MenuBtn" @click="addRadio('eCheckBox','Your Question', ['value-1','value-2'])"> <i class="fa fa-check-square" /> CheckBox</div>
+              <div class="MenuBtn" @click="addBasicComponents('eDivider','divider2023', '#a7ce74')"> <i class="fa fa-minus" /> Divider</div>
+              <div class="MenuBtn" @click="addStar('eStar','Your Question', 0)"> <i class="fa fa-star-half-o" /> Score</div>
+              <div class="MenuBtn" @click="addComplexComponents('eAddress','address','',addressArray)"> <i class="fa fa-map-marker" /> Address</div>
+              <div class="MenuBtn" @click="addBasicComponents('ePicture','picture','https://cdn.pixabay.com/photo/2013/03/06/01/01/water-90781_1280.jpg')"> <i class="fa fa-file-image-o" /> Picture</div>
+              <div class="MenuBtn" @click="addBasicComponents('eDate','date','2018-10-10')"> <i class="fa fa-calendar" /> Date</div>
+              <!-- <div class="MenuBtn"> <i class="fa fa-calendar-o" /> DateTime</div> -->
+              <div class="MenuBtn" @click="addRadio('eSelector','Your Question','value-2')"> <i class="fa fa-caret-square-o-down" /> Selector</div>
+              <!-- <div class="MenuBtn"> <i class="fa fa-toggle-off" /> Switch</div> -->
+              <!-- <div class="MenuBtn"> <i class="fa fa-envelope-o" /> Email</div> -->
               <el-divider></el-divider>
               <div class="MenuNodeTitle"> Complex Element</div>
-              <div class="MenuBtn"> <i class="fa fa-play-circle"/> Video</div>
-              <div class="MenuBtn"> <i class="fa fa-sliders"/> Slider</div>
+              <!-- <div class="MenuBtn"> <i class="fa fa-play-circle"/> Video</div> -->
+              <div class="MenuBtn" @click="addSlider('eSlider','Slider',0)"> <i class="fa fa-sliders"/> Slider</div>
               <div class="MenuBtn"> <i class="fa fa-list"/> List</div>
               <div class="MenuBtn"> <i class="fa fa-list-ol"/> Ordered List</div>
               <div class="MenuBtn"> <i class="fa fa-table"/> Table</div>
               <div class="MenuBtn"> <i class="fa fa-question"/> Yes/No Question</div>
-              <el-divider></el-divider>
+              <!-- <el-divider></el-divider>
               <div class="MenuNodeTitle"> Chart Element</div>
               <div class="MenuBtn"> <i class="fa fa-area-chart"/> Area Chart</div>
               <div class="MenuBtn"> <i class="fa fa-bar-chart"/> Bar Chart</div>
@@ -35,7 +36,7 @@
               <div class="MenuNodeTitle"> Business Icon Element</div>
               <div class="MenuBtn"> <i class="fa fa-apple"/> Apple</div>
               <div class="MenuBtn"> <i class="fa fa-twitter"/> Twitter</div>
-              <el-divider></el-divider>
+              <el-divider></el-divider> -->
         </div>
       </el-col>
       <el-col :span="13">
@@ -65,22 +66,56 @@
             组件默认值: 
             <input class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
           </div>
+          <div class="opInputs">
+            组件最大值: 
+            <input class="opInput" placeholder="请输入整数" @input="changeMaxValue(optionsMaxValue)" v-model="optionsMaxValue" >
+          </div>
+          <div class="opInputs">
+            组件最小值: 
+            <input class="opInput" placeholder="请输入整数" @input="changeMinValue(optionsMinValue)" v-model="optionsMinValue" >
+          </div>
+          <div class="opInputs" v-show="optionsStepValue">
+            组件步值: 
+            <input class="opInput" placeholder="请输入整数" @input="changeStepValue(optionsStepValue)" v-model="optionsStepValue" >
+          </div>
+          <div class="opInputs">
+            <el-button @click="delComponents()" style="width: 100%;" type="danger"><i class="el-icon-delete"></i></el-button>
+          </div>
           <div class="opName" v-show="optionsRadio.length > 0">
-              选项：
-              <el-divider></el-divider>
-              <div v-for="(item,index) in optionsRadio" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
-                <label style="line-height: 40px">Label：</label>
-                <input class="opInput" v-model="item.radioLabel" style="margin-right: 4px;">
-                <label style="line-height: 40px">Value：</label>
-                <input class="opInput" v-model="item.radioValue" >
-              </div>
-              <div style="background: #a7ce74;border-top:4px #222222 solid;" @click="">
-                <i class="el-icon-plus"></i>
-              </div>
+            选项：
+            <el-divider></el-divider>
+            <div v-for="(item,index) in optionsRadio" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
+              <label style="line-height: 40px">Label：</label>
+              <input class="opInput" v-model="item.radioLabel" style="margin-right: 4px;">
+              <label style="line-height: 40px">Value：</label>
+              <input class="opInput" v-model="item.radioValue" >
+            </div>
+            <div style="background: #a7ce74;border-top:4px #222222 solid;cursor: pointer;" @click="addRadioOptions()">
+              <i class="el-icon-plus"></i>
+            </div>
+          </div>
+          <div class="opName" v-show="optionsAttr.length > 0">
+            选项：
+            <el-divider></el-divider>
+            <div v-for="(item,index) in optionsAttr" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
+              <label style="line-height: 40px">Label：</label>
+              <input class="opInput" v-model="item.complexAttr" style="margin-right: 4px;">
+              <label style="line-height: 40px">Value：</label>
+              <input class="opInput" v-model="item.complexVal" >
+            </div>
           </div>
         </div>
       </el-col>
     </el-row>
+
+
+    <el-dialog title="删除" :visible.sync="dialogVisible" width="60%">
+      <span style="font-size: 20px;font-weight: 700;">是否确认删除第 {{ optionsIndex+1 }} 个组件，组件Key值为 {{ optionsKey }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmDelCom()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,13 +124,29 @@ import Heading from '@/components/formElement/Heading.vue'
 import SortText from '@/components/formElement/SortText.vue'
 import LongText from '@/components/formElement/LongText.vue'
 import eRadio from '@/components/formElement/ERadio.vue'
+import eCheckBox from '@/components/formElement/ECheckBox.vue'
+import eDivider from '@/components/formElement/EasyDivider.vue'
+import eStar from '@/components/formElement/EStar.vue'
+import eAddress from '@/components/formElement/EAddress.vue'
+import ePicture from '@/components/formElement/EPicture.vue'
+import eDate from '@/components/formElement/EDate.vue'
+import eSelector from '@/components/formElement/ESelector.vue'
+import eSlider from '@/components/formElement/ESlider.vue'
 
 export default {
   components: {
     Heading,
     SortText,
     LongText,
-    eRadio
+    eRadio,
+    eCheckBox,
+    eDivider,
+    eStar,
+    eAddress,
+    ePicture,
+    eDate,
+    eSelector,
+    eSlider
   },
   data() {
     return {
@@ -105,10 +156,70 @@ export default {
       optionsName: '',
       optionsLabel: '',
       optionsDefaultValue: '',
-      optionsRadio: []
+      optionsMaxValue: '',
+      optionsMinValue: '',
+      optionsStepValue: '',
+      optionsRadio: [],
+      optionsAttr: [],
+      dialogVisible: false,
+      addressArray: [
+        {
+          'complexAttr':'国家/地区',
+          'complexVal': '中国',
+        },
+        {
+          'complexAttr': '省市',
+          'complexVal': '广西',
+        },
+        {
+          'complexAttr': '城市',
+          'complexVal': '柳州',
+        },
+        {
+          'complexAttr': '区/县',
+          'complexVal': '城中区',
+        },
+        {
+          'complexAttr': '详细地址',
+          'complexVal': '广西科技大学',
+        }
+      ]
     }
   },
   methods: {
+    delComponents() {
+      if(!this.optionsKey) {
+        this.$message({
+          type: 'info',
+          message: '请选择一个组件'
+        })
+      } else if (this.optionsKey) {
+         this.dialogVisible = true
+      }
+    },
+    confirmDelCom() {
+      this.items.splice(this.optionsIndex,1)
+      this.optionsIndex = ''
+      this.optionsKey = ''
+      this.optionsName = '',
+      this.optionsLabel = '',
+      this.optionsDefaultValue = '',
+      this.optionsMaxValue = '',
+      this.optionsMinValue = '',
+      this.optionsStepValue = '',
+      this.optionsRadio = [],
+      this.optionsAttr = [],
+      this.dialogVisible = false
+    },
+    addRadioOptions() {
+      if(this.optionsKey) {
+        var length = this.items[this.optionsIndex].attributes.radioOptions.length + 1
+        this.items[this.optionsIndex].attributes.radioOptions.push({
+          radioLabel: 'HELLO',
+          radioValue: 'value' + '-' + length
+        })
+      }
+    },
     addRadio(name, label, defaultValue) {
       var date = new Date().getTime()
       this.items.push({
@@ -120,17 +231,55 @@ export default {
           radioOptions: [
             {
               radioLabel: 'CLOUDS',
-              radioValue: 'value-2'
+              radioValue: 'value-1'
             },
             {
               radioLabel: 'EARTH',
-              radioValue: 'value-3'
+              radioValue: 'value-2'
             },
             {
               radioLabel: 'WATER',
-              radioValue: 'value-4'
+              radioValue: 'value-3'
             }
           ]
+        }
+      })
+    },
+    addStar(name, label, defaultValue) {
+      var date = new Date().getTime()
+      this.items.push({
+        component: name,
+        attributes: {
+          label: label,
+          defaultValue: defaultValue,
+          key: 'easy' + date,
+          max: 5,
+        }
+      })
+    },
+    addSlider(name, label, defaultValue) {
+      var date = new Date().getTime()
+      this.items.push({
+        component: name,
+        attributes: {
+          label: label,
+          defaultValue: defaultValue,
+          key: 'easy' + date,
+          max: 100,
+          min: 0,
+          step: 1
+        }
+      })
+    },
+    addComplexComponents(name, label, defaultValue,complexAttr) {
+      var date = new Date().getTime()
+      this.items.push({
+        component: name,
+        attributes: {
+          label: label,
+          defaultValue: defaultValue,
+          key: 'easy' + date,
+          complexAttr: complexAttr
         }
       })
     },
@@ -152,8 +301,30 @@ export default {
       this.optionsLabel = this.items[key].attributes.label
       this.optionsDefaultValue = this.items[key].attributes.defaultValue
       this.optionsKey = this.items[key].attributes.key
+      if(this.items[key].attributes.max) {
+        this.optionsMaxValue = this.items[key].attributes.max
+      } else {
+        this.optionsMaxValue = 0
+      }
+      if(this.items[key].attributes.min) {
+        this.optionsMinValue = this.items[key].attributes.min
+      } else {
+        this.optionsMinValue = 0
+      }
+      if(this.items[key].attributes.step) {
+        this.optionsStepValue = this.items[key].attributes.step
+      } else {
+        this.optionsStepValue = 0
+      }
       if(this.items[key].attributes.radioOptions) {
         this.optionsRadio = this.items[key].attributes.radioOptions
+      } else if (!this.items[key].attributes.radioOptions) {
+        this.optionsRadio = []
+      }
+      if(this.items[key].attributes.complexAttr) {
+        this.optionsAttr = this.items[key].attributes.complexAttr
+      } else if (!this.items[key].attributes.complexAttr) {
+        this.optionsAttr = []
       }
     },
     changeKey(newValue) {
@@ -164,6 +335,46 @@ export default {
     },
     changeDefaultValue(newValue) {
       this.items[this.optionsIndex].attributes.defaultValue = newValue
+    },
+    changeMaxValue(newValue) {
+      if(newValue) {
+        var newNum = parseInt(newValue)
+      } else {
+        var newNum = 0
+      }
+      if(newNum > 20) {
+        if(this.optionsName === 'eStar') {
+          newNum = 20
+          this.$message({
+            type: 'info',
+            message: '最大可设为20'
+          })
+        }
+      }
+      this.items[this.optionsIndex].attributes.max = newNum
+    },
+    changeMinValue(newValue) {
+      if(newValue) {
+        var newNum = parseInt(newValue)
+      } else {
+        var newNum = 0
+      }
+      this.items[this.optionsIndex].attributes.min = newNum
+    },
+    changeStepValue(newValue) {
+      if(newValue) {
+        var newNum = parseInt(newValue)
+      } else {
+        var newNum = 1
+      }
+      if(newNum < 1) {
+          newNum = 1
+          this.$message({
+            type: 'info',
+            message: '最小可设为1'
+        })
+      }
+      this.items[this.optionsIndex].attributes.step = newNum
     }
   }
 }
