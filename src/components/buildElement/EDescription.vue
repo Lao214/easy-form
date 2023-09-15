@@ -1,7 +1,8 @@
 <template>
-  <div class="componentBorder" style="">
-    <h1 style="margin: 0;text-align: center;">{{ attributes.label }}</h1>
-    <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.defaultValue }}</p>
+  <div>
+    <div class="componentBorder">
+      <p style="margin: 4px;font-weight: 600;">{{ attributes.defaultValue }}</p>
+    </div>
   </div>
 </template>
 
@@ -23,9 +24,9 @@ export default {
 .componentBorder {
   width: 100%;
   /* border: 2px solid #2c3e50; */
-  /* padding: 8px 0px; */
+  padding: 8px 0px;
   border-radius: 4px;
-  /* margin: 8px 0px; */
+  margin: 8px 0px;
 }
 
 .componentBorder:hover {

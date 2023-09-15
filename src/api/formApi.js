@@ -27,5 +27,11 @@ export default {
       url: '/easy/BForm/getFormByKey/' + formKey,
       method: 'get'
     })
+  },
+  getFormByKeyPublic(formKey) {
+    return request({
+      url: '/easy/BForm/getFormByKeyPublic/' + formKey,
+      method: 'get'
+    })
   }
 }

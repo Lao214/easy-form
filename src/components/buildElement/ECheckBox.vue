@@ -1,8 +1,8 @@
 <template>
-  <div class="componentBorder" style="" @click="callBack">
+  <div class="componentBorder">
     <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
     <ul class="unstyled centered">
-      <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px">
+      <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px;">
         <input class="styled-checkbox" :id="'styled-checkbox-' + index" type="checkbox" @change="updateSelectedValue(item.radioValue)" :value="item.radioValue" v-model="attributes.defaultValue">
         <label :for="'styled-checkbox-' + index">{{ item.radioLabel }}</label>
       </li>
@@ -37,7 +37,7 @@ export default {
 <style scoped>
 .componentBorder {
   width: 100%;
-  border: 2px solid #2c3e50;
+  /* border: 2px solid #2c3e50; */
   padding: 8px 0px;
   border-radius: 4px;
   margin: 14px 0px;
@@ -45,7 +45,7 @@ export default {
 }
 
 .componentBorder:hover {
-  border: 2px solid #2881da;
+  /* border: 2px solid #2881da; */
 }
 
 .styled-checkbox {

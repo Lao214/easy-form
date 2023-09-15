@@ -83,7 +83,11 @@
             </div>
             <div class="opInputs">
               组件默认值: 
-              <input class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
+              <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
+              <el-select v-show="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
+                <el-option v-for="item in optionsRadio" :key="item.radioValue" :label="item.radioLabel" :value="item.radioValue">
+                </el-option>
+              </el-select>
             </div>
             <div class="opInputs">
               组件最大值: 
@@ -433,7 +437,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .adaptive-div {
     width: 80%; /* 将宽度设置为100%以占据父容器的全部宽度 */
     background-color: #fefefe; /* 设置背景颜色 */
@@ -616,4 +620,12 @@ export default {
 }
 
 
+::v-deep .el-input__inner {
+  width: 100%;
+  height: 34px;
+  border-radius: 4px;
+  color: #2c3e50;
+  border: #2c3e50 2px solid;
+  background-color: #2c3e5000;
+}
 </style>

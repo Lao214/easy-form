@@ -16,7 +16,7 @@
       <el-col :span="20">
         <div style="height: 95vh;background-color: #a7ce74;padding: 21px;overflow-y: scroll;">
           <div style="display: flex; flex-wrap: wrap; padding:70px 70px;">
-            <span style="width: 100%;font-size: 24px;font-weight: 600;text-align: start;margin:20px 10px;"><i class="fa fa-share-alt-square" style="color: rgb(46, 84, 9);font-size: 28px;margin-right: 10px;"></i>Share your form</span>
+            <span style="width: 100%;font-size: 24px;font-weight: 600;text-align: start;margin:20px 10px;"><i class="fa fa-share-alt-square" style="color: rgb(46, 84, 9);font-size: 28px;margin-right: 10px;"></i>Share Your Form</span>
             <div style="width: 50%;min-height: 320px;height: auto;background: white; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.429);border-radius: 4px;padding: 20px;">
               <div style="width: 100%;height: 70px;text-align: start;">
                 <span style="font-weight: 600;color: #49760f;margin-left: 11px;">LINK TO SHARE</span>
@@ -27,7 +27,7 @@
                 </div>
                 <div style="width: 100%;margin-top: 10px;text-align: end;">
                   <el-button type="success"><i class="fa fa-copy"></i> COPY</el-button>
-                  <el-button type="primary"><i class="fa fa-openid"></i> OPEN IN NEW TAB</el-button>
+                  <el-button @click="openInNewTab" type="primary"><i class="fa fa-openid"></i> OPEN IN NEW TAB</el-button>
                   <el-button type="success"><i class="fa fa-qrcode"></i> DWONLOAD QR</el-button>
                 </div>
                 <div style="width: 100%;margin-top: 10px;text-align: end;">
@@ -64,6 +64,12 @@ export default {
   data() {
     return {
       linkData: 'http://localhost:7217/build?key=1702475532068851712'
+    }
+  },
+  methods: {
+    openInNewTab() {
+      // 在新选项卡中打开一个URL
+      window.open(this.linkData, '_blank');
     }
   }
 }
