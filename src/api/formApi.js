@@ -14,5 +14,18 @@ export default {
       method: 'post',
       data: dataForm
     })
+  },
+  updateForm(dataForm) {
+    return request({
+      url: '/easy/BForm/updateForm',
+      method: 'post',
+      data: dataForm
+    })
+  },
+  getFormByKey(formKey) {
+    return request({
+      url: '/easy/BForm/getFormByKey/' + formKey,
+      method: 'get'
+    })
   }
 }

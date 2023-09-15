@@ -63,7 +63,7 @@
                 <span style="margin-left: 7px;line-height: 25px;">{{ item.formName }} <br> <a style="color: #a1a1a1;font-size: 14px;">创建时间：{{ item.createTime }}</a></span>
             </div>
             <div style="margin-right: 20px;">
-              <span class="form-edit" @click="goToEdit(item.id)">Edit</span>
+              <span class="form-edit" @click="goToEdit(item.formKey)">Edit</span>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default {
       this.getFormList()
     },
     goToEdit(id) {
-      this.$router.push({ path: '/formDetails', query: { id: id } })
+      this.$router.push({ path: '/formDetails', query: { key: id } })
     },
     createForm() {
       this.dialogVisible = true

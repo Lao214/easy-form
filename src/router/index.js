@@ -15,6 +15,11 @@ const router = new VueRouter({
           component: () => import("../view/login/Login.vue")
         },
         {
+          path: "/build",
+          name:'build',
+          component: () => import("../view/build/Build.vue")
+        },
+        {
           path: "/home",
           name:'Home',
           component: () => import("../view/index.vue"),
@@ -29,11 +34,11 @@ const router = new VueRouter({
               name: 'formDetails',
               component: () => import('@/view/form/FormDetails.vue')
             },
-            // {
-            //   path: '/projectDetails',
-            //   name: 'projectDetails',
-            //   component: () => import('@/view/user/projectDetails.vue')
-            // },
+            {
+              path: '/release',
+              name: 'release',
+              component: () => import('@/view/release/Release.vue')
+            },
             // {
             //   path: '/role',
             //   name: 'role',

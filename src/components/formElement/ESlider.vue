@@ -18,11 +18,8 @@ export default {
   },
   data() {
     return {
-      sliderValue: 0, // 初始滑块值
-      minValue: 0,     // 最小值
-      maxValue: 100,   // 最大值
-      stepValue: 1     // 步进值
-    };
+      
+    }
   },
   methods: {
     callBack() {

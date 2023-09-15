@@ -3,40 +3,55 @@
     <el-row>
       <el-col :span="4">
         <div style="height: 95vh;background-color: #d3cfdd79;padding: 11px;overflow-y: scroll;">
-              <div class="MenuNodeTitle"> Basic Element</div>
-              <div class="MenuBtn" @click="addBasicComponents('Heading','Heading','subHeader')"> <i class="fa fa-header" /> Heading</div>
-              <div class="MenuBtn" @click="addBasicComponents('SortText','Your Question','please input your answer in here')"> <i class="fa fa-text-width" /> Sort Text</div>
-              <div class="MenuBtn" @click="addBasicComponents('LongText','Your Question','please input your answer in here')"> <i class="fa fa-text-height" /> Long Text</div>
-              <div class="MenuBtn" @click="addRadio('eRadio','Your Question','value-2')"> <i class="fa fa-dot-circle-o" /> Radio</div>
-              <div class="MenuBtn" @click="addRadio('eCheckBox','Your Question', ['value-1','value-2'])"> <i class="fa fa-check-square" /> CheckBox</div>
-              <div class="MenuBtn" @click="addBasicComponents('eDivider','divider2023', '#a7ce74')"> <i class="fa fa-minus" /> Divider</div>
-              <div class="MenuBtn" @click="addStar('eStar','Your Question', 0)"> <i class="fa fa-star-half-o" /> Score</div>
-              <div class="MenuBtn" @click="addComplexComponents('eAddress','address','',addressArray)"> <i class="fa fa-map-marker" /> Address</div>
-              <div class="MenuBtn" @click="addBasicComponents('ePicture','picture','https://cdn.pixabay.com/photo/2013/03/06/01/01/water-90781_1280.jpg')"> <i class="fa fa-file-image-o" /> Picture</div>
-              <div class="MenuBtn" @click="addBasicComponents('eDate','date','2018-10-10')"> <i class="fa fa-calendar" /> Date</div>
-              <!-- <div class="MenuBtn"> <i class="fa fa-calendar-o" /> DateTime</div> -->
-              <div class="MenuBtn" @click="addRadio('eSelector','Your Question','value-2')"> <i class="fa fa-caret-square-o-down" /> Selector</div>
-              <!-- <div class="MenuBtn"> <i class="fa fa-toggle-off" /> Switch</div> -->
-              <!-- <div class="MenuBtn"> <i class="fa fa-envelope-o" /> Email</div> -->
-              <el-divider></el-divider>
-              <div class="MenuNodeTitle"> Complex Element</div>
-              <!-- <div class="MenuBtn"> <i class="fa fa-play-circle"/> Video</div> -->
-              <div class="MenuBtn" @click="addSlider('eSlider','Slider',0)"> <i class="fa fa-sliders"/> Slider</div>
-              <div class="MenuBtn"> <i class="fa fa-list"/> List</div>
-              <div class="MenuBtn"> <i class="fa fa-list-ol"/> Ordered List</div>
-              <div class="MenuBtn"> <i class="fa fa-table"/> Table</div>
-              <div class="MenuBtn"> <i class="fa fa-question"/> Yes/No Question</div>
-              <!-- <el-divider></el-divider>
-              <div class="MenuNodeTitle"> Chart Element</div>
-              <div class="MenuBtn"> <i class="fa fa-area-chart"/> Area Chart</div>
-              <div class="MenuBtn"> <i class="fa fa-bar-chart"/> Bar Chart</div>
-              <div class="MenuBtn"> <i class="fa fa-line-chart"/> Line Chart</div>
-              <div class="MenuBtn"> <i class="fa fa-pie-chart"/> Pie Chart</div>
-              <el-divider></el-divider>
-              <div class="MenuNodeTitle"> Business Icon Element</div>
-              <div class="MenuBtn"> <i class="fa fa-apple"/> Apple</div>
-              <div class="MenuBtn"> <i class="fa fa-twitter"/> Twitter</div>
-              <el-divider></el-divider> -->
+          <div class="checkbox-wrapper-10">
+            <input checked="" type="checkbox" id="cb5" class="tgl tgl-flip" v-model="isChecked">
+            <label for="cb5" data-tg-on="组件" data-tg-off="功能" class="tgl-btn"></label>
+          </div>
+          <div v-show="!isChecked" style="padding: 10px;">
+            <div class="MenuBtn" style="margin:20px auto;" @click="gotoRelease()"> <i class="fa fa-send" /> Release</div>
+            <!-- <div class="MenuBtn"> <i class="fa fa-lightbulb-o" /> Logic</div> -->
+            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-meh-o" /> Feedback</div>
+            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-table" /> Data Sheets</div>
+            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-bar-chart" /> Data Chart</div>
+            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-mobile" /> Mobile Preview</div>
+          </div>
+          <div v-show="isChecked">
+            <div class="MenuNodeTitle"> Basic Element </div>
+            <div class="MenuBtn" @click="addBasicComponents('Heading','Heading','subHeader')"> <i class="fa fa-header" /> Heading</div>
+            <div class="MenuBtn" @click="addBasicComponents('eDescription','Description','write something please')"> <i class="fa fa-file-text-o" /> Description</div>
+            <div class="MenuBtn" @click="addBasicComponents('SortText','Your Question','please input your answer in here')"> <i class="fa fa-text-width" /> Sort Text</div>
+            <div class="MenuBtn" @click="addBasicComponents('LongText','Your Question','please input your answer in here')"> <i class="fa fa-text-height" /> Long Text</div>
+            <div class="MenuBtn" @click="addRadio('eRadio','Your Question','value-2')"> <i class="fa fa-dot-circle-o" /> Radio</div>
+            <div class="MenuBtn" @click="addRadio('eCheckBox','Your Question', ['value-1','value-2'])"> <i class="fa fa-check-square" /> CheckBox</div>
+            <div class="MenuBtn" @click="addBasicComponents('eDivider','divider2023', '#a7ce74')"> <i class="fa fa-minus" /> Divider</div>
+            <div class="MenuBtn" @click="addStar('eStar','Your Question', 0)"> <i class="fa fa-star-half-o" /> Score</div>
+            <div class="MenuBtn" @click="addComplexComponents('eAddress','address','',addressArray)"> <i class="fa fa-map-marker" /> Address</div>
+            <div class="MenuBtn" @click="addBasicComponents('ePicture','picture','https://cdn.pixabay.com/photo/2013/03/06/01/01/water-90781_1280.jpg')"> <i class="fa fa-file-image-o" /> Picture</div>
+            <div class="MenuBtn" @click="addBasicComponents('eDate','date','2018-10-10')"> <i class="fa fa-calendar" /> Date</div>
+            <!-- <div class="MenuBtn"> <i class="fa fa-calendar-o" /> DateTime</div> -->
+            <div class="MenuBtn" @click="addRadio('eSelector','Your Question','value-2')"> <i class="fa fa-caret-square-o-down" /> Selector</div>
+            <!-- <div class="MenuBtn"> <i class="fa fa-toggle-off" /> Switch</div> -->
+            <!-- <div class="MenuBtn"> <i class="fa fa-envelope-o" /> Email</div> -->
+            <el-divider></el-divider>
+            <div class="MenuNodeTitle"> Complex Element</div>
+            <!-- <div class="MenuBtn"> <i class="fa fa-play-circle"/> Video</div> -->
+            <div class="MenuBtn" @click="addSlider('eSlider','Slider',0)"> <i class="fa fa-sliders"/> Slider</div>
+            <!-- <div class="MenuBtn"> <i class="fa fa-list"/> List</div>
+            <div class="MenuBtn"> <i class="fa fa-list-ol"/> Ordered List</div>
+            <div class="MenuBtn"> <i class="fa fa-table"/> Table</div>
+            <div class="MenuBtn"> <i class="fa fa-question"/> Yes/No Question</div> -->
+            <!-- <el-divider></el-divider>
+            <div class="MenuNodeTitle"> Chart Element</div>
+            <div class="MenuBtn"> <i class="fa fa-area-chart"/> Area Chart</div>
+            <div class="MenuBtn"> <i class="fa fa-bar-chart"/> Bar Chart</div>
+            <div class="MenuBtn"> <i class="fa fa-line-chart"/> Line Chart</div>
+            <div class="MenuBtn"> <i class="fa fa-pie-chart"/> Pie Chart</div>
+            <el-divider></el-divider>
+            <div class="MenuNodeTitle"> Business Icon Element</div>
+            <div class="MenuBtn"> <i class="fa fa-apple"/> Apple</div>
+            <div class="MenuBtn"> <i class="fa fa-twitter"/> Twitter</div>
+            <el-divider></el-divider> -->
+          </div>
         </div>
       </el-col>
       <el-col :span="13">
@@ -50,58 +65,63 @@
       </el-col>
       <el-col :span="7">
         <div style="height: 95vh;background-color: #85848779;padding: 11px;overflow-y: scroll;">
-          <div class="opName">
-            组件名：{{ this.optionsName }}
-            <el-divider></el-divider>
-          </div>
           <div class="opInputs">
-            组件Key: 
-            <input class="opInput" @input="changeKey(optionsKey)" v-model="optionsKey" >
+            <el-button @click="saveForm()" style="width: 100%;font-weight: 700;" type="success">SAVE</el-button>
           </div>
-          <div class="opInputs">
-            组件Label: 
-            <input class="opInput" @input="changeLabel(optionsLabel)" v-model="optionsLabel" >
-          </div>
-          <div class="opInputs">
-            组件默认值: 
-            <input class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
-          </div>
-          <div class="opInputs">
-            组件最大值: 
-            <input class="opInput" placeholder="请输入整数" @input="changeMaxValue(optionsMaxValue)" v-model="optionsMaxValue" >
-          </div>
-          <div class="opInputs">
-            组件最小值: 
-            <input class="opInput" placeholder="请输入整数" @input="changeMinValue(optionsMinValue)" v-model="optionsMinValue" >
-          </div>
-          <div class="opInputs" v-show="optionsStepValue">
-            组件步值: 
-            <input class="opInput" placeholder="请输入整数" @input="changeStepValue(optionsStepValue)" v-model="optionsStepValue" >
-          </div>
-          <div class="opInputs">
-            <el-button @click="delComponents()" style="width: 100%;" type="danger"><i class="el-icon-delete"></i></el-button>
-          </div>
-          <div class="opName" v-show="optionsRadio.length > 0">
-            选项：
-            <el-divider></el-divider>
-            <div v-for="(item,index) in optionsRadio" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
-              <label style="line-height: 40px">Label：</label>
-              <input class="opInput" v-model="item.radioLabel" style="margin-right: 4px;">
-              <label style="line-height: 40px">Value：</label>
-              <input class="opInput" v-model="item.radioValue" >
+          <div v-show="isChecked">
+            <div class="opName">
+              组件名：{{ this.optionsName }}
+              <el-divider></el-divider>
             </div>
-            <div style="background: #a7ce74;border-top:4px #222222 solid;cursor: pointer;" @click="addRadioOptions()">
-              <i class="el-icon-plus"></i>
+            <div class="opInputs">
+              组件Key: 
+              <input class="opInput" @input="changeKey(optionsKey)" v-model="optionsKey" >
             </div>
-          </div>
-          <div class="opName" v-show="optionsAttr.length > 0">
-            选项：
-            <el-divider></el-divider>
-            <div v-for="(item,index) in optionsAttr" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
-              <label style="line-height: 40px">Label：</label>
-              <input class="opInput" v-model="item.complexAttr" style="margin-right: 4px;">
-              <label style="line-height: 40px">Value：</label>
-              <input class="opInput" v-model="item.complexVal" >
+            <div class="opInputs">
+              组件Label: 
+              <input class="opInput" @input="changeLabel(optionsLabel)" v-model="optionsLabel" >
+            </div>
+            <div class="opInputs">
+              组件默认值: 
+              <input class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
+            </div>
+            <div class="opInputs">
+              组件最大值: 
+              <input class="opInput" placeholder="请输入整数" @input="changeMaxValue(optionsMaxValue)" v-model="optionsMaxValue" >
+            </div>
+            <div class="opInputs">
+              组件最小值: 
+              <input class="opInput" placeholder="请输入整数" @input="changeMinValue(optionsMinValue)" v-model="optionsMinValue" >
+            </div>
+            <div class="opInputs" v-show="optionsStepValue">
+              组件步值: 
+              <input class="opInput" placeholder="请输入整数" @input="changeStepValue(optionsStepValue)" v-model="optionsStepValue" >
+            </div>
+            <div class="opInputs">
+              <el-button @click="delComponents()" style="width: 100%;" type="danger"><i class="el-icon-delete"></i></el-button>
+            </div>
+            <div class="opName" v-show="optionsRadio.length > 0">
+              选项：
+              <el-divider></el-divider>
+              <div v-for="(item,index) in optionsRadio" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
+                <label style="line-height: 40px">Label：</label>
+                <input class="opInput" v-model="item.radioLabel" style="margin-right: 4px;">
+                <label style="line-height: 40px">Value：</label>
+                <input class="opInput" v-model="item.radioValue" >
+              </div>
+              <div style="background: #a7ce74;border-top:4px #222222 solid;cursor: pointer;" @click="addRadioOptions()">
+                <i class="el-icon-plus"></i>
+              </div>
+            </div>
+            <div class="opName" v-show="optionsAttr.length > 0">
+              选项：
+              <el-divider></el-divider>
+              <div v-for="(item,index) in optionsAttr" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;">
+                <label style="line-height: 40px">Label：</label>
+                <input class="opInput" v-model="item.complexAttr" style="margin-right: 4px;">
+                <label style="line-height: 40px">Value：</label>
+                <input class="opInput" v-model="item.complexVal" >
+              </div>
             </div>
           </div>
         </div>
@@ -132,6 +152,8 @@ import ePicture from '@/components/formElement/EPicture.vue'
 import eDate from '@/components/formElement/EDate.vue'
 import eSelector from '@/components/formElement/ESelector.vue'
 import eSlider from '@/components/formElement/ESlider.vue'
+import eDescription from '@/components/formElement/EDescription.vue'
+import formApi from '@/api/formApi'
 
 export default {
   components: {
@@ -146,10 +168,13 @@ export default {
     ePicture,
     eDate,
     eSelector,
-    eSlider
+    eSlider,
+    eDescription
   },
   data() {
     return {
+      one: {},
+      isChecked: true,
       items: [],
       optionsIndex: '',
       optionsKey: '',
@@ -186,7 +211,35 @@ export default {
       ]
     }
   },
+  created() {
+    this.getFormByKey()
+  },
   methods: {
+    gotoRelease() {
+      this.$router.push({ path: '/release', query: { key: this.$route.query.key } })
+    },
+    getFormByKey() {
+      formApi.getFormByKey(this.$route.query.key).then(res => {
+         if(res.data.code === 200) {
+          this.one = res.data.data.one
+          this.items = JSON.parse(res.data.data.one.formItems)
+         }
+      })
+    },
+    saveForm() {
+      const bForm = {
+        formKey: this.$route.query.key,
+        formItems: JSON.stringify(this.items)
+      }
+      formApi.updateForm(bForm).then(res => {
+        if(res.data.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '添加成功'
+          })
+        }
+      })
+    },
     delComponents() {
       if(!this.optionsKey) {
         this.$message({
@@ -441,4 +494,126 @@ export default {
   border: #2c3e50 2px solid;
   background-color: #2c3e5000;
 }
+
+
+.checkbox-wrapper-10 .tgl {
+  display: none;
+}
+
+.checkbox-wrapper-10 .tgl,
+  .checkbox-wrapper-10 .tgl:after,
+  .checkbox-wrapper-10 .tgl:before,
+  .checkbox-wrapper-10 .tgl *,
+  .checkbox-wrapper-10 .tgl *:after,
+  .checkbox-wrapper-10 .tgl *:before,
+  .checkbox-wrapper-10 .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+
+.checkbox-wrapper-10 .tgl::-moz-selection,
+  .checkbox-wrapper-10 .tgl:after::-moz-selection,
+  .checkbox-wrapper-10 .tgl:before::-moz-selection,
+  .checkbox-wrapper-10 .tgl *::-moz-selection,
+  .checkbox-wrapper-10 .tgl *:after::-moz-selection,
+  .checkbox-wrapper-10 .tgl *:before::-moz-selection,
+  .checkbox-wrapper-10 .tgl + .tgl-btn::-moz-selection,
+  .checkbox-wrapper-10 .tgl::selection,
+  .checkbox-wrapper-10 .tgl:after::selection,
+  .checkbox-wrapper-10 .tgl:before::selection,
+  .checkbox-wrapper-10 .tgl *::selection,
+  .checkbox-wrapper-10 .tgl *:after::selection,
+  .checkbox-wrapper-10 .tgl *:before::selection,
+  .checkbox-wrapper-10 .tgl + .tgl-btn::selection {
+  background: none;
+}
+
+.checkbox-wrapper-10 .tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 7em;
+  height: 2em;
+  position: relative;
+  left: 20%;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-wrapper-10 .tgl + .tgl-btn:after,
+  .checkbox-wrapper-10 .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+
+.checkbox-wrapper-10 .tgl + .tgl-btn:after {
+  left: 0;
+}
+
+.checkbox-wrapper-10 .tgl + .tgl-btn:before {
+  display: none;
+}
+
+.checkbox-wrapper-10 .tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+
+.checkbox-wrapper-10 .tgl-flip + .tgl-btn {
+  padding: 2px;
+  transition: all 0.2s ease;
+  font-family: sans-serif;
+  perspective: 100px;
+}
+
+.checkbox-wrapper-10 .tgl-flip + .tgl-btn:after,
+  .checkbox-wrapper-10 .tgl-flip + .tgl-btn:before {
+  display: inline-block;
+  transition: all 0.4s ease;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 4px;
+}
+
+.checkbox-wrapper-10 .tgl-flip + .tgl-btn:after {
+  content: attr(data-tg-on);
+  background: #96cb6f;
+  transform: rotateY(-180deg);
+}
+
+.checkbox-wrapper-10 .tgl-flip + .tgl-btn:before {
+  background: #cd961f;
+  content: attr(data-tg-off);
+}
+
+.checkbox-wrapper-10 .tgl-flip + .tgl-btn:active:before {
+  transform: rotateY(-20deg);
+}
+
+.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:before {
+  transform: rotateY(180deg);
+}
+
+.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:after {
+  transform: rotateY(0);
+  left: 0;
+  background: #53b30e;
+}
+
+.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:active:after {
+  transform: rotateY(20deg);
+}
+
+
 </style>
