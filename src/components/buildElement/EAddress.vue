@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" style="" @click="callBack">
+  <div class="componentBorder">
     <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
     <div style="display:flex; flex-wrap: wrap;">
       <div style="width: 50%;display: flex;flex-wrap:wrap;">
@@ -45,10 +45,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .componentBorder {
   width: 100%;
-  border: 2px solid #2c3e50;
+  /* border: 2px solid #2c3e50; */
   padding: 8px 0px;
   border-radius: 4px;
   margin: 14px 0px;
@@ -56,7 +56,8 @@ export default {
 }
 
 .componentBorder:hover {
-  border: 2px solid #2881da;
+  /* border: 2px solid #2881da; */
 }
+
 
 </style>

@@ -22,6 +22,9 @@ import eRadio from '@/components/buildElement/ERadio.vue'
 import SortText from '@/components/buildElement/SortText.vue'
 import LongText from '@/components/buildElement/LongText.vue'
 import eCheckBox from '@/components/buildElement/ECheckBox.vue'
+import eDivider from '@/components/buildElement/EasyDivider.vue'
+import eStar from '@/components/buildElement/EStar.vue'
+import eAddress from '@/components/buildElement/EAddress.vue'
 import formApi from '@/api/formApi'
 
 export default {
@@ -31,7 +34,10 @@ export default {
     eRadio,
     SortText,
     LongText,
-    eCheckBox
+    eCheckBox,
+    eDivider,
+    eStar,
+    eAddress
   },
   data() {
     return {
@@ -54,7 +60,7 @@ export default {
           var answerCount = 0
           for(let i = 0; i < this.items.length; i++) {
             if(this.items[i].component === 'eRadio' || this.items[i].component === 'SortText' || this.items[i].component === 'LongText'
-            || this.items[i].component === 'eCheckBox' 
+            || this.items[i].component === 'eCheckBox' || this.items[i].component === 'eStar'
             ) {
               this.answerTotal = this.answerTotal + 1
               this.items[i].answerId = answerCount
@@ -66,11 +72,20 @@ export default {
     },
     callBack(key) {
       console.log(this.items[key])
-      const answer = {
-        key: this.items[key].attributes.key,
-        value: this.items[key].attributes.defaultValue,
-        label: this.items[key].attributes.label,
-        type: this.items[key].component
+      if(this.items[key].component === 'eAddress') {
+        const answer = {
+          key: this.items[key].attributes.key,
+          value: this.items[key].attributes.defaultValue,
+          label: this.items[key].attributes.label,
+          type: this.items[key].component
+        }
+      } else{
+        const answer = {
+          key: this.items[key].attributes.key,
+          value: this.items[key].attributes.defaultValue,
+          label: this.items[key].attributes.label,
+          type: this.items[key].component
+        }
       }
       this.answer[this.items[key].answerId] = answer
     },
