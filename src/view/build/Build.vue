@@ -60,7 +60,7 @@ export default {
           var answerCount = 0
           for(let i = 0; i < this.items.length; i++) {
             if(this.items[i].component === 'eRadio' || this.items[i].component === 'SortText' || this.items[i].component === 'LongText'
-            || this.items[i].component === 'eCheckBox' || this.items[i].component === 'eStar'
+            || this.items[i].component === 'eCheckBox' || this.items[i].component === 'eStar' || this.items[i].component === 'eAddress'
             ) {
               this.answerTotal = this.answerTotal + 1
               this.items[i].answerId = answerCount
@@ -73,12 +73,19 @@ export default {
     callBack(key) {
       console.log(this.items[key])
       if(this.items[key].component === 'eAddress') {
+        var addressValue = []
+        this.items[key].attributes.complexAttr.forEach(element => {
+          let attr = element.complexAttr
+          let val = element.complexVal
+          addressValue.push(attr + ':' + val)
+        })
         const answer = {
           key: this.items[key].attributes.key,
-          value: this.items[key].attributes.defaultValue,
           label: this.items[key].attributes.label,
-          type: this.items[key].component
+          type: this.items[key].component,
+          value: addressValue
         }
+        this.answer[this.items[key].answerId] = answer
       } else{
         const answer = {
           key: this.items[key].attributes.key,
@@ -86,11 +93,11 @@ export default {
           label: this.items[key].attributes.label,
           type: this.items[key].component
         }
+        this.answer[this.items[key].answerId] = answer
       }
-      this.answer[this.items[key].answerId] = answer
     },
     submitAnswer() {
-      console.log(this.items)
+      // console.log(this.items)
       console.log(this.answer)
     }
   }
