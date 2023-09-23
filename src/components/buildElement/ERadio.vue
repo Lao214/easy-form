@@ -109,4 +109,14 @@ export default {
 .radio-input:checked~.label-text {
   color: hsl(0, 0%, 40%);
 }
+
+/* 设置-webkit-transform-style为preserve-3d */
+.radio-input-wrapper {
+  -webkit-transform-style: preserve-3d;
+}
+
+/* 或者设置-webkit-backface-visibility为hidden */
+.radio-input-wrapper {
+  -webkit-backface-visibility: hidden;
+}
 </style>
