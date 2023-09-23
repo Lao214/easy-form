@@ -63,7 +63,7 @@
 export default {
   data() {
     return {
-      linkData: 'http://localhost:7217/build?key=1702475532068851712'
+      linkData: 'http://localhost:7217/build?key=' + this.$route.query.key
     }
   },
   methods: {

@@ -226,7 +226,9 @@ export default {
       formApi.getFormByKey(this.$route.query.key).then(res => {
          if(res.data.code === 200) {
           this.one = res.data.data.one
-          this.items = JSON.parse(res.data.data.one.formItems)
+          if(res.data.data.one.formItems) {
+            this.items = JSON.parse(res.data.data.one.formItems)
+          }
          }
       })
     },

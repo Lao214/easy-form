@@ -5,7 +5,7 @@
     </div>
     <div class="main">
       <component v-for="(item, index) in items" :key="index" @callBack="callBack" :is="item.component" :attributes="item.attributes" :option-key="index"/>
-      <el-button @click="submitAnswer()" type="success" style="padding: 11px 27px">
+      <el-button :loading="submitloading" @click="submitAnswer()" type="success" style="padding: 11px 27px">
         提交
       </el-button>
     </div>
@@ -25,7 +25,12 @@ import eCheckBox from '@/components/buildElement/ECheckBox.vue'
 import eDivider from '@/components/buildElement/EasyDivider.vue'
 import eStar from '@/components/buildElement/EStar.vue'
 import eAddress from '@/components/buildElement/EAddress.vue'
+import ePicture from '@/components/buildElement/EPicture.vue'
+import eDate from '@/components/buildElement/EDate.vue'
+import eSelector from '@/components/buildElement/ESelector.vue'
+import eSlider from '@/components/buildElement/ESlider.vue'
 import formApi from '@/api/formApi'
+import answerApi from '@/api/answerApi'
 
 export default {
   components: {
@@ -37,7 +42,11 @@ export default {
     eCheckBox,
     eDivider,
     eStar,
-    eAddress
+    eAddress,
+    ePicture,
+    eDate,
+    eSelector,
+    eSlider
   },
   data() {
     return {
@@ -45,7 +54,8 @@ export default {
       one: {},
       answer: [],
       answerNum: 0,
-      answerTotal: 0
+      answerTotal: 0,
+      submitloading: false
     }
   },
   created() {
@@ -61,6 +71,7 @@ export default {
           for(let i = 0; i < this.items.length; i++) {
             if(this.items[i].component === 'eRadio' || this.items[i].component === 'SortText' || this.items[i].component === 'LongText'
             || this.items[i].component === 'eCheckBox' || this.items[i].component === 'eStar' || this.items[i].component === 'eAddress'
+            || this.items[i].component === 'eDate' || this.items[i].component === 'eSelector' || this.items[i].component === 'eSlider'
             ) {
               this.answerTotal = this.answerTotal + 1
               this.items[i].answerId = answerCount
@@ -97,8 +108,23 @@ export default {
       }
     },
     submitAnswer() {
-      // console.log(this.items)
+      this.submitloading = true
+      const dataAnswer = {
+        formKey: this.$route.query.key,
+        answerDetails: JSON.stringify(this.answer)
+      }
       console.log(this.answer)
+      // answerApi.saveAnswer(dataAnswer).then(res => {
+      //   if(res.data.code === 200) {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '提交成功'
+      //     })
+      //     this.submitloading = false
+      //   } else {
+      //     this.submitloading = false
+      //   }
+      // })
     }
   }
 }
