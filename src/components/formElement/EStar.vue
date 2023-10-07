@@ -1,6 +1,6 @@
 <template>
   <div class="componentBorder" style="" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
+    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <el-rate :max="attributes.max" v-model="attributes.defaultValue" :icons="attributes.radioOptions" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="margin:10px 20px;"></el-rate>
   </div>
 </template>

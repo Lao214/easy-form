@@ -1,6 +1,6 @@
 <template>
   <div class="componentBorder" style="" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
+    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <div style="display:flex; flex-wrap: wrap;">
       <div style="width: 50%;display: flex;flex-wrap:wrap;">
         <label style="margin-left: 9px;margin-bottom: 1px;font-weight: 600;width:90%;font-size: 12px;">{{ attributes.complexAttr[0].complexAttr }}</label>

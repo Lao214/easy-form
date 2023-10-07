@@ -5,7 +5,7 @@
     </div>
     <div class="main">
       <component v-for="(item, index) in items" :key="index" @callBack="callBack" :is="item.component" :attributes="item.attributes" :option-key="index"/>
-      <el-button :loading="submitloading" @click="submitAnswer()" type="success" style="padding: 11px 27px">
+      <el-button :loading="submitloading" @click="submitAnswer()" type="success" style="padding: 11px 27px;margin: 0 auto;">
         提交
       </el-button>
     </div>
@@ -29,6 +29,7 @@ import ePicture from '@/components/buildElement/EPicture.vue'
 import eDate from '@/components/buildElement/EDate.vue'
 import eSelector from '@/components/buildElement/ESelector.vue'
 import eSlider from '@/components/buildElement/ESlider.vue'
+// import eButton from '@/components/buildElement/EButton.vue'
 import formApi from '@/api/formApi'
 import answerApi from '@/api/answerApi'
 
@@ -51,6 +52,7 @@ export default {
   data() {
     return {
       items: [],
+      requires: [],
       one: {},
       answer: [],
       answerNum: 0,
@@ -75,15 +77,23 @@ export default {
             ) {
               this.answerTotal = this.answerTotal + 1
               this.items[i].answerId = answerCount
+              if(this.items[i].attributes.require) {
+                this.requires.push(this.items[i].answerId)
+              }
               answerCount++
             }
           }
+          console.log(this.requires)
+          console.log(this.items)
          }
       })
     },
     callBack(key) {
-      console.log(this.items[key])
-      if(this.items[key].component === 'eAddress') {
+      // console.log(this.items[key])
+      if(this.items[key].component === 'eButton') {
+        this.submitAnswer()
+      }
+      else if(this.items[key].component === 'eAddress') {
         var addressValue = []
         this.items[key].attributes.complexAttr.forEach(element => {
           let attr = element.complexAttr
@@ -94,7 +104,8 @@ export default {
           key: this.items[key].attributes.key,
           label: this.items[key].attributes.label,
           type: this.items[key].component,
-          value: addressValue
+          value: addressValue,
+          require: this.items[key].attributes.require
         }
         this.answer[this.items[key].answerId] = answer
       } else{
@@ -102,29 +113,63 @@ export default {
           key: this.items[key].attributes.key,
           value: this.items[key].attributes.defaultValue,
           label: this.items[key].attributes.label,
-          type: this.items[key].component
+          type: this.items[key].component,
+          require: this.items[key].attributes.require
         }
         this.answer[this.items[key].answerId] = answer
       }
     },
     submitAnswer() {
+      if(this.answer.length < 1) {
+        this.$message({
+          type: 'info',
+          message: '请填写问卷'
+        })
+        return
+      }
+      for(var i = 0; i < this.requires.length; i++) {
+        if(this.answer[this.requires[i]]) {
+          if(this.answer[this.requires[i]].type === 'eCheckBox') {
+            if(this.answer[this.requires[i]].value.length < 1) {
+              this.$message({
+                type: 'info',
+                message: '第' + (this.requires[i]+1) + '题还没回答'
+              })
+              return
+            }     
+          }
+        } else {
+          this.$message({
+            type: 'info',
+            message: '第' + (this.requires[i]+1) + '题还没回答'
+          })
+          return
+        }
+      }
       this.submitloading = true
       const dataAnswer = {
         formKey: this.$route.query.key,
-        answerDetails: JSON.stringify(this.answer)
+        originalData: JSON.stringify(this.answer),
+        name: this.one.formName,
+        source: '其他'
       }
-      console.log(this.answer)
-      // answerApi.saveAnswer(dataAnswer).then(res => {
-      //   if(res.data.code === 200) {
-      //     this.$message({
-      //       type: 'success',
-      //       message: '提交成功'
-      //     })
-      //     this.submitloading = false
-      //   } else {
-      //     this.submitloading = false
-      //   }
-      // })
+      answerApi.saveAnswer(dataAnswer).then(res => {
+        if(res.data.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
+          this.$router.push({
+            path: '/succ',
+            query: {
+              feedback: feedback
+            }
+          })
+          this.submitloading = false
+        } else {
+          this.submitloading = false
+        }
+      })
     }
   }
 }

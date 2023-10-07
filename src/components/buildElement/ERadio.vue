@@ -1,8 +1,8 @@
 <template>
-  <div class="componentBorder" style="">
-    <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
+  <div class="componentBorder">
+    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <div class="radio-input-wrapper">
-      <label v-for="(item,index) in attributes.radioOptions" :key="index" class="label">
+      <label v-for="(item,index) in attributes.radioOptions" :key="index" :for="optionKey + '-' + index" class="label">
         <input :value="item.radioValue" :name="'value-radio' + optionKey" :id="optionKey + '-' + index" class="radio-input" type="radio" v-model="attributes.defaultValue" @change="updateSelectedValue(item.radioValue)">
         <div class="radio-design"></div>
         <div class="label-text">{{ item.radioLabel }}</div>

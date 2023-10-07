@@ -1,10 +1,10 @@
 <template>
   <div class="componentBorder" style="" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700">{{ attributes.label }}</p>
+    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <ul class="unstyled centered">
-      <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px">
-        <input class="styled-checkbox" :id="'styled-checkbox-' + index" type="checkbox" @change="updateSelectedValue(item.radioValue)" :value="item.radioValue" v-model="attributes.defaultValue">
-        <label :for="'styled-checkbox-' + index">{{ item.radioLabel }}</label>
+      <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px;">
+        <input class="styled-checkbox" :id="'styled-checkbox-' + optionKey  + '-' + index" type="checkbox" @change="updateSelectedValue(item.radioValue)" :value="item.radioValue" v-model="attributes.defaultValue" :disabled="isCheckboxDisabled(item.radioValue)" >
+        <label :for="'styled-checkbox-' + optionKey  + '-' + index">{{ item.radioLabel }}</label>
       </li>
     </ul>
     <!-- <button @click="showSelectedOptions">显示选中的选项</button> -->
@@ -16,20 +16,42 @@ export default {
   props: ['optionKey','attributes'],
   data() {
     return {
-      selectedOptions: []
+      selectedOptions: {}
     }
+  },
+  computed: {
+    // 计算属性，返回当前未选中的选项数量
+    remainingSelection() {
+      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
+      return this.attributes.max - selectedCount;
+    },
   },
   methods: {
     callBack() {
       this.$emit('callBack', this.optionKey)
     },
     updateSelectedValue(newValue) {
-      // this.attributes.defaultValue.push(newValue)
+      if(this.selectedOptions[newValue]) {
+        this.selectedOptions[newValue] = ''
+      } else {
+        this.selectedOptions[newValue] = newValue
+      }
+      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
+      console.log(selectedCount)
+      if (selectedCount > this.maxSelection) {
+        // 如果超过最大限制，取消选中当前项
+        this.selectedOptions[newValue] = false;
+      }
       this.callBack()
     },
     showSelectedOptions() {
       console.log(this.attributes.defaultValue)
-    }
+    },
+    // 判断复选框是否应该被禁用
+    isCheckboxDisabled(value) {
+      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
+      return selectedCount >= this.attributes.max && !this.selectedOptions[value];
+    },
   }
 }
 </script>
@@ -102,7 +124,15 @@ export default {
 }
 
 .centered {
-  width: 300px;
+  width: 91%;
   margin: 0px 0px 0px 20px;
+  font-weight: 900;
+}
+
+/* 设置-webkit-transform-style为preserve-3d */
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 </style>
