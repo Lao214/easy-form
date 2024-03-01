@@ -20,6 +20,11 @@ const router = new VueRouter({
           component: () => import("../view/build/Build.vue")
         },
         {
+          path: "/share",
+          name:'share',
+          component: () => import("../view/build/Share.vue")
+        },
+        {
           path: "/home",
           name:'Home',
           component: () => import("../view/index.vue"),

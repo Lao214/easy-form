@@ -231,7 +231,8 @@ export default {
       this.drag = false
     },
     gotoRelease() {
-      this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })
+      window.open('/share?key=' + this.$route.query.key)
+      // this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })
     },
     getFormByKey() {
       this.isLoading = true
