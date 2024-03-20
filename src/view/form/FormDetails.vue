@@ -61,7 +61,7 @@
           <div v-show="isChecked">
             <div class="opName">
               组件名：{{ optionsName }} <br>
-              <span>
+              <span v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' * optionsName !== 'ePicture'">
                 是否必填：
                 <label class="switch">
                   <input v-model="optionsRequire" @change="changeRequire(optionsRequire)" type="checkbox">
@@ -74,24 +74,26 @@
               组件Key: 
               <input class="opInput" @input="changeKey(optionsKey)" v-model="optionsKey" >
             </div>
-            <div class="opInputs">
-              组件Label: 
+            <div class="opInputs" v-show="optionsName !== 'eDescription'">
+              <span v-show="optionsName !== 'Heading'">组件Label: </span>
+              <span v-show="optionsName === 'Heading'">主标题: </span>
               <input class="opInput" @input="changeLabel(optionsLabel)" v-model="optionsLabel" >
             </div>
             <div class="opInputs">
-              组件默认值: 
+              <span v-show="optionsName !== 'Heading'">组件默认值: </span>
+              <span v-show="optionsName === 'Heading'">副标题: </span>
               <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
               <el-select v-show="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
                 <el-option v-for="item in optionsRadio" :key="item.radioValue" :label="item.radioLabel" :value="item.radioValue">
                 </el-option>
               </el-select>
             </div>
-            <div class="opInputs">
-              <span v-if="optionsName != 'eCheckBox'">组件最大值:</span> 
+            <div v-show="optionsName !== 'Heading' && optionsName !== 'eDescription'" class="opInputs">
+              <span v-if="optionsName !== 'eCheckBox'">组件最大值:</span> 
               <span v-if="optionsName === 'eCheckBox'">最多可选:</span> 
               <input class="opInput" placeholder="请输入整数" @input="changeMaxValue(optionsMaxValue)" v-model="optionsMaxValue" >
             </div>
-            <div class="opInputs">
+            <div v-show="optionsName !== 'Heading' && optionsName !== 'eDescription'" class="opInputs">
               <span v-if="optionsName != 'eCheckBox'">组件最小值:</span> 
               <!-- <span v-if="optionsName === 'eCheckBox'">最少要选:</span>  -->
               <input  v-if="optionsName != 'eCheckBox'" class="opInput" placeholder="请输入整数" @input="changeMinValue(optionsMinValue)" v-model="optionsMinValue" >
