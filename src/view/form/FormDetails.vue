@@ -17,7 +17,7 @@
           </div>
           <div v-show="isChecked">
             <div class="MenuNodeTitle"> 基础组件 </div>
-            <div class="MenuBtn" @click="addBasicComponents('Heading','Heading','subHeader')"> <i class="fa fa-header" /> 头部/标题</div>
+            <div class="MenuBtn" @click="addHeader('Heading','主标题','副标题')"> <i class="fa fa-header" /> 头部/标题</div>
             <div class="MenuBtn" @click="addBasicComponents('eDescription','Description','write something please')"> <i class="fa fa-file-text-o" /> 描述</div>
             <div class="MenuBtn" @click="addBasicComponents('SortText','Your Question','please input your answer in here')"> <i class="fa fa-text-width" /> 短输入框</div>
             <div class="MenuBtn" @click="addBasicComponents('LongText','Your Question','please input your answer in here')"> <i class="fa fa-text-height" /> 长输入框</div>
@@ -59,52 +59,69 @@
             <el-button @click="saveForm()" style="width: 100%;font-weight: 700;" :loading="isLoading" type="success">保存表单</el-button>
           </div>
           <div v-show="isChecked">
+
             <div class="opName">
               组件名：{{ optionsName }} <br>
-              <span v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' * optionsName !== 'ePicture'">
+
+              <span v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' && optionsName !== 'ePicture' && optionsName !== 'eDivider'">
                 是否必填：
                 <label class="switch">
                   <input v-model="optionsRequire" @change="changeRequire(optionsRequire)" type="checkbox">
                   <span class="slider"></span>
                 </label>
               </span>
+
               <el-divider></el-divider>
             </div>
+
             <div class="opInputs">
               组件Key: 
               <input class="opInput" @input="changeKey(optionsKey)" v-model="optionsKey" >
             </div>
-            <div class="opInputs" v-show="optionsName !== 'eDescription'">
-              <span v-show="optionsName !== 'Heading'">组件Label: </span>
-              <span v-show="optionsName === 'Heading'">主标题: </span>
+            <div v-show="optionsName === 'Heading'" class="opInputs">
+              主标题: 
+              <input class="opInput" @input="changeTitle(optionsTitle)" v-model="optionsTitle" >
+            </div>
+            <div v-show="optionsName === 'Heading'" class="opInputs">
+              副标题: 
+              <input class="opInput" @input="changeTitle(optionsSubtitle)" v-model="optionsSubtitle" >
+            </div>
+
+            <div class="opInputs" v-show="optionsName === 'SortText' || optionsName === 'LongText'">
+              <span >组件Label: </span>
               <input class="opInput" @input="changeLabel(optionsLabel)" v-model="optionsLabel" >
             </div>
-            <div class="opInputs">
-              <span v-show="optionsName !== 'Heading'">组件默认值: </span>
-              <span v-show="optionsName === 'Heading'">副标题: </span>
+
+            <div v-show="optionsName === 'eDescription' || optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio'" class="opInputs">
+              <span>组件默认值: </span>
               <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
               <el-select v-show="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
                 <el-option v-for="item in optionsRadio" :key="item.radioValue" :label="item.radioLabel" :value="item.radioValue">
                 </el-option>
               </el-select>
             </div>
-            <div v-show="optionsName !== 'Heading' && optionsName !== 'eDescription'" class="opInputs">
+
+            <div v-show="optionsName === 'eSlider' || optionsName === 'eCheckBox'" class="opInputs">
               <span v-if="optionsName !== 'eCheckBox'">组件最大值:</span> 
               <span v-if="optionsName === 'eCheckBox'">最多可选:</span> 
               <input class="opInput" placeholder="请输入整数" @input="changeMaxValue(optionsMaxValue)" v-model="optionsMaxValue" >
             </div>
-            <div v-show="optionsName !== 'Heading' && optionsName !== 'eDescription'" class="opInputs">
-              <span v-if="optionsName != 'eCheckBox'">组件最小值:</span> 
+
+            <div v-show="optionsName === 'eSlider' || optionsName === 'eCheckBox'" class="opInputs">
+              <span v-if="optionsName !== 'eCheckBox'">组件最小值:</span> 
               <!-- <span v-if="optionsName === 'eCheckBox'">最少要选:</span>  -->
               <input  v-if="optionsName != 'eCheckBox'" class="opInput" placeholder="请输入整数" @input="changeMinValue(optionsMinValue)" v-model="optionsMinValue" >
             </div>
+
             <div class="opInputs" v-show="optionsStepValue">
               组件步值: 
               <input class="opInput" placeholder="请输入整数" @input="changeStepValue(optionsStepValue)" v-model="optionsStepValue" >
             </div>
+
             <div class="opInputs">
               <el-button @click="delComponents()" style="width: 100%;" type="danger"><i class="el-icon-delete"></i></el-button>
             </div>
+
             <div class="opName" v-show="optionsRadio.length > 0">
               选项：
               <el-divider></el-divider>
@@ -191,6 +208,8 @@ export default {
       optionsMaxValue: '',
       optionsMinValue: '',
       optionsStepValue: '',
+      optionsTitle:'',
+      optionsSubtitle: '',
       optionsRadio: [],
       optionsAttr: [],
       dialogVisible: false,
@@ -383,6 +402,17 @@ export default {
         }
       })
     },
+    addHeader(name, title, subtitle) {
+      var date = new Date().getTime()
+      this.items.push({
+        component: name,
+        attributes: {
+          title: title,
+          subtitle: subtitle,
+          key: 'easy' + date,
+        }
+      })
+    },
     callBack(key) {
       this.optionsIndex = key
       this.optionsName = this.items[key].component
@@ -390,6 +420,8 @@ export default {
       this.optionsLabel = this.items[key].attributes.label
       this.optionsDefaultValue = this.items[key].attributes.defaultValue
       this.optionsKey = this.items[key].attributes.key
+      this.optionsTitle = this.items[key].attributes.title
+      this.optionsSubtitle = this.items[key].attributes.subtitle
       if(this.items[key].attributes.max) {
         this.optionsMaxValue = this.items[key].attributes.max
       } else {
@@ -425,12 +457,28 @@ export default {
     changeLabel(newValue) {
       this.items[this.optionsIndex].attributes.label = newValue
     },
+    // Heading 的方法
+    changeTitle(newValue) {
+      this.items[this.optionsIndex].attributes.title = newValue
+    },
+     // Heading 的方法
+    changeSubtitle(newValue) {
+      this.items[this.optionsIndex].attributes.subtitle = newValue
+    },
     changeDefaultValue(newValue) {
       if( this.items[this.optionsIndex].component === 'eStar') {
         if(!newValue) {
           newValue = 0
         }
         newValue = parseInt(newValue)
+      }
+      if(this.items[this.optionsIndex].component === 'eCheckBox') {
+        console.log(this.items[this.optionsIndex].attributes)
+        if(this.items[this.optionsIndex].attributes.defaultValue && (this.items[this.optionsIndex].attributes.defaultValue.length > this.items[this.optionsIndex].attributes.max)) {
+          return this.$message.warning('超过最大限制')
+        } else {
+
+        }
       }
       this.items[this.optionsIndex].attributes.defaultValue = newValue
     },

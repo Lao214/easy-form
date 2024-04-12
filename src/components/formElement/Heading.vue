@@ -1,7 +1,7 @@
 <template>
   <div class="componentBorder" style="" @click="callBack">
-    <h1 style="margin: 0;text-align: center;">{{ attributes.label }}</h1>
-    <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.defaultValue }}</p>
+    <h1 style="margin: 0;text-align: center;">{{ attributes.title }}</h1>
+    <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.subtitle }}</p>
   </div>
 </template>
 
