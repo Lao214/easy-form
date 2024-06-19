@@ -37,7 +37,7 @@ export default {
         this.selectedOptions[newValue] = newValue
       }
       const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
-      console.log(selectedCount)
+      // console.log(selectedCount)
       if (selectedCount > this.maxSelection) {
         // 如果超过最大限制，取消选中当前项
         this.selectedOptions[newValue] = false;

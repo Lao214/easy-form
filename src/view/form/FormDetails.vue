@@ -87,12 +87,12 @@
               <input class="opInput" @input="changeTitle(optionsSubtitle)" v-model="optionsSubtitle" >
             </div>
 
-            <div class="opInputs" v-show="optionsName === 'SortText' || optionsName === 'LongText'">
+            <div class="opInputs" v-show="optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio' || optionsName === 'eCheckBox' || optionsName === 'eSelector' || optionsName === 'eStar' || optionsName === 'ePicture' || optionsName === 'ePicture' || optionsName === 'eDate'">
               <span >组件Label: </span>
               <input class="opInput" @input="changeLabel(optionsLabel)" v-model="optionsLabel" >
             </div>
 
-            <div v-show="optionsName === 'eDescription' || optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio'" class="opInputs">
+            <div v-show="optionsName === 'eDescription' || optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio' || optionsName === 'eCheckBox' || optionsName === 'eSelector' || optionsName === 'eStar' || optionsName === 'ePicture' || optionsName === 'eDate'" class="opInputs">
               <span>组件默认值: </span>
               <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
               <el-select v-show="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
@@ -472,15 +472,19 @@ export default {
         }
         newValue = parseInt(newValue)
       }
+      this.items[this.optionsIndex].attributes.defaultValue = newValue
       if(this.items[this.optionsIndex].component === 'eCheckBox') {
-        console.log(this.items[this.optionsIndex].attributes)
+        // console.log(this.items[this.optionsIndex].attributes)
+        // console.log(this.items[this.optionsIndex].attributes.defaultValue.length)
+        // console.log(this.items[this.optionsIndex].attributes.max)
         if(this.items[this.optionsIndex].attributes.defaultValue && (this.items[this.optionsIndex].attributes.defaultValue.length > this.items[this.optionsIndex].attributes.max)) {
+          this.items[this.optionsIndex].attributes.defaultValue = this.items[this.optionsIndex].attributes.defaultValue.slice(0, this.items[this.optionsIndex].attributes.max)
+          this.optionsDefaultValue = this.optionsDefaultValue.slice(0, this.items[this.optionsIndex].attributes.max)
           return this.$message.warning('超过最大限制')
         } else {
 
         }
       }
-      this.items[this.optionsIndex].attributes.defaultValue = newValue
     },
     changeMaxValue(newValue) {
       if(newValue) {

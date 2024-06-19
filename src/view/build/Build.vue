@@ -81,8 +81,18 @@ export default {
                 this.requires.push(this.items[i].answerId)
               }
               answerCount++
+              if(this.items[i].attributes.defaultValue) {
+                this.answer[answerCount-1] = {
+                  key: this.items[i].attributes.key,
+                  label: this.items[i].attributes.label,
+                  type: this.items[i].component,
+                  value: this.items[i].attributes.defaultValue,
+                  require: this.items[i].attributes.require
+                }
+              }
             }
           }
+          console.log(this.answer)
           console.log(this.requires)
           console.log(this.items)
          }
@@ -149,8 +159,8 @@ export default {
       this.submitloading = true
       const dataAnswer = {
         formKey: this.$route.query.key,
-        originalData: JSON.stringify(this.answer),
-        name: this.one.formName,
+        answerDetails: JSON.stringify(this.answer),
+        // formName: this.one.formName,
         source: '其他'
       }
       answerApi.saveAnswer(dataAnswer).then(res => {
@@ -159,12 +169,12 @@ export default {
             type: 'success',
             message: '提交成功'
           })
-          this.$router.push({
-            path: '/succ',
-            query: {
-              feedback: feedback
-            }
-          })
+          // this.$router.push({
+          //   path: '/succ',
+          //   query: {
+          //     feedback: feedback
+          //   }
+          // })
           this.submitloading = false
         } else {
           this.submitloading = false

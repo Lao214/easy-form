@@ -36,21 +36,21 @@ export default {
       } else {
         this.selectedOptions[newValue] = newValue
       }
-      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
-      console.log(selectedCount)
+      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length
+      // console.log(selectedCount)
       if (selectedCount > this.maxSelection) {
         // 如果超过最大限制，取消选中当前项
-        this.selectedOptions[newValue] = false;
+        this.selectedOptions[newValue] = false
       }
       this.callBack()
     },
     showSelectedOptions() {
-      console.log(this.attributes.defaultValue)
+      // console.log(this.attributes.defaultValue)
     },
     // 判断复选框是否应该被禁用
     isCheckboxDisabled(value) {
-      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
-      return selectedCount >= this.attributes.max && !this.selectedOptions[value];
+      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length
+      return selectedCount >= this.attributes.max && !this.selectedOptions[value]
     },
   }
 }
