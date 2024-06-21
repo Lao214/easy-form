@@ -26,7 +26,6 @@
                     <input v-model="linkDataOnLine" placeholder="link" type="search" class="input" disabled>
                   </div>
                   <div style="width: 100%;margin-top: 10px;text-align: end;">
-                    <el-button @click="openInNewTabTest" type="success"><i class="fa fa-copy"></i> 测试地址</el-button>
                     <el-button @click="copyLink" type="success"><i class="fa fa-copy"></i> 复制</el-button>
                     <el-button @click="openInNewTab" type="primary"><i class="fa fa-openid"></i> 在新的页面打开链接</el-button>
                     <!-- <el-button type="success"><i class="fa fa-qrcode"></i> 下载二维码</el-button> -->
@@ -36,26 +35,7 @@
                   </div>
                 </div>
               </div>
-  
-              <div v-if="key === 'a7378a8b499b4fbc923334bb0683c518'" style="width: 50%;min-height: 140px;height: auto;background: white; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.429);border-radius: 4px;padding: 20px;margin-top: 20px;">
-                <div style="width: 100%;height: 70px;text-align: start;">
-                  <span style="font-weight: 600;color: #49760f;margin-left: 11px;">为链接添加厂区</span>
-                  <div style="margin-top: 20px;">
-                    <select v-model="citys" @change="changeCitys" placeholder="link" type="search" class="input">
-                      <option value="shenzhen">深圳</option>
-                      <option value="chengdu_MCEBG">成都-MCEBG</option>
-                      <option value="zhenzhou_iPEBG">郑州-iPEBG</option>
-                      <option value="tianjin">天津</option>
-                      <option value="jiyuan">济源</option>
-                      <option value="jincheng">晋城</option>
-                      <option value="chengdu_iDSBG">成都-iDSBG</option>
-                      <option value="taiyuan">太原</option>
-                      <option value="nanning">南宁</option>
-                      <option value="zhengzhou_iDPBG">郑州-iDSBG</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+
   
               <div style="width: 50%;min-height: 140px;height: auto;background: white; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.429);border-radius: 4px;padding: 20px;margin-top: 20px;">
                 <div style="width: 100%;height: 70px;text-align: start;">
@@ -103,17 +83,13 @@
         citys: '',
         isChecked: false,
         QRImgUrl: '',
-        baseUrl: 'https://tduck-vue.foxconnedu.com/',
+        baseUrl: window.location.origin + '/build?key=',
         isDetails: false,
         linkText: ''
       }
     },
     created() {
-      if (this.$route.query.key && this.$route.query.key === 'a7378a8b499b4fbc923334bb0683c518') {
-        this.linkDataOnLine = this.baseUrl + 's/a7378a8b499b4fbc923334bb0683c518?factoryarea=' + this.citys
-      } else {
-        this.linkDataOnLine = this.baseUrl  + this.$route.query.code
-      }
+      this.linkDataOnLine = this.baseUrl  + this.$route.query.key
       this.getQRcode()
       if(this.$route.query.type && this.$route.query.type === 'details') {
         this.isDetails = true
@@ -184,7 +160,7 @@
         this.linkDataOnLine = 'https://tduck-vue.foxconnedu.com/s/a7378a8b499b4fbc923334bb0683c518?factoryarea=' + this.citys
       },
       addLogo(text) {
-        this.linkDataOnLine = this.baseUrl  + this.$route.query.code
+        this.linkDataOnLine = this.baseUrl  + this.$route.query.key
         if(text) {
           this.linkDataOnLine = this.linkDataOnLine + '?source=' + text
         }

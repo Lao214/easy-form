@@ -78,7 +78,7 @@ export default {
   width: 22px;
   height: 22px;
   border-radius: 100px;
-  background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
+  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
   position: relative;
 }
 

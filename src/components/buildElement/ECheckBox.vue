@@ -89,13 +89,13 @@ export default {
   background: #e7e7e7;
 }
 .styled-checkbox:hover + label:before {
-  background: #f35429;
+  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
 }
 .styled-checkbox:focus + label:before {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 .styled-checkbox:checked + label:before {
-  background: #f35429;
+  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
 }
 .styled-checkbox:disabled + label {
   color: #b8b8b8;
