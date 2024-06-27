@@ -66,9 +66,9 @@ export default {
   methods: {
     getFormByKey() {
       formApi.getFormByKeyPublic(this.$route.query.key).then(res => {
-         if(res.data.code === 200) {
-          this.one = res.data.data.one
-          this.items = JSON.parse(res.data.data.one.formItems)
+         if(res.code === 200) {
+          this.one = res.data.one
+          this.items = JSON.parse(res.data.one.formItems)
           var answerCount = 0
           for(let i = 0; i < this.items.length; i++) {
             if(this.items[i].component === 'eRadio' || this.items[i].component === 'SortText' || this.items[i].component === 'LongText'
@@ -164,7 +164,7 @@ export default {
         source: '其他'
       }
       answerApi.saveAnswer(dataAnswer).then(res => {
-        if(res.data.code === 200) {
+        if(res.code === 200) {
           this.$message({
             type: 'success',
             message: '提交成功'

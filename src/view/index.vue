@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
     var token = getToken()
-    console.log(token)
+    console.log(token,'/view/index')
     if(!token) {
       this.$message({
         message: '登录已过期，请重新登录',

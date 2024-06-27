@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import { removeToken } from '@/utils/auth'
+
 export default {
   data() {
     return {
@@ -95,7 +97,7 @@ export default {
     handleLoginClick() {
       this.userFormsClass = 'bounceRight';
     },
-    handleLogin() { 
+    async handleLogin() {
       if(!this.loginForm.username) {
         this.$message({
           message: '请输入用户名',
@@ -110,13 +112,22 @@ export default {
         })
         return
       }
+      removeToken()
       this.loading = true
-      this.$store.dispatch('user/login', this.loginForm).then(() => {
+      try {
+        // 等待 login 操作完成
+        await this.$store.dispatch('user/login', this.loginForm)
+        // 等待 getInfo 操作完成
+        await this.$store.dispatch('user/getInfo')
+        // 跳转到 /dashboard
         this.$router.push({ path: '/home' })
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
+      } catch (error) {
+        // 处理错误
+        console.error(error);
+      } finally {
+        // 确保在操作完成后设置 loading 为 false
+        this.loading = false;
+      }
     }
   }
 }

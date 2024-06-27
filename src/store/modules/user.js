@@ -42,10 +42,10 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        // console.log(response.data)
-        const { data } = response.data
-        commit('SET_TOKEN', data.tokenInfo.tokenValue)
-        setToken(data.tokenInfo.tokenValue)
+        // console.log(response,'response')
+        commit('SET_TOKEN', response.data.token)
+        localStorage.setItem('expTime',response.data.expTime)
+        setToken(response.data.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -54,24 +54,33 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
+      if(!state.token) {
+        console.log('token is null')
+        return
+      }
       getInfo().then(response => {
         if(response) {
-          const { data } = response.data
-          if (!data) {
+          const { one } = response.data
+          if (!one) {
             return reject('Verification failed, please Login again.')
           }
           // console.log(data.one.nickname)
           // const { name, avatar } = data
-          if(data.one) {
-            commit('SET_NAME', data.one.nickname)
-            commit('SET_AVATAR', data.one.avatar)
+          if(one) {
+            // console.log(one)
+            commit('SET_NAME', one.nickname)
+            commit('SET_AVATAR', one.avatar)
+            commit('SET_MENUS', one.authorityList)
+
+            // 修正：传递 one.menus 到 loadAsyncRoutes
+            // dispatch('loadAsyncRoutes', one.menus).then(() => resolve(one)) // 确保异步操作完成
           }
   
           // commit('SET_BUTTONS', data.buttons)
           // commit('SET_MENUS', data.routers)
-          resolve(data)
+          resolve(one)
         }
       }).catch(error => {
         reject(error)

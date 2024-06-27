@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'ec-token'
+const TokenKey = 'easy-token'
 const EXPIRATION_KEY = 'ec-token-expiration'
 
 export function getToken() {
@@ -14,7 +14,7 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  console.log(token)
+  // console.log(token)
   const expiration = new Date();
   expiration.setDate(expiration.getDate() + 30); // 设置有效期为30天
   Cookies.set(EXPIRATION_KEY,expiration.toISOString())

@@ -257,19 +257,15 @@ export default {
     },
     getFormByKey() {
       this.isLoading = true
-      var username = ''
       formApi.getFormByKey(this.$route.query.key).then(res => {
-				username = res.data.data.username
-        formApi.getFormByKey(this.$route.query.key,username).then(res => {
-         if(res.data.code === 200) {
-          this.one = res.data.data.one
-          if(res.data.data.one.formItems) {
-            this.items = JSON.parse(res.data.data.one.formItems)
+        if(res.code === 200) {
+            this.one = res.data.one
+            if(res.data.one.formItems) {
+              this.items = JSON.parse(res.data.one.formItems)
+            }
           }
-         }
         })
       this.isLoading = false
-			})
     },
     saveForm() {
       this.isLoading = true
@@ -278,7 +274,7 @@ export default {
         formItems: JSON.stringify(this.items)
       }
       formApi.updateForm(bForm).then(res => {
-          if(res.data.code === 200) {
+          if(res.code === 200) {
             this.$message({
               type: 'success',
               message: '保存成功'

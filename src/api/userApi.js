@@ -6,7 +6,7 @@ export default {
 
 export function login(loginForm) {
   return request({
-    url: '/easy/user/doLogin',
+    url: '/easy/user/login',
     method: 'post',
     data: loginForm
   })

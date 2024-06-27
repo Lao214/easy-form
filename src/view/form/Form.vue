@@ -135,7 +135,7 @@ export default {
     confirmCreate() {
       this.dataForm.formType = this.selectedOption
       FormApi.saveForm(this.dataForm).then(res => {
-        if(res.data.code === 200) {
+        if(res.code === 200) {
           this.$message({
             type: 'success',
             message: 'Create Success'
@@ -151,8 +151,8 @@ export default {
         sortType: this.sortType
       }
       FormApi.getFormList(queryForm).then(res => {
-        if(res.data.code === 200) {
-          this.formList = res.data.data.list
+        if(res.code === 200) {
+          this.formList = res.data.list
         }
       })
     }
