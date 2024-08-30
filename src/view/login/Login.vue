@@ -4,15 +4,15 @@
       <div class="user_options-container">
         <div class="user_options-text">
           <div class="user_options-unregistered">
-            <h2 class="user_unregistered-title">Don't have an account?</h2>
-            <p class="user_unregistered-text">Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
-            <button class="user_unregistered-signup" id="signup-button" @click="handleSignupClick">Sign up</button>
+            <h2 class="user_unregistered-title">{{ $t('DontHaveAnAccount')  }}</h2>
+            <p class="user_unregistered-text">{{ $t('registerSlogan') }}</p>
+            <button class="user_unregistered-signup" id="signup-button" @click="handleSignupClick">{{ $t('signUp') }}</button>
           </div>
 
           <div class="user_options-registered">
-            <h2 class="user_registered-title">Have an account?</h2>
-            <p class="user_registered-text">Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
-            <button class="user_registered-login" id="login-button" @click="handleLoginClick">Login</button>
+            <h2 class="user_registered-title">{{ $t('haveAnAccount') }}</h2>
+            <p class="user_registered-text">{{ $t('loginSlogan') }}</p>
+            <button class="user_registered-login" id="login-button" @click="handleLoginClick">{{ $t('loginBtn') }}</button>
           </div>
         </div>
         
@@ -37,8 +37,12 @@
               </div>
               <div class="forms_buttons">
                 <!-- <button type="button" class="forms_buttons-forgot">Forgot password?</button> -->
-                <i v-show="logInWay === 0" class="fa fa-envelope" style="color: gray;font-size: 27px;" @click="logInWay = 1"></i>
-                <i v-show="logInWay === 1" class="fa fa-mail-reply" style="color: gray;font-size: 27px;" @click="logInWay = 0"></i>
+                <div style="display: flex;align-items: center;">
+                  <i v-show="logInWay === 0" class="fa fa-envelope" style="color: gray;font-size: 27px;" @click="logInWay = 1"></i>
+                  <i v-show="logInWay === 1" class="fa fa-mail-reply" style="color: gray;font-size: 27px;" @click="logInWay = 0"></i>
+                  <svg t="1724932470072" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2527" width="27" height="27" style="margin-left: 1rem;cursor: pointer;" @click="changeI18N()"><path d="M636.416 418.304H885.76c16.384 0 32.256 6.656 44.032 18.432s18.432 27.648 18.432 44.032V885.76c0 16.384-6.656 32.256-18.432 44.032s-27.648 18.432-44.032 18.432H480.256c-16.384 0-32.256-6.656-44.032-18.432s-18.432-27.648-18.432-44.032v-249.344H542.72c24.576 0 48.64-9.728 66.048-27.136 17.408-17.408 27.136-41.472 27.136-66.048l0.512-124.928zM75.264 137.728c0-16.384 6.656-32.256 18.432-44.032s27.648-18.432 44.032-18.432H542.72c16.384 0 32.256 6.656 44.032 18.432s18.432 27.648 18.432 44.032V542.72c0 16.384-6.656 32.256-18.432 44.032s-27.648 18.432-44.032 18.432H137.728c-16.384 0-32.256-6.656-44.032-18.432s-18.432-27.648-18.432-44.032V137.728zM199.68 407.04h45.568v-24.064h65.536v115.2h48.128V382.464h67.072v19.968h49.664V250.368H359.424v-33.28c0-9.728 1.536-18.432 4.096-25.6 0.512-1.024 1.024-2.56 1.536-4.096 0-1.024-3.072-1.536-9.216-2.56h-45.568v65.536H199.68v156.672z m45.568-119.296h65.536v58.88H245.248V287.744z m180.736 58.88h-66.56V287.744h67.072v58.88z m198.656 475.136l18.944-52.224h97.792l18.944 52.224H814.08l-87.04-247.808h-62.976l-89.6 247.808h50.176z m32.256-93.696l36.352-105.984h1.536l33.28 105.984h-71.168z m228.352-403.456h-62.464c0-69.12-55.808-124.928-124.928-124.928V137.728c103.936 0 187.392 83.968 187.392 186.88z m-747.52 374.272H199.68c0 69.12 55.808 124.928 124.928 124.928V885.76c-103.424 0-186.88-83.456-186.88-186.88z m0 0" fill="#1c3c57" p-id="2528"></path></svg>
+                </div>
+        
                 <button type="button" class="forms_buttons-action" @click="handleLogin()">Log In</button>
               </div>
             </form>
@@ -55,7 +59,7 @@
                 </div>
                 <div v-show="signUpWay === 1" class="forms_field" style="display: flex;">
                   <input type="text" placeholder="Code" class="forms_field-input" style="width: 70%;"/>
-                  <button type="submit" class="forms_buttons-action" style="width: 30%;">Send</button>
+                  <button class="forms_buttons-action" style="width: 30%;">Send</button>
                 </div>
                 <div v-show="signUpWay === 0" class="forms_field">
                   <input type="password" placeholder="Password" class="forms_field-input"  />
@@ -91,6 +95,13 @@ export default {
     }
   },
   methods: {
+    changeI18N() {
+      if(this.$i18n.locale === 'zh') {
+        this.$i18n.locale = 'en'
+      } else {
+        this.$i18n.locale = 'zh'
+      }
+    },
     handleSignupClick() {
       this.userFormsClass = 'bounceLeft';
     },
@@ -366,7 +377,7 @@ input::placeholder {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 35px;
+  margin-top: 1.7rem;
 }
 
 .user_options-forms .forms_buttons-forgot {

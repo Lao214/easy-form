@@ -2,7 +2,7 @@
   <div class="body">
     <el-row>
       <el-col :span="4">
-        <div style="height: 95vh;background-color: #d3cfdd79;padding: 11px;overflow-y: scroll;">
+        <div style="height: 95vh;background-color: #ffffff;padding: 11px;overflow-y: scroll;">
           <div class="checkbox-wrapper-10">
             <input checked="" type="checkbox" id="cb5" class="tgl tgl-flip" v-model="isChecked">
             <label for="cb5" data-tg-on="组件" data-tg-off="功能" class="tgl-btn"></label>
@@ -36,7 +36,7 @@
         </div>
       </el-col>
       <el-col :span="13">
-        <div style="height: 95vh;background-color: #a7ce74;padding: 11px;overflow-y: scroll;">
+        <div style="height: 95vh;background-color: #a7ce74;padding: 14px;overflow-y: scroll;">
           <div class="adaptive-div">
             <div v-show="isLoading" class="three-body">
               <div class="three-body__dot"></div>
@@ -54,7 +54,7 @@
         </div>
       </el-col>
       <el-col :span="7">
-        <div style="height: 95vh;background-color: #85848779;padding: 11px;overflow-y: scroll;">
+        <div style="height: 95vh;background-color: #ffffff;padding: 11px;overflow-y: scroll;">
           <div class="opInputs">
             <el-button @click="saveForm()" style="width: 100%;font-weight: 700;" :loading="isLoading" type="success">保存表单</el-button>
           </div>
