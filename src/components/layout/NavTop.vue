@@ -1,32 +1,70 @@
 <template>
   <nav>
-    <div class="logo">Echoes</div>
+    <div class="logo">EasyForm</div>
     <div class="navbar">
         <ul class="nav-menu">
-          <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+          <li class="nav-item" @click="goByNavTop('home')"><a class="nav-link">Home</a></li>
+          <li class="nav-item"><a  class="nav-link">About</a></li>
+          <li class="nav-item"><a  class="nav-link">Services</a></li>
+          <li class="nav-item"><a  class="nav-link">Contact</a></li>
           <li class="nav-item"><a @click="logOut()" class="nav-link">LogOut</a></li>
         </ul>
-        <div style="color: white;margin-left: 97px;font-size: 14px;">
-          <div class="block"><el-avatar :size="35" :src="avatar"></el-avatar></div>
-          {{ username }}
+        <div style="color: white;margin-left: 3rem;font-size: 1rem;display: flex;align-items: center;">
+          <div class="block" style="margin-right: .41rem;">
+            <el-avatar :size="35" :src="avatar"></el-avatar>
+          </div>
+          {{ name }}
         </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  props: ['username','avatar'],
+  computed: {
+    ...mapGetters([
+      'avatar',
+      'name'
+    ])
+  },
+  created() {
+    this.$store.dispatch('user/getInfo')
+  },
   methods: {
     logOut() {
-      this.$router.push({ path: '/' })
-      this.$message({
-        type: 'success',
-        message: '登出成功'
-      })
+      this.$confirm('确定要登出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('user/logout')
+          this.$router.push('/')
+          this.$message({
+            type: 'success',
+            message: '登出成功'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })        
+        })
+    },
+    goByNavTop(route) {
+        const currentPath = this.$route.path;
+
+        // 检查当前路径是否为 '/resours' 且查询参数 'ftype' 是否为目标值
+        if (currentPath === '/' + route) {
+            // 当前路由已经是目标路由，无需导航
+            return;
+        }
+
+        // 否则执行导航操作
+        this.$router.push({ 
+            path: '/' + route
+        })
     }
   }
 }

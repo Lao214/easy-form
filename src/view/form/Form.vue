@@ -71,14 +71,14 @@
     </el-row>
 
     <el-dialog :visible.sync="dialogVisible" width="70%" :close-on-click-modal="false" >
-      <span style="color: #2c3e50;font-weight: 700;font-size: 24px;">CREATE FORM</span>
-      <div style="margin: 20px 15%;text-align: start;">
-        <div  style="margin: 20px;">
-          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 12%;">表单名称：</span>
-          <input v-model="dataForm.formName" style="width: 84%;height: 40px;border-radius: 4px;border: 2.5px #2c3e50 solid;">
+      <span style="color: #2c3e50;font-weight: 700;font-size: 2rem;">CREATE FORM</span>
+      <div style="margin-left:15%;text-align: start;">
+        <div  style="margin: 1rem;display: flex;">
+          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单名称：</span>
+          <input v-model="dataForm.formName" class="create-form-input">
         </div>
-        <div style="margin: 20px;display: flex;align-items: center;">
-          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 12%;">表单类型：</span>
+        <div style="margin: 1rem;display: flex;">
+          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单类型：</span>
           <div class="switch-field">
             <input type="radio" id="radio-one" name="switch-one" v-model="selectedOption" :value="0" checked/>
             <label for="radio-one">CLASSIC FORM</label>
@@ -161,6 +161,18 @@ export default {
 </script>
 
 <style scoped>
+.create-form-input {
+  height: 2.4rem;
+  border-radius: 4px;
+  outline: none;      /* 去掉点击或输入时的边框 */
+  resize: none;       /* 去掉右下角的拖动调整大小的控件 */
+  border: 2.5px #2c3e50 solid;
+  box-sizing: border-box;
+  padding: 1rem;
+  font-size: 1.1rem;
+  width: 57%;
+}
+
 .forms {
   height: 61px;
   line-height: 60px;
@@ -310,8 +322,8 @@ export default {
  }
 
  .switch-field {
-  width:  84%;
 	display: flex;
+  justify-content: left;
 	overflow: hidden;
 }
 
@@ -331,8 +343,8 @@ export default {
   font-weight: 600;
 	/* line-height: 1; */
 	text-align: center;
-	padding: 8px 47px;
-	margin-right: -1px;
+	padding: 8px 1rem;
+	/* margin-right: -1px; */
 	transition: all 0.1s ease-in-out;
 }
 

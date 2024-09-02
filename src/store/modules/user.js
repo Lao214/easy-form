@@ -1,4 +1,4 @@
-import { login, getInfo } from '../../api/userApi'
+import { login, getInfo, logout } from '../../api/userApi'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const getDefaultState = () => {
@@ -91,13 +91,18 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      // logout(state.token).then(() => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
-      resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
+      if(!state.token) {
+        console.log('token is null')
+        return
+      }
+      logout().then(response => {
+          console.log('removeToken')
+          removeToken()
+          commit('RESET_STATE')
+          resolve()
+          // resetRouter()
+      })
+
     })
   },
 

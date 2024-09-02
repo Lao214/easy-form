@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavTop :username="username" :avatar="avatar"></NavTop>
+    <NavTop></NavTop>
     <div class="main">
       <router-view/>
     </div>
@@ -18,8 +18,7 @@ export default {
   },
   data() {
     return {
-      username: '',
-      avatar: 'https://img0.baidu.com/it/u=392728669,1375239372&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=449'
+      
     }
   },
   mounted() {

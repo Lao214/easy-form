@@ -2,21 +2,28 @@
   <div class="body">
     <el-row>
       <el-col :span="4">
-        <div style="height: 95vh;background-color: #ffffff;padding: 11px;overflow-y: scroll;">
-          <div class="checkbox-wrapper-10">
+        <div class="left-body">
+          <!-- <div class="checkbox-wrapper-10">
             <input checked="" type="checkbox" id="cb5" class="tgl tgl-flip" v-model="isChecked">
             <label for="cb5" data-tg-on="组件" data-tg-off="功能" class="tgl-btn"></label>
+          </div> -->
+        
+          <div class="tabs">
+            <input v-model="isChecked" value="组件" name="fav_language" id="html" type="radio" class="input"/>
+            <label for="html" class="label">组件</label>
+            <input v-model="isChecked" value="功能" name="fav_language" id="css" type="radio" class="input"/>
+            <label for="css" class="label">功能</label>
           </div>
-          <div v-show="!isChecked" style="padding: 10px;">
-            <div class="MenuBtn" style="margin:20px auto;" @click="gotoRelease()"> <i class="fa fa-send" /> 发布</div>
-            <!-- <div class="MenuBtn"> <i class="fa fa-lightbulb-o" /> Logic</div> -->
-            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-meh-o" /> 反馈（未开放）</div>
-            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-table" /> 数据表格（未开放）</div>
-            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-bar-chart" /> 数据图表（未开放）</div>
-            <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-mobile" /> 手机浏览（未开放）</div>
+
+          <div v-show="isChecked === '功能'" style="padding: 10px;">
+            <div class="MenuBtn" style="margin:1rem auto;" @click="gotoRelease()"> <i class="fa fa-send" /> 发布</div>
+            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-meh-o" /> 反馈（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-table" /> 数据表格（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-bar-chart" /> 数据图表（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-mobile" /> 手机浏览（未开放）</div>
           </div>
-          <div v-show="isChecked">
-            <div class="MenuNodeTitle"> 基础组件 </div>
+          <div v-show="isChecked === '组件'">
+            <div class="MenuNodeTitle" style="margin-top: 1rem;"> 基础组件 </div>
             <div class="MenuBtn" @click="addHeader('Heading','主标题','副标题')"> <i class="fa fa-header" /> 头部/标题</div>
             <div class="MenuBtn" @click="addBasicComponents('eDescription','Description','write something please')"> <i class="fa fa-file-text-o" /> 描述</div>
             <div class="MenuBtn" @click="addBasicComponents('SortText','Your Question','please input your answer in here')"> <i class="fa fa-text-width" /> 短输入框</div>
@@ -54,9 +61,9 @@
         </div>
       </el-col>
       <el-col :span="7">
-        <div style="height: 95vh;background-color: #ffffff;padding: 11px;overflow-y: scroll;">
+        <div class="right-body">
           <div class="opInputs">
-            <el-button @click="saveForm()" style="width: 100%;font-weight: 700;" :loading="isLoading" type="success">保存表单</el-button>
+            <el-button @click="saveForm()" class="save-btn" :loading="isLoading" type="success">保存表单</el-button>
           </div>
           <div v-show="isChecked">
 
@@ -119,7 +126,7 @@
             </div>
 
             <div class="opInputs">
-              <el-button @click="delComponents()" style="width: 100%;" type="danger"><i class="el-icon-delete"></i></el-button>
+              <button @click="delComponents()" class="del-btn"><i class="el-icon-delete"></i></button>
             </div>
 
             <div class="opName" v-show="optionsRadio.length > 0">
@@ -131,7 +138,7 @@
                 <label style="line-height: 40px;">Value：</label>
                 <input class="opInput" v-model="item.radioValue" style="" >
               </div>
-              <div style="background: #a7ce74;width: 100%;border-top:4px #222222 solid;cursor: pointer;" @click="addRadioOptions()">
+              <div class="save-btn" @click="addRadioOptions()">
                 <i class="el-icon-plus"></i>
               </div>
             </div>
@@ -197,7 +204,7 @@ export default {
   data() {
     return {
       one: {},
-      isChecked: true,
+      isChecked: '组件',
       items: [],
       optionsIndex: '',
       optionsKey: '',
@@ -543,15 +550,36 @@ export default {
     text-align: center;line-height: 27px;
  }
 .body {
-  background-color: #83bbe86a;
+  background-color: #83bbe800;
   /* height: 100vh; */
   text-align: center;
+  --radius: 8px;
+  --border: 4px;
+  --height: 2rem;
+  --speed: 0.25s;
 }
+.left-body {
+  height: 95vh;
+  // background: linear-gradient(to right, #363555, #2a2941);
+  background: #101e33;
+  padding: 11px;
+  overflow-y: scroll;
+  color: #7f84a8;
+}
+
+.right-body {
+  height: 95vh;
+  background-color: #101e33;
+  padding: 11px;
+  overflow-y: scroll;
+  color: #7f84a8;
+}
+
 .MenuBtn{
   cursor: pointer;
-  height: 40px;
+  min-height: 40px;
   line-height: 40px;
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: 500;
   text-align: start;
   padding-left: 29px;
@@ -584,15 +612,47 @@ export default {
   font-weight: 600;
   margin:14px 4px;
 }
+
 .opInput {
   width: 100%;
   height: 34px;
   border-radius: 4px;
-  border: #2c3e50 2px solid;
-  background-color: #2c3e5000;
+  border: none;       /* 去掉默认边框 */
+  outline: none;      /* 去掉点击或输入时的边框 */
+  resize: none;       /* 去掉右下角的拖动调整大小的控件 */
+  background-color: #35455c;
+  color: #7f84a8;
+  box-sizing: border-box;
+  padding: .4rem;
 }
 
+.save-btn {
+  width: 100%;
+  padding: .77rem;
+  border-radius: .2rem;
+  border: none;
+  background: #42b983;
+  color: white;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
 
+.del-btn {
+  width: 100%;
+  padding: .77rem;
+  border-radius: .2rem;
+  border: none;
+  // background: #d51212;
+  background: #f52f25;
+  color: white;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.save-btn:hover, .del-btn:hover {
+  background: #d4dff6;
+  color: #2c2f47;
+}
 .checkbox-wrapper-10 .tgl {
   display: none;
 }
@@ -877,6 +937,123 @@ export default {
 
 .switch input:checked + .slider:before {
   transform: translateX(1.6em);
+}
+
+
+.tabs {
+  height: var(--height);
+  display: grid;
+  grid-auto-flow: column;
+  background: hsl(0 0% 0%);
+  border-radius: var(--radius);
+  grid-auto-columns: 1fr;
+  position: relative;
+  border: var(--border) solid hsl(0 0% 0%);
+  font-weight: 700;
+}
+
+.tabs {
+  --ease: linear(
+    0,
+    0.1641 3.52%,
+    0.311 7.18%,
+    0.4413 10.99%,
+    0.5553 14.96%,
+    0.6539 19.12%,
+    0.738 23.5%,
+    0.8086 28.15%,
+    0.8662 33.12%,
+    0.9078 37.92%,
+    0.9405 43.12%,
+    0.965 48.84%,
+    0.9821 55.28%,
+    0.992 61.97%,
+    0.9976 70.09%,
+    1
+  );
+}
+
+.tabs > .input,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.tabs:has(:checked:nth-of-type(1)) {
+  --active: 0;
+}
+.tabs:has(:checked:nth-of-type(2)) {
+  --active: 1;
+}
+.tabs:has(:checked:nth-of-type(3)) {
+  --active: 2;
+}
+.tabs:has(:checked:nth-of-type(4)) {
+  --active: 3;
+}
+
+.tabs :checked + .label {
+  --highlight: 1;
+}
+
+.tabs:has(.input:nth-of-type(2)) {
+  --count: 2;
+}
+.tabs:has(.input:nth-of-type(3)) {
+  --count: 3;
+}
+.tabs:has(.input:nth-of-type(4)) {
+  --count: 4;
+}
+
+.tabs .label {
+  padding: 0 clamp(10px, 10px + 10px, 20px);
+  cursor: pointer;
+  text-align: center;
+  height: 100%;
+  display: grid;
+  border-radius: calc(var(--radius) - var(--border));
+  place-items: center;
+  color: hsl(0 0% 100% / calc(0.5 + var(--highlight, 0)));
+  transition: background, color;
+  transition-duration: 0.25s;
+  transition-timing-function: var(--ease, ease);
+}
+
+.input:not(:checked) + .label:hover {
+  --highlight: 0.35;
+  background: hsl(0 0% 20%);
+}
+
+.tabs::after {
+  pointer-events: none;
+  content: "";
+  width: calc(100% / var(--count));
+  height: 100%;
+  background: hsl(0 0% 100%);
+  position: absolute;
+  border-radius: calc(var(--radius) - var(--border));
+  mix-blend-mode: difference;
+  translate: calc(var(--active, 0) * 100%) 0;
+  transition: translate, outline-color;
+  transition-duration: var(--speed);
+  transition-timing-function: var(--ease, ease);
+  outline: 2px solid transparent;
+}
+
+.tabs:has(:focus-visible)::after {
+  outline-color: red;
+}
+
+.MenuBtn .fa {
+  margin-right: .4rem;
 }
 
 </style>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store';
-import { Button, Select, Message, Avatar, Row, Col, Divider, Dialog, Rate, DatePicker,Option } from 'element-ui';
+import { Button, Select, Message, MessageBox, Avatar, Row, Col, Divider, Dialog, Rate, DatePicker,Option } from 'element-ui';
 
   // 国际化
   import VueI18n from 'vue-i18n'  //引入下载的vue-i18包
@@ -17,7 +17,7 @@ import { Button, Select, Message, Avatar, Row, Col, Divider, Dialog, Rate, DateP
 
   const i18n = new VueI18n({
     // 保存用户习惯，如果没有，就默认中文简体
-    locale: localStorage.getItem('i18n-inhub') ? localStorage.getItem('i18n-inhub') : 'zh', // 默认语言
+    locale: localStorage.getItem('i18n-easyform') ? localStorage.getItem('i18n-easyform') : 'zh', // 默认语言
     messages
   })
 
@@ -34,6 +34,10 @@ Vue.component(DatePicker.name, DatePicker)
 Vue.component(Option.name, Option)
 Vue.config.productionTip = false
 Vue.prototype.$message = Message
+
+Vue.prototype.$confirm = MessageBox.confirm
+
+Vue.prototype.$alert = MessageBox.alert
 
 new Vue({
   i18n,
