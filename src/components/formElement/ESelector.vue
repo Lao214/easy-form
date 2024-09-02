@@ -33,7 +33,7 @@ export default {
   border: 2px solid #2c3e50;
   padding: 8px 0px;
   border-radius: 4px;
-  margin: 14px 0px;
+  margin: .7rem 0px;
   text-align: start;
 }
 

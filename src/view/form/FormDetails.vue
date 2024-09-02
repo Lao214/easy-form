@@ -2,12 +2,7 @@
   <div class="body">
     <el-row>
       <el-col :span="4">
-        <div class="left-body">
-          <!-- <div class="checkbox-wrapper-10">
-            <input checked="" type="checkbox" id="cb5" class="tgl tgl-flip" v-model="isChecked">
-            <label for="cb5" data-tg-on="组件" data-tg-off="功能" class="tgl-btn"></label>
-          </div> -->
-        
+        <div class="left-body">   
           <div class="tabs">
             <input v-model="isChecked" value="组件" name="fav_language" id="html" type="radio" class="input"/>
             <label for="html" class="label">组件</label>
@@ -15,7 +10,7 @@
             <label for="css" class="label">功能</label>
           </div>
 
-          <div v-show="isChecked === '功能'" style="padding: 10px;">
+          <div v-show="isChecked === '功能'" style="padding: 1rem;">
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoRelease()"> <i class="fa fa-send" /> 发布</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-meh-o" /> 反馈（未开放）</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-table" /> 数据表格（未开放）</div>
@@ -43,7 +38,7 @@
         </div>
       </el-col>
       <el-col :span="13">
-        <div style="height: 95vh;background-color: #a7ce74;padding: 14px;overflow-y: scroll;">
+        <div style="height: 95vh;background: #f3f3fd;padding: 14px;overflow-y: scroll;">
           <div class="adaptive-div">
             <div v-show="isLoading" class="three-body">
               <div class="three-body__dot"></div>
@@ -91,7 +86,7 @@
             </div>
             <div v-show="optionsName === 'Heading'" class="opInputs">
               副标题: 
-              <input class="opInput" @input="changeTitle(optionsSubtitle)" v-model="optionsSubtitle" >
+              <input class="opInput" @input="changeSubtitle(optionsSubtitle)" v-model="optionsSubtitle" >
             </div>
 
             <div class="opInputs" v-show="optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio' || optionsName === 'eCheckBox' || optionsName === 'eSelector' || optionsName === 'eStar' || optionsName === 'ePicture' || optionsName === 'ePicture' || optionsName === 'eDate'">
@@ -134,9 +129,9 @@
               <el-divider></el-divider>
               <div v-for="(item,index) in optionsRadio" :key="index" style="display: flex;margin-bottom: 7px;font-size: 12px;width: 100%;">
                 <label style="line-height: 40px;">Label：</label>
-                <input class="opInput" v-model="item.radioLabel" style="margin-right: 4px;">
+                <input class="opInput" v-model="item.label" style="margin-right: 4px;">
                 <label style="line-height: 40px;">Value：</label>
-                <input class="opInput" v-model="item.radioValue" style="" >
+                <input class="opInput" v-model="item.valu" style="" >
               </div>
               <div class="save-btn" @click="addRadioOptions()">
                 <i class="el-icon-plus"></i>
@@ -228,7 +223,7 @@ export default {
           'complexVal': '中国',
         },
         {
-          'complexAttr': '省市',
+          'complexAttr': '省市区',
           'complexVal': '广西',
         },
         {
@@ -319,8 +314,8 @@ export default {
       if(this.optionsKey) {
         var length = this.items[this.optionsIndex].attributes.radioOptions.length + 1
         this.items[this.optionsIndex].attributes.radioOptions.push({
-          radioLabel: 'HELLO',
-          radioValue: 'value' + '-' + length
+          label: 'HELLO',
+          valu: 'value' + '-' + length
         })
       }
     },
@@ -337,16 +332,16 @@ export default {
           min: 1,
           radioOptions: [
             {
-              radioLabel: '选项label1',
-              radioValue: 'value-1'
+              label: '选项label1',
+              valu: 'value-1'
             },
             {
-              radioLabel: '选项label2',
-              radioValue: 'value-2'
+              label: '选项label2',
+              valu: 'value-2'
             },
             {
-              radioLabel: '选项label3',
-              radioValue: 'value-3'
+              label: '选项label3',
+              valu: 'value-3'
             }
           ]
         }
@@ -536,14 +531,16 @@ export default {
 <style lang="scss" scoped>
   .adaptive-div {
     width: 80%; /* 将宽度设置为100%以占据父容器的全部宽度 */
-    background-color: #fefefe; /* 设置背景颜色 */
+    background-color: #ffffff; /* 设置背景颜色 */
     max-width: 1200px;
     min-height: 400px;
-    border-radius: 10px;
+    border-radius: .2rem;
     margin: 0 auto;
-    padding: 14px;
+    padding: 1rem;
+    box-shadow: .31rem .34rem .61rem rgba(0, 0, 0, 0.27);
   }
  .fa{ 
+    cursor: pointer;
     border: 2px solid #2c3e50;
     width: 27px;
     height: 27px;
@@ -561,18 +558,20 @@ export default {
 .left-body {
   height: 95vh;
   // background: linear-gradient(to right, #363555, #2a2941);
-  background: #101e33;
+  // background: #0a2e3e;
+  color: #9398b8;
+  background: #0a2e3e;
+  // color: #fff;
   padding: 11px;
   overflow-y: scroll;
-  color: #7f84a8;
 }
 
 .right-body {
   height: 95vh;
-  background-color: #101e33;
+  background-color: #0a2e3e;
   padding: 11px;
   overflow-y: scroll;
-  color: #7f84a8;
+  color: #9398b8;
 }
 
 .MenuBtn{
@@ -585,8 +584,9 @@ export default {
   padding-left: 29px;
 }
 .MenuBtn:hover { /* background-color: #d3cfdd79; */
-  background-color: #0f35546a;
+  background-color: #b3dcfd6a;
   border-radius: 5px;
+  color: black
 }
 
 .MenuNodeTitle {
@@ -617,9 +617,9 @@ export default {
   width: 100%;
   height: 34px;
   border-radius: 4px;
-  border: none;       /* 去掉默认边框 */
-  outline: none;      /* 去掉点击或输入时的边框 */
-  resize: none;       /* 去掉右下角的拖动调整大小的控件 */
+  border: none;  /* 去掉默认边框 */
+  outline: none; /* 去掉点击或输入时的边框 */
+  resize: none;  /* 去掉右下角的拖动调整大小的控件 */
   background-color: #35455c;
   color: #7f84a8;
   box-sizing: border-box;
@@ -652,124 +652,6 @@ export default {
 .save-btn:hover, .del-btn:hover {
   background: #d4dff6;
   color: #2c2f47;
-}
-.checkbox-wrapper-10 .tgl {
-  display: none;
-}
-
-.checkbox-wrapper-10 .tgl,
-  .checkbox-wrapper-10 .tgl:after,
-  .checkbox-wrapper-10 .tgl:before,
-  .checkbox-wrapper-10 .tgl *,
-  .checkbox-wrapper-10 .tgl *:after,
-  .checkbox-wrapper-10 .tgl *:before,
-  .checkbox-wrapper-10 .tgl + .tgl-btn {
-  box-sizing: border-box;
-}
-
-.checkbox-wrapper-10 .tgl::-moz-selection,
-  .checkbox-wrapper-10 .tgl:after::-moz-selection,
-  .checkbox-wrapper-10 .tgl:before::-moz-selection,
-  .checkbox-wrapper-10 .tgl *::-moz-selection,
-  .checkbox-wrapper-10 .tgl *:after::-moz-selection,
-  .checkbox-wrapper-10 .tgl *:before::-moz-selection,
-  .checkbox-wrapper-10 .tgl + .tgl-btn::-moz-selection,
-  .checkbox-wrapper-10 .tgl::selection,
-  .checkbox-wrapper-10 .tgl:after::selection,
-  .checkbox-wrapper-10 .tgl:before::selection,
-  .checkbox-wrapper-10 .tgl *::selection,
-  .checkbox-wrapper-10 .tgl *:after::selection,
-  .checkbox-wrapper-10 .tgl *:before::selection,
-  .checkbox-wrapper-10 .tgl + .tgl-btn::selection {
-  background: none;
-}
-
-.checkbox-wrapper-10 .tgl + .tgl-btn {
-  outline: 0;
-  display: block;
-  width: 7em;
-  height: 2em;
-  position: relative;
-  left: 20%;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.checkbox-wrapper-10 .tgl + .tgl-btn:after,
-  .checkbox-wrapper-10 .tgl + .tgl-btn:before {
-  position: relative;
-  display: block;
-  content: "";
-  width: 50%;
-  height: 100%;
-}
-
-.checkbox-wrapper-10 .tgl + .tgl-btn:after {
-  left: 0;
-}
-
-.checkbox-wrapper-10 .tgl + .tgl-btn:before {
-  display: none;
-}
-
-.checkbox-wrapper-10 .tgl:checked + .tgl-btn:after {
-  left: 50%;
-}
-
-.checkbox-wrapper-10 .tgl-flip + .tgl-btn {
-  padding: 2px;
-  transition: all 0.2s ease;
-  font-family: sans-serif;
-  perspective: 100px;
-}
-
-.checkbox-wrapper-10 .tgl-flip + .tgl-btn:after,
-  .checkbox-wrapper-10 .tgl-flip + .tgl-btn:before {
-  display: inline-block;
-  transition: all 0.4s ease;
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  line-height: 2em;
-  font-weight: bold;
-  color: #fff;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 4px;
-}
-
-.checkbox-wrapper-10 .tgl-flip + .tgl-btn:after {
-  content: attr(data-tg-on);
-  background: #96cb6f;
-  transform: rotateY(-180deg);
-}
-
-.checkbox-wrapper-10 .tgl-flip + .tgl-btn:before {
-  background: #cd961f;
-  content: attr(data-tg-off);
-}
-
-.checkbox-wrapper-10 .tgl-flip + .tgl-btn:active:before {
-  transform: rotateY(-20deg);
-}
-
-.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:before {
-  transform: rotateY(180deg);
-}
-
-.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:after {
-  transform: rotateY(0);
-  left: 0;
-  background: #53b30e;
-}
-
-.checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:active:after {
-  transform: rotateY(20deg);
 }
 
 

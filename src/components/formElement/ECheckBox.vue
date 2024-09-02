@@ -3,8 +3,8 @@
     <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <ul class="unstyled centered">
       <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px;">
-        <input class="styled-checkbox" :id="'styled-checkbox-' + optionKey  + '-' + index" type="checkbox" @change="updateSelectedValue(item.radioValue)" :value="item.radioValue" v-model="attributes.defaultValue" :disabled="isCheckboxDisabled(item.radioValue)" >
-        <label :for="'styled-checkbox-' + optionKey  + '-' + index">{{ item.radioLabel }}</label>
+        <input class="styled-checkbox" :id="'styled-checkbox-' + optionKey  + '-' + index" type="checkbox" @change="updateSelectedValue(item.valu)" :value="item.valu" v-model="attributes.defaultValue" :disabled="isCheckboxDisabled(item.valu)" >
+        <label :for="'styled-checkbox-' + optionKey  + '-' + index">{{ item.label }}</label>
       </li>
     </ul>
     <!-- <button @click="showSelectedOptions">显示选中的选项</button> -->
@@ -62,7 +62,7 @@ export default {
   border: 2px solid #2c3e50;
   padding: 8px 0px;
   border-radius: 4px;
-  margin: 14px 0px;
+  margin: .7rem 0px;
   text-align: start;
 }
 

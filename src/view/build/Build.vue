@@ -197,11 +197,11 @@ export default {
   height: 5vh
 }
 .main {
-  width: 87vw;
-  max-width:1200px;
+  width: 81vw;
+  max-width:960px;
   background: #fff;
   margin: 0 auto;
-  padding: 11px;
+  padding: 1rem;
   height: auto;
   min-height:100vh;
 }

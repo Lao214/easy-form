@@ -3,9 +3,9 @@
     <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <div class="radio-input-wrapper">
       <label v-for="(item,index) in attributes.radioOptions" :key="index" :for="optionKey + '-' + index" class="label">
-        <input :value="item.radioValue" :name="'value-radio' + optionKey" :id="optionKey + '-' + index" class="radio-input" type="radio" v-model="attributes.defaultValue" @change="updateSelectedValue(item.radioValue)">
+        <input :value="item.valu" :name="'value-radio' + optionKey" :id="optionKey + '-' + index" class="radio-input" type="radio" v-model="attributes.defaultValue" @change="updateSelectedValue(item.valu)">
         <div class="radio-design"></div>
-        <div class="label-text">{{ item.radioLabel }}</div>
+        <div class="label-text">{{ item.label }}</div>
       </label>
     </div>
   </div>
@@ -36,7 +36,7 @@ export default {
   /* border: 2px solid #2c3e50; */
   padding: 8px 0px;
   border-radius: 4px;
-  margin: 14px 0px;
+  margin: .7rem 0px;
   text-align: start;
 }
 
@@ -50,17 +50,18 @@ export default {
 .label {
   display: flex;
   align-items: center;
-  border-radius: 100px;
-  padding: 14px 16px;
-  margin: 5px 0;
+  border-radius: .41rem;
+  padding: .4rem 1rem ;
+  margin: .2rem 0;
   cursor: pointer;
   transition: .3s;
 }
 
+
 .label:hover,
 .label:focus-within,
 .label:active {
-  background: hsla(0, 0%, 80%, .14);
+  background: hsla(219, 55%, 80%, 0.293);
 }
 
 .radio-input {
@@ -74,8 +75,8 @@ export default {
 }
 
 .radio-design {
-  width: 22px;
-  height: 22px;
+  width: 1rem;
+  height: 1rem;
   border-radius: 100px;
   background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
   position: relative;
