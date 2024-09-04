@@ -2,19 +2,10 @@
     <div style="margin:0;">
       <el-row>
         <el-col :span="4">
-          <div style="height: 100vh;background-color: #d3cfdd79;padding: 11px;overflow-y: scroll;">
-            <div v-show="!isChecked" style="padding: 10px;">
-              <div class="MenuBtn" style="margin:20px auto;" @click="goback()"> <i class="el-icon-arrow-left" /> 返回表单列表</div>
-              <div v-if="isDetails" class="MenuBtn" style="margin:20px auto;" @click="gobackDetails()"> <i class="el-icon-arrow-left" /> 返回表单详情</div>
-              <!-- <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-meh-o" /> 反馈</div>
-              <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-table" /> 数据列表</div>
-              <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-bar-chart" /> 数据图表</div>
-              <div class="MenuBtn" style="margin:20px auto;"> <i class="fa fa-mobile" /> 手机浏览</div> -->
-            </div>
-          </div>
+          <leftBody></leftBody>
         </el-col>
         <el-col :span="20">
-          <div style="height: 100vh;background-color: #a7ce74;padding: 21px;overflow-y: scroll;">
+          <div style="height: 100vh;background-color: #a7ce74;padding: 1rem;overflow-y: scroll;box-sizing: border-box;">
             <div style="display: flex; flex-wrap: wrap; padding:0px 70px;">
               <span style="width: 100%;font-size: 24px;font-weight: 600;text-align: start;margin:20px 10px;"><i class="fa fa-share-alt-square" style="color: rgb(46, 84, 9);font-size: 28px;margin-right: 10px;"></i>分享你的表单</span>
               <div style="width: 50%;min-height: 392px;height: auto;background: white; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.429);border-radius: 4px;padding: 20px;">
@@ -36,7 +27,6 @@
                 </div>
               </div>
 
-  
               <div style="width: 50%;min-height: 140px;height: auto;background: white; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.429);border-radius: 4px;padding: 20px;margin-top: 20px;">
                 <div style="width: 100%;height: 70px;text-align: start;">
                   <span style="font-weight: 600;color: #49760f;margin-left: 11px;">为链接添加标识，可用于区分来源</span>
@@ -73,8 +63,12 @@
   
   <script>
   import QRCode from 'qrcode'
+  import LeftBody from '@/components/formDetails/LeftBody.vue'
   
   export default {
+    components: { 
+      LeftBody
+    },
     data() {
       return {
         key: this.$route.query.key,

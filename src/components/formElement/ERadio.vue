@@ -110,4 +110,9 @@ export default {
 .radio-input:checked~.label-text {
   color: hsl(0, 0%, 40%);
 }
+
+/* .radio-input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+} */
 </style>
