@@ -20,11 +20,6 @@ const router = new VueRouter({
           component: () => import("../view/build/Build.vue")
         },
         {
-          path: "/share",
-          name:'share',
-          component: () => import("../view/build/Share.vue")
-        },
-        {
           path: "/home",
           name:'Home',
           component: () => import("../view/index.vue"),
@@ -44,14 +39,16 @@ const router = new VueRouter({
               name: 'release',
               component: () => import('@/view/release/Release.vue')
             },
-            // {
-            //   path: '/role',
-            //   name: 'role',
-            //   meta: {
-            //     title: "角色管理"
-            //   },
-            //   component: () => import('@/view/user/Role.vue')
-            // },
+            {
+              path: '/logic',
+              name: 'logic',
+              component: () => import('@/view/logic/logic.vue')
+            },
+            {
+              path: "/share",
+              name:'share',
+              component: () => import("../view/build/Share.vue")
+            },
           ]
         },
       ]

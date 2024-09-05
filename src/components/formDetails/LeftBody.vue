@@ -9,7 +9,7 @@
 
         <div v-show="isChecked === '功能'" style="padding: 1rem;">
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoRelease()"> <i class="fa fa-send" /> 发布</div>
-            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-meh-o" /> 反馈（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;" @click="gotoLogic()"> <i class="fa fa-meh-o" /> 反馈</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-table" /> 数据表格（未开放）</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-bar-chart" /> 数据图表（未开放）</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-mobile" /> 手机浏览（未开放）</div>
@@ -49,6 +49,9 @@ export default {
         gotoRelease() {
             window.open('/share?key=' + this.$route.query.key)
             // this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })
+        },
+        gotoLogic() {
+           window.open('/logic?key=' + this.$route.query.key)
         },
         gobackDetails() {
             this.$router.push({ path: '/formDetails', query: { key: this.$route.query.key } })
