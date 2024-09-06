@@ -16,14 +16,30 @@
                             {{ logic }}  <span style="color: grey; margin-right: .2rem;" v-show="!logic">请点击右侧运算符和数据项组成您的计算公式...</span> <span class="blinking">_</span>
                         </div>
                     </div>
+                    <h2> 反馈UI </h2>
+                    <div class="ui-container">
+                        <div class="ui-tools">
+                            <svg-icon icon-file-name="text_eva" style="cursor: pointer;" @click="addElement('eTextUI','val')"></svg-icon>
+                            <span v-for="(item,index3) in results" :key="index3" class="tool-result">{{ item }}</span>
+                        </div>
+
+                        <component v-for="(item, index) in uitems" :key="index" :is="item.component" :attributes="item.attributes" :optionKey="index" :optionsIndex="optionsIndex" @selectUI="selectUI" @delThis="delThis" />
+                    </div>
                 </div>
             </el-col>
             <el-col :span="7">
                 <div class="right-body">
                     <div class="operators">
-                        <h2 style="margin: .41rem;">运算符</h2>
+                        <h2 style="margin: .41rem;">运算符、数字及操作</h2>
                         <div class="button-container">
                             <button v-for="(item,index) in operators" :key="index" class="button-3d" @click="addOperators(item)">
+                                <div class="button-top">
+                                    <span class="material-icons">{{ item }}</span>
+                                </div>
+                                <div class="button-bottom"></div>
+                                <div class="button-base"></div>
+                            </button>
+                            <button v-for="(item,index2) in numbers" :key="'n' + index2" class="button-3d" @click="addNum(item)">
                                 <div class="button-top">
                                     <span class="material-icons">{{ item }}</span>
                                 </div>
@@ -83,22 +99,40 @@
 
 <script>
 import LeftBodyVue from '@/components/formDetails/LeftBody.vue'
-import formApi from '@/api/formApi';
+import formApi from '@/api/formApi'
+import eTextUI from '@/components/evaUI/eTextUI.vue'
 
 export default {
     components: {
-        LeftBodyVue
+        LeftBodyVue,
+        eTextUI
     },
     data() {
         return {
             operators: ['+','-','x','÷','=','(',')'],
+            numbers: ['0','1','2','3','4','5','6','7','9'],
             formItems: [],
             results: [],
             logic: '',
             logics: [],
+            uitems: [],
+            optionsIndex: null,
         }
     },
     methods: {
+        selectUI(key) {
+            this.optionsIndex = key
+        },
+        addElement(name, val) {
+            var date = new Date().getTime()
+            this.uitems.push({
+                component: name,
+                attributes: {
+                    valu: val,
+                    key: 'ui' + date,
+                }
+            })
+        },
         update() {
             if(this.logics.length === 0) {
                 this.$message.warning("请至少算出一个结果集")
@@ -136,13 +170,13 @@ export default {
                 this.$message.warning("请先输入数据项或括弧")
                 return
             }
-            if(item !== '(' && item !== ')' && item !== '=') {
-                if (['+', '-', 'x', '÷','=','(',')'].includes(this.logic.slice(-1))) {
+            if(item !== '(' && item !== '=') {
+                if (['+', '-', 'x', '÷','=','('].includes(this.logic.slice(-1))) {
                     this.$message.warning("运算符不能连续输入")
                     return
                 }
-            } else if(item === '(' || item === ')') {
-                if (['(',')'].includes(this.logic.slice(-1))) {
+            } else if(item === '(') {
+                if ([')'].includes(this.logic.slice(-1))) {
                     this.$message.warning("不能连续输入括弧")
                     return
                 }
@@ -177,6 +211,13 @@ export default {
             }
             this.logic += '{{' + item + '}}'
         },
+        addNum(item) {
+            if (!['+','-','x','÷','('].includes(this.logic.slice(-1))) {
+                this.$message.warning("数字前面须是加减乘除号及左括弧")
+                return
+            }
+            this.logic += item
+        },
         clear() {
             this.logic = ''
         },
@@ -198,7 +239,10 @@ export default {
             // 如果没有其他元素使用该 result，则删除 logics 和 results 中的元素
             this.logics.splice(index, 1);
             this.results.splice(index, 1);
-        }
+        },
+        delThis(key) {
+            this.uitems.splice(key,1)
+        },
     },
     mounted() {
         this.getFormByKey()
@@ -343,10 +387,32 @@ export default {
     flex-wrap: wrap; */
     text-align: left;
     width: 100%;
-    min-height: 30rem;
+    height: 19rem;
     border: 1px solid #cecece;
     padding: 1rem;
     box-sizing: border-box;
+    overflow: scroll;
+}
+
+.ui-container{
+    /* display: flex;
+    flex-wrap: wrap; */
+    text-align: left;
+    width: 100%;
+    height: 30rem;
+    border: 1px solid #cecece;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+
+.ui-tools {
+    padding: .4rem 0;
+    border-bottom: 1px solid #cecece;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .blinking {
@@ -363,8 +429,8 @@ export default {
     letter-spacing: .1rem;
     font-weight: 700;
     font-size: 1rem;
-    margin-bottom: 1rem;
-    width: 100%;
+    margin-bottom: .81rem;
+    width: 97%;
     padding: .31rem;
     border-radius: .2rem;
     cursor: pointer;
@@ -373,5 +439,14 @@ export default {
 }
 .results:hover {
     background: rgb(182, 203, 217);
+}
+
+.tool-result {
+    font-size: .7rem;
+    border: 1.5px solid #868585;
+    margin-left: .2rem;
+    padding: .1rem .2rem;
+    border-radius: .2rem;
+    cursor: pointer;
 }
 </style>

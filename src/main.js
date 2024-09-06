@@ -4,6 +4,8 @@ import router from './router'
 import store from './store';
 import { Button, Select, Message, MessageBox, Avatar, Row, Col, Divider, Dialog, Rate, DatePicker,Option } from 'element-ui';
 
+import './assets/icons/index'
+
   // 国际化
   import VueI18n from 'vue-i18n'  //引入下载的vue-i18包
   import enLocale from '../src/locales/en.json'
