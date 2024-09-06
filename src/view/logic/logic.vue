@@ -20,10 +20,10 @@
                     <div class="ui-container">
                         <div class="ui-tools">
                             <svg-icon icon-file-name="text_eva" style="cursor: pointer;" @click="addElement('eTextUI','val')"></svg-icon>
-                            <span v-for="(item,index3) in results" :key="index3" class="tool-result">{{ item }}</span>
+                            <span v-for="(item,index3) in results" :key="index3" class="tool-result" @click="insertResult(item)">{{ item }}</span>
                         </div>
 
-                        <component v-for="(item, index) in uitems" :key="index" :is="item.component" :attributes="item.attributes" :optionKey="index" :optionsIndex="optionsIndex" @selectUI="selectUI" @delThis="delThis" />
+                        <component v-for="(item, index) in uitems" :key="index" :is="item.component" :attributes="item.attributes" :optionKey="index" :optionsIndex="optionsIndex" @selectUI="selectUI" @delThis="delThis" @copyThis="copyThis" />
                     </div>
                 </div>
             </el-col>
@@ -128,7 +128,7 @@ export default {
             this.uitems.push({
                 component: name,
                 attributes: {
-                    valu: val,
+                    val: '',
                     key: 'ui' + date,
                 }
             })
@@ -140,7 +140,8 @@ export default {
             }
             const dataForm = {
                 formKey: this.$route.query.key,
-                evaluateLogic: this.logics.join(',')
+                evaluateLogic: this.logics.join(','),
+                evaluateUi: this.uitems.length >  0 ? JSON.stringify(this.uitems) : ''
             }
             formApi.updateForm(dataForm).then(res => {
                 this.$message({
@@ -161,7 +162,8 @@ export default {
                     this.logics = res.data.one.evaluateLogic.split(',')
                     this.logics.forEach(element => {
                         this.results.push(element.split('=')[1])
-                    });
+                    })
+                    this.uitems = JSON.parse(res.data.one.evaluateUi)
                 }
             })
         },
@@ -209,7 +211,7 @@ export default {
                 this.$message.warning("请不要连续输入数据项或结果集")
                 return
             }
-            this.logic += '{{' + item + '}}'
+            this.logic +=  item
         },
         addNum(item) {
             if (!['+','-','x','÷','('].includes(this.logic.slice(-1))) {
@@ -243,6 +245,19 @@ export default {
         delThis(key) {
             this.uitems.splice(key,1)
         },
+        copyThis(key) {
+            let item = JSON.parse(JSON.stringify(this.uitems[key]))
+            var date = new Date().getTime()
+            item.attributes.key = 'ui' + date
+            this.uitems.push(item)
+        },
+        insertResult(item) {
+            if(!this.optionsIndex && this.optionsIndex !== 0) {
+                this.$message.warning("请先选择一个UI组件")
+                return
+            }
+            this.uitems[this.optionsIndex].attributes.val += `{{${item}}}`
+        }
     },
     mounted() {
         this.getFormByKey()

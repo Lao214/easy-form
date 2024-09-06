@@ -20,6 +20,11 @@ const router = new VueRouter({
           component: () => import("../view/build/Build.vue")
         },
         {
+          path: "/succ",
+          name:'succ',
+          component: () => import("../view/build/Succ.vue")
+        },
+        {
           path: "/home",
           name:'Home',
           component: () => import("../view/index.vue"),

@@ -57,7 +57,9 @@ export default {
       answer: [],
       answerNum: 0,
       answerTotal: 0,
-      submitloading: false
+      submitloading: false,
+      logic: '',
+      logicUI: '',
     }
   },
   created() {
@@ -68,6 +70,8 @@ export default {
       formApi.getFormByKeyPublic(this.$route.query.key).then(res => {
          if(res.code === 200) {
           this.one = res.data.one
+          this.logic = res.data.one.evaluateLogic
+          this.logicUI = res.data.one.evaluateUi
           this.items = JSON.parse(res.data.one.formItems)
           var answerCount = 0
           for(let i = 0; i < this.items.length; i++) {
@@ -92,9 +96,9 @@ export default {
               }
             }
           }
-          console.log(this.answer)
-          console.log(this.requires)
-          console.log(this.items)
+          // console.log(this.answer)
+          // console.log(this.requires)
+          // console.log(this.items)
          }
       })
     },
@@ -157,9 +161,16 @@ export default {
         }
       }
       this.submitloading = true
+      this.answer.forEach(element => {
+        // 使用正则表达式进行全局替换
+        const regex = new RegExp(`{{${element.key}}}`, 'g');
+        this.logic = this.logic.replace(regex, element.value);
+      })
       const dataAnswer = {
         formKey: this.$route.query.key,
         answerDetails: JSON.stringify(this.answer),
+        logic: this.logic ? this.logic : '',
+        logicUI: this.logicUI ? this.logicUI : '',
         // formName: this.one.formName,
         source: '其他'
       }
@@ -169,16 +180,29 @@ export default {
             type: 'success',
             message: '提交成功'
           })
-          // this.$router.push({
-          //   path: '/succ',
-          //   query: {
-          //     feedback: feedback
-          //   }
-          // })
+
+          Object.entries(res.data.dataMap).forEach(([key, value]) => {
+            // 使用正则表达式进行全局替换，将 {{resultX}} 替换为对应的值
+            const regexR = new RegExp(`{{${key}}}`, 'g');
+            this.logicUI = this.logicUI.replace(regexR, value);
+          })
+
+          // 暂时存储数据
+          sessionStorage.setItem('feedback' + this.$route.query.key, this.logicUI)
+
+          this.$router.push({
+            path: '/succ',
+            query: {
+              key: this.$route.query.key
+            }
+          })
+
           this.submitloading = false
         } else {
           this.submitloading = false
         }
+      }).finally(() => {
+        this.submitloading = false
       })
     }
   }

@@ -1,7 +1,7 @@
 <template>
     <div class="body" :class="optionsIndex === optionKey ? 'active' : ''" @click="selectUI()">
         <textarea class="e-text-ui" v-model="attributes.val" placeholder="请输入反馈页面需要显示的文字..."></textarea>
-        <span v-show="optionKey === optionsIndex" class="floating-btn">
+        <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
             <i class="el-icon-document-copy"></i>
         </span>
         <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
@@ -19,6 +19,9 @@ export default {
         },
         delThis() {
             this.$emit('delThis', this.optionKey)
+        },
+        copyThis() {
+            this.$emit('copyThis', this.optionKey)
         }
     }
 }
