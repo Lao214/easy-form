@@ -63,7 +63,6 @@ export default {
   border:2px solid #ea5524;
 }
 
-
 /* MAIN */
 /* =============================================== */
 .label {

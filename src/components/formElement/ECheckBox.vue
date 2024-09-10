@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" style="" @click="callBack">
+  <div class="componentBorder" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
     <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <ul class="unstyled centered">
       <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px;">
@@ -7,13 +7,18 @@
         <label :for="'styled-checkbox-' + optionKey  + '-' + index">{{ item.label }}</label>
       </li>
     </ul>
-    <!-- <button @click="showSelectedOptions">显示选中的选项</button> -->
+    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+      <i class="el-icon-document-copy"></i>
+    </span>
+    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+      <i class="el-icon-delete"></i>
+    </span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['optionKey','attributes'],
+  props: ['optionKey','attributes','optionsIndex'],
   data() {
     return {
       selectedOptions: {}
@@ -29,6 +34,12 @@ export default {
   methods: {
     callBack() {
       this.$emit('callBack', this.optionKey)
+    },
+    delThis() {
+      this.$emit('delThis', this.optionKey)
+    },
+    copyThis() {
+      this.$emit('copyThis', this.optionKey)
     },
     updateSelectedValue(newValue) {
       if(this.selectedOptions[newValue]) {
@@ -139,5 +150,33 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+.floating-del-btn {
+    position: absolute;
+    right: -2.3rem;
+    top: 2.4rem;
+    width: 2rem;
+    height: 2rem;
+    background: #c91414;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating-btn {
+    position: absolute;
+    right: -2.3rem;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: #383333;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
