@@ -37,13 +37,16 @@ export default {
   border-radius: 4px;
   margin: .7rem 0px;
   text-align: start;
+  cursor: pointer;
+}
+
+.active {
+  border:2px solid #ea5524;
 }
 
 .componentBorder:hover {
-  border: 2px solid #2881da;
+  border:2px solid #ea5524;
 }
- 
-
 
 
 .sliderNum{

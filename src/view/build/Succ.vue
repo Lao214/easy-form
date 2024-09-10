@@ -30,7 +30,7 @@ export default {
     height: auto;
     background: #a7ce74;
     min-height: 100vh;
-    padding: 3rem;
+    padding-top: 3rem;
 }
 
 .main {
@@ -40,6 +40,6 @@ export default {
     margin: 0 auto;
     padding: 1rem;
     height: auto;
-    min-height:80vh;
+    min-height:77vh;
 }
 </style>

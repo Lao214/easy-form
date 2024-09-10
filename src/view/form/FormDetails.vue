@@ -15,7 +15,7 @@
             <div v-show="!isLoading">
               <draggable v-model="items" chosen-class="chosen" force-fallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                 <transition-group>
-                  <component v-for="(item, index) in items" :key="item.attributes.key" :is="item.component" :attributes="item.attributes" :option-key="index" @callBack="callBack"/>
+                  <component v-for="(item, index) in items" :key="item.attributes.key" :is="item.component" :optionsIndex="optionsIndex" :attributes="item.attributes" :option-key="index" @delThis="delThis" @copyThis="copyThis" @callBack="callBack"/>
                 </transition-group>
               </draggable>
             </div>
@@ -84,10 +84,6 @@
             <div class="opInputs" v-show="optionsStepValue">
               组件步值: 
               <input class="opInput" placeholder="请输入整数" @input="changeStepValue(optionsStepValue)" v-model="optionsStepValue" >
-            </div>
-
-            <div class="opInputs">
-              <button @click="delComponents()" class="del-btn"><i class="el-icon-delete"></i></button>
             </div>
 
             <div class="opName" v-show="optionsRadio.length > 0">
@@ -251,15 +247,14 @@ export default {
       })
       this.isLoading = false
     },
-    delComponents() {
-      if(!this.optionsKey) {
-        this.$message({
-          type: 'info',
-          message: '请选择一个组件'
-        })
-      } else if (this.optionsKey) {
-         this.dialogVisible = true
-      }
+    delThis(key) {
+      this.dialogVisible = true
+    },
+    copyThis(key) {
+      let item = JSON.parse(JSON.stringify(this.items[key]))
+      var date = new Date().getTime()
+      item.attributes.key = 'easy' + date
+      this.items.push(item)
     },
     confirmDelCom() {
       this.items.splice(this.optionsIndex,1)

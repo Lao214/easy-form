@@ -40,6 +40,11 @@ const router = new VueRouter({
               component: () => import('@/view/form/FormDetails.vue')
             },
             {
+              path: '/formData',
+              name: 'formData',
+              component: () => import('@/view/form/FormData.vue')
+            },
+            {
               path: '/release',
               name: 'release',
               component: () => import('@/view/release/Release.vue')

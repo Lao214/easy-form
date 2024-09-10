@@ -31,8 +31,12 @@ export default {
   text-align: start;
 }
 
+.active {
+  border:2px solid #ea5524;
+}
+
 .componentBorder:hover {
-  border: 2px solid #2881da;
+  border:2px solid #ea5524;
 }
 
 </style>

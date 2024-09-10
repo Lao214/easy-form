@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" style="" @click="callBack">
+  <div class="componentBorder" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
     <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <div class="radio-input-wrapper">
       <label v-for="(item,index) in attributes.radioOptions" :key="index" class="label">
@@ -8,12 +8,18 @@
         <div class="label-text">{{ item.label }}</div>
       </label>
     </div>
+    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+      <i class="el-icon-document-copy"></i>
+    </span>
+    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+      <i class="el-icon-delete"></i>
+    </span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['optionKey','attributes'],
+  props: ['optionKey','attributes','optionsIndex'],
   data() {
     return {
 
@@ -22,6 +28,12 @@ export default {
   methods: {
     callBack() {
       this.$emit('callBack', this.optionKey)
+    },
+    delThis() {
+      this.$emit('delThis', this.optionKey)
+    },
+    copyThis() {
+      this.$emit('copyThis', this.optionKey)
     },
     updateSelectedValue(newValue) {
       this.attributes.defaultValue = newValue
@@ -39,10 +51,16 @@ export default {
   border-radius: 4px;
   margin: .7rem 0px;
   text-align: start;
+  position: relative;
+  cursor: pointer;
+}
+
+.active {
+  border:2px solid #ea5524;
 }
 
 .componentBorder:hover {
-  border: 2px solid #2881da;
+  border:2px solid #ea5524;
 }
 
 
@@ -115,4 +133,32 @@ export default {
   display: flex;
   flex-wrap: wrap;
 } */
+
+.floating-del-btn {
+    position: absolute;
+    right: -2.3rem;
+    top: 2.4rem;
+    width: 2rem;
+    height: 2rem;
+    background: #c91414;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating-btn {
+    position: absolute;
+    right: -2.3rem;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: #383333;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>

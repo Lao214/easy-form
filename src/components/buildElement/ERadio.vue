@@ -25,6 +25,7 @@ export default {
     },
     updateSelectedValue() {
       this.callBack()
+      console.log(this.attributes)
     }
   }
 }

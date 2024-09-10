@@ -229,18 +229,18 @@ export default {
             // 遍历 logics，检查是否有其他元素使用了该 result
             const isUsed = this.logics.some((element, i) => {
                 // 排除当前要删除的 index 元素进行判断
-                return i !== index && element.includes(resultToDelete);
-            });
+                return i !== index && element.includes(resultToDelete)
+            })
 
             // 如果其他元素中使用了该 result，中止方法并显示警告
             if (isUsed) {
-                this.$message.warning("其他元素中使用了此 result，无法删除！");
-                return;
+                this.$message.warning("其他元素中使用了此 result，无法删除！")
+                return
             }
 
             // 如果没有其他元素使用该 result，则删除 logics 和 results 中的元素
-            this.logics.splice(index, 1);
-            this.results.splice(index, 1);
+            this.logics.splice(index, 1)
+            this.results.splice(index, 1)
         },
         delThis(key) {
             this.uitems.splice(key,1)

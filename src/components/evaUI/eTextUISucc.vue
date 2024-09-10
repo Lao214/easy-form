@@ -1,8 +1,5 @@
 <template>
     <div class="text-body">
-        <!-- <te class="e-text-ui" >
-            {{ attributes.val }}
-        </p> -->
         <div class="e-text-ui" v-html="formattedText"></div>
     </div>
 </template>
@@ -26,7 +23,7 @@ export default {
 
 .text-body {
     background: rgba(255, 255, 255, 0);
-    width: calc(100% - 4rem);
+    width: 100%;
     border-radius: .2rem;
     box-sizing: border-box;
     padding: .7rem;

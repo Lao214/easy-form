@@ -10,7 +10,7 @@
         <div v-show="isChecked === '功能'" style="padding: 1rem;">
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoRelease()"> <i class="fa fa-send" /> 发布</div>
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoLogic()"> <i class="fa fa-meh-o" /> 反馈</div>
-            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-table" /> 数据表格（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;" @click="gotoData()"> <i class="fa fa-table" /> 数据表格 </div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-bar-chart" /> 数据图表（未开放）</div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-mobile" /> 手机浏览（未开放）</div>
             <div class="MenuBtn" style="margin:1rem auto;" @click="gobackDetails()" v-show="$route.path !== '/formDetails'"> <i class="el-icon-arrow-left" /> 返回表单详情</div>
@@ -47,14 +47,23 @@ export default {
     },
     methods: {
         gotoRelease() {
-            window.open('/share?key=' + this.$route.query.key)
-            // this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })
+          window.open('/share?key=' + this.$route.query.key)
+          // this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })
         },
         gotoLogic() {
-           window.open('/logic?key=' + this.$route.query.key)
+          window.open('/logic?key=' + this.$route.query.key)
         },
         gobackDetails() {
-            this.$router.push({ path: '/formDetails', query: { key: this.$route.query.key } })
+          if(this.$route.path === '/formDetails') {
+            return
+          }
+          this.$router.push({ path: '/formDetails', query: { key: this.$route.query.key } })
+        },
+        gotoData() {
+          if(this.$route.path === '/formData') {
+            return
+          }
+          this.$router.push({ path: '/formData', query: { key: this.$route.query.key } })
         },
         addHeader(name, title, subtitle) {
             this.$emit('addHeader', name, title, subtitle)
