@@ -163,7 +163,9 @@ export default {
                     this.logics.forEach(element => {
                         this.results.push(element.split('=')[1])
                     })
-                    this.uitems = JSON.parse(res.data.one.evaluateUi)
+                    if(res.data.one.evaluateUi) {
+                        this.uitems = JSON.parse(res.data.one.evaluateUi)
+                    }
                 }
             })
         },
@@ -214,7 +216,7 @@ export default {
             this.logic +=  item
         },
         addNum(item) {
-            if (!['+','-','x','÷','('].includes(this.logic.slice(-1))) {
+            if (!['+','-','x','÷','(','0','1','2','3','4','5','6','7','8','9'].includes(this.logic.slice(-1))) {
                 this.$message.warning("数字前面须是加减乘除号及左括弧")
                 return
             }

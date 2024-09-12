@@ -2,8 +2,8 @@
   <div class="componentBorder" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
     <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
     <div class="radio-input-wrapper">
-      <label v-for="(item,index) in attributes.radioOptions" :key="index" class="label">
-        <input :value="item.valu" :name="'value-radio' + optionKey" :id="optionKey + '-' + index" class="radio-input" type="radio" v-model="attributes.defaultValue" @change="updateSelectedValue(item.valu)">
+      <label v-for="(item,index4) in attributes.radioOptions" :key="'kk' + index4" class="label">
+        <input :value="item.label" :name="'value-radio' + optionKey" :id="optionKey + '-' + index4" class="radio-input" type="radio" v-model="attributes.defaultLabel" @change="updateSelectedValue(item.valu, item.label)">
         <div class="radio-design"></div>
         <div class="label-text">{{ item.label }}</div>
       </label>
@@ -35,8 +35,10 @@ export default {
     copyThis() {
       this.$emit('copyThis', this.optionKey)
     },
-    updateSelectedValue(newValue) {
+    updateSelectedValue(newValue, newLab) {
       this.attributes.defaultValue = newValue
+      this.$set(this.attributes, 'defaultLabel', newLab);
+
       this.callBack()
     }
   }

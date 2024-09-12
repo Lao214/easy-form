@@ -32,7 +32,7 @@ export default {
 .body {
     background: white;
     width: calc(100% - 4rem);
-    min-height: 2rem;
+    min-height: 6rem;
     border-radius: .2rem;
     box-sizing: border-box;
     padding: .7rem;
@@ -76,7 +76,7 @@ export default {
 
 .e-text-ui {
     width: 100%;
-    height: 100%;
+    height: 5rem;
     resize: none;
     border: none;
     outline: none;

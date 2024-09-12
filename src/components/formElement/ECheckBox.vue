@@ -1,10 +1,20 @@
 <template>
-  <div class="componentBorder" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
+  <div class="componentBorder" :class="{ active: optionsIndex === optionKey }" @click="callBack">
+    <p style="padding: 0px 16px; font-weight: 700">
+      <span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}
+    </p>
     <ul class="unstyled centered">
-      <li v-for="(item,index) in attributes.radioOptions" :key="index" style="margin:10px;">
-        <input class="styled-checkbox" :id="'styled-checkbox-' + optionKey  + '-' + index" type="checkbox" @change="updateSelectedValue(item.valu)" :value="item.valu" v-model="attributes.defaultValue" :disabled="isCheckboxDisabled(item.valu)" >
-        <label :for="'styled-checkbox-' + optionKey  + '-' + index">{{ item.label }}</label>
+      <li v-for="(item, index) in attributes.radioOptions" :key="index" style="margin:10px;">
+        <input 
+          class="styled-checkbox" 
+          :id="'styled-checkbox-' + optionKey + '-' + index" 
+          type="checkbox" 
+          :checked="isSelected(item.label)" 
+          @change="updateSelectedValue(item.label)" 
+          :value="item.label" 
+          :disabled="isCheckboxDisabled(item.label)" 
+        >
+        <label :for="'styled-checkbox-' + optionKey + '-' + index">{{ item.label }}</label>
       </li>
     </ul>
     <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
@@ -18,16 +28,28 @@
 
 <script>
 export default {
-  props: ['optionKey','attributes','optionsIndex'],
+  props: ['optionKey', 'attributes', 'optionsIndex'],
   data() {
     return {
-      selectedOptions: {}
+      selectedOptions: {} // 用来存储选中的复选框
+    }
+  },
+  watch: {
+    'attributes.defaultLabel': {
+      handler(newLabels) {
+        // 清空现有选中的选项
+        this.selectedOptions = {};
+        // 将新的选中的选项标记为已选中
+        newLabels.forEach(label => {
+          this.$set(this.selectedOptions, label, true);
+        });
+      },
+      deep: true,
     }
   },
   computed: {
-    // 计算属性，返回当前未选中的选项数量
     remainingSelection() {
-      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length;
+      const selectedCount = Object.values(this.selectedOptions).filter(Boolean).length;
       return this.attributes.max - selectedCount;
     },
   },
@@ -41,31 +63,33 @@ export default {
     copyThis() {
       this.$emit('copyThis', this.optionKey)
     },
-    updateSelectedValue(newValue) {
-      if(this.selectedOptions[newValue]) {
-        this.selectedOptions[newValue] = ''
+    updateSelectedValue(label) {
+      // 更新选中状态
+      if (this.selectedOptions[label]) {
+        this.$set(this.selectedOptions, label, false)
       } else {
-        this.selectedOptions[newValue] = newValue
+        if (Object.values(this.selectedOptions).filter(Boolean).length >= this.attributes.max) {
+          return; // 达到最大选择限制，禁止选择
+        }
+        this.$set(this.selectedOptions, label, true)
       }
-      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length
-      // console.log(selectedCount)
-      if (selectedCount > this.maxSelection) {
-        // 如果超过最大限制，取消选中当前项
-        this.selectedOptions[newValue] = false
-      }
-      this.callBack()
+
+      // 同步到外部组件
+      this.$emit('update:defaultLabel', Object.keys(this.selectedOptions).filter(label => this.selectedOptions[label]));
+
+      this.callBack();
     },
-    showSelectedOptions() {
-      // console.log(this.attributes.defaultValue)
-    },
-    // 判断复选框是否应该被禁用
     isCheckboxDisabled(value) {
-      const selectedCount = Object.values(this.selectedOptions).filter((isSelected) => isSelected).length
-      return selectedCount >= this.attributes.max && !this.selectedOptions[value]
+      const selectedCount = Object.values(this.selectedOptions).filter(Boolean).length;
+      return selectedCount >= this.attributes.max && !this.selectedOptions[value];
     },
+    isSelected(label) {
+      return this.selectedOptions[label] || false;
+    }
   }
 }
 </script>
+
 
 <style scoped>
 .componentBorder {

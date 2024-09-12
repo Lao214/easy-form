@@ -63,8 +63,8 @@
             <div v-show="optionsName === 'eDescription' || optionsName === 'SortText' || optionsName === 'LongText' || optionsName === 'eRadio' || optionsName === 'eCheckBox' || optionsName === 'eSelector' || optionsName === 'eStar' || optionsName === 'ePicture' || optionsName === 'eDate'" class="opInputs">
               <span>组件默认值: </span>
               <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
-              <el-select v-show="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
-                <el-option v-for="item in optionsRadio" :key="item.radioValue" :label="item.radioLabel" :value="item.radioValue">
+              <el-select v-if="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
+                <el-option v-for="item in optionsRadio" :key="item.label + item.valu" :label="item.label" :value="item.valu">
                 </el-option>
               </el-select>
             </div>
@@ -89,9 +89,9 @@
             <div class="opName" v-show="optionsRadio.length > 0">
               选项：
               <el-divider></el-divider>
-              <div v-for="(item,index) in optionsRadio" :key="index" class="ra-items"> 
+              <div v-for="(item,index2) in optionsRadio" :key="'r' + index2" class="ra-items"> 
                 <label style="line-height: 40px;">Label：</label>
-                <input class="opInput" v-model="item.label" style="margin-right: .2rem;">
+                <input class="opInput" v-model="item.label" @change="checkLabel" style="margin-right: .2rem;">
                 <label style="line-height: 40px;">Value：</label>
                 <input class="opInput" v-model="item.valu" style="" >
                 <span @click="delRadioOptions(item,index)" class="ra-del-items">
@@ -105,7 +105,7 @@
             <div class="opName" v-show="optionsAttr.length > 0">
               选项：
               <el-divider></el-divider>
-              <div v-for="(item,index) in optionsAttr" class="ra-items" :key="index">
+              <div v-for="(item,index2) in optionsAttr" class="ra-items" :key="'a' + index2">
                 <label style="line-height: 40px;">Label：</label>
                 <input class="opInput" v-model="item.complexAttr" style="margin-right: .2rem;">
                 <label style="line-height: 40px">Value：</label>
@@ -218,6 +218,24 @@ export default {
     // 拖拽结束事件
     onEnd() {
       this.drag = false
+    },
+    checkLabel() {
+      const seenLabels = new Set(); // 用于存储已见过的标签
+      const updatedOptionsRadio = this.optionsRadio.map(element => {
+        let uniqueLabel = element.label;
+        // 如果标签已经存在于 Set 中，修改为唯一标签
+        while (seenLabels.has(uniqueLabel)) {
+          // 为标签添加后缀以确保唯一性
+          this.$message.warning('label重复，已自动修改')
+          uniqueLabel = `${element.label} (${Math.random().toString(36).substring(2, 7)})`
+        }
+        seenLabels.add(uniqueLabel)
+        // 返回新的对象，更新 label
+        return { ...element, label: uniqueLabel }
+      })
+
+      // 更新 optionsRadio
+      this.optionsRadio = updatedOptionsRadio
     },
     getFormByKey() {
       this.isLoading = true
@@ -429,17 +447,35 @@ export default {
       }
       this.items[this.optionsIndex].attributes.defaultValue = newValue
       if(this.items[this.optionsIndex].component === 'eCheckBox') {
-        // console.log(this.items[this.optionsIndex].attributes)
-        // console.log(this.items[this.optionsIndex].attributes.defaultValue.length)
-        // console.log(this.items[this.optionsIndex].attributes.max)
-        if(this.items[this.optionsIndex].attributes.defaultValue && (this.items[this.optionsIndex].attributes.defaultValue.length > this.items[this.optionsIndex].attributes.max)) {
+        let newLab = []
+        newValue.forEach(element => {
+          const foundOption = this.items[this.optionsIndex].attributes.radioOptions.find(option => option.valu === element)
+          newLab.push(foundOption.label)
+        })
+        this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', newLab)
+        if(this.items[this.optionsIndex].attributes.defaultLabel && (this.items[this.optionsIndex].attributes.defaultLabel.length > this.items[this.optionsIndex].attributes.max)) {
           this.items[this.optionsIndex].attributes.defaultValue = this.items[this.optionsIndex].attributes.defaultValue.slice(0, this.items[this.optionsIndex].attributes.max)
+          this.items[this.optionsIndex].attributes.defaultLabel = this.items[this.optionsIndex].attributes.defaultLabel.slice(0, this.items[this.optionsIndex].attributes.max)
           this.optionsDefaultValue = this.optionsDefaultValue.slice(0, this.items[this.optionsIndex].attributes.max)
           return this.$message.warning('超过最大限制')
         } else {
-
+          
         }
       }
+      if(this.items[this.optionsIndex].component === 'eRadio' && newValue !== '') {     
+        const foundOption = this.items[this.optionsIndex].attributes.radioOptions.find(option => option.valu === newValue)
+        // this.items[this.optionsIndex].attributes.defaultLabel = foundOption.label
+        if(foundOption) {
+          this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', foundOption.label)
+        } else {
+          this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', '')
+        }
+      } else if (newValue === '') {
+        // this.items[this.optionsIndex].attributes.defaultLabel = ''
+        this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', '')
+      }
+
+      console.log(this.items[this.optionsIndex].attributes)
     },
     changeMaxValue(newValue) {
       if(newValue) {
