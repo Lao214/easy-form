@@ -15,7 +15,7 @@
             <div v-show="!isLoading">
               <draggable v-model="items" chosen-class="chosen" force-fallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                 <transition-group>
-                  <component v-for="(item, index) in items" :key="item.attributes.key" :is="item.component" :optionsIndex="optionsIndex" :attributes="item.attributes" :option-key="index" @delThis="delThis" @copyThis="copyThis" @callBack="callBack"/>
+                  <component v-for="(item, index) in items" :key="item.attributes.key" :is="item.component" :optionsIndex="optionsIndex" :attributes="item.attributes" :option-key="index" @delThis="delThis" @copyThis="copyThis" @callBack="callBack" @update:optionsDefaultValue="changeDefaultValue" />
                 </transition-group>
               </draggable>
             </div>
@@ -64,8 +64,7 @@
               <span>组件默认值: </span>
               <input v-show="optionsName != 'eCheckBox'" class="opInput" @input="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" >
               <el-select v-if="optionsName === 'eCheckBox'" style="width: 100%;color: #2c3e50;" @change="changeDefaultValue(optionsDefaultValue)" v-model="optionsDefaultValue" multiple placeholder="请选择">
-                <el-option v-for="item in optionsRadio" :key="item.label + item.valu" :label="item.label" :value="item.valu">
-                </el-option>
+                <el-option v-for="item in optionsRadio" :key="item.label + item.valu" :label="item.label" :value="item.label"></el-option>
               </el-select>
             </div>
 
@@ -439,20 +438,24 @@ export default {
       this.items[this.optionsIndex].attributes.subtitle = newValue
     },
     changeDefaultValue(newValue) {
+      console.log(newValue)
       if( this.items[this.optionsIndex].component === 'eStar') {
         if(!newValue) {
           newValue = 0
         }
         newValue = parseInt(newValue)
       }
-      this.items[this.optionsIndex].attributes.defaultValue = newValue
+      if(this.items[this.optionsIndex].component !== 'eCheckBox') {
+        this.items[this.optionsIndex].attributes.defaultValue = newValue
+      }
       if(this.items[this.optionsIndex].component === 'eCheckBox') {
-        let newLab = []
+        let newVal = []
         newValue.forEach(element => {
-          const foundOption = this.items[this.optionsIndex].attributes.radioOptions.find(option => option.valu === element)
-          newLab.push(foundOption.label)
+          const foundOption = this.items[this.optionsIndex].attributes.radioOptions.find(option => option.label === element)
+          newVal.push(foundOption.valu)
         })
-        this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', newLab)
+        this.$set(this.items[this.optionsIndex].attributes, 'defaultValue', newVal)
+        this.$set(this.items[this.optionsIndex].attributes, 'defaultLabel', newValue)
         if(this.items[this.optionsIndex].attributes.defaultLabel && (this.items[this.optionsIndex].attributes.defaultLabel.length > this.items[this.optionsIndex].attributes.max)) {
           this.items[this.optionsIndex].attributes.defaultValue = this.items[this.optionsIndex].attributes.defaultValue.slice(0, this.items[this.optionsIndex].attributes.max)
           this.items[this.optionsIndex].attributes.defaultLabel = this.items[this.optionsIndex].attributes.defaultLabel.slice(0, this.items[this.optionsIndex].attributes.max)

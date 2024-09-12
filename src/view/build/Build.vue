@@ -103,7 +103,6 @@ export default {
       })
     },
     callBack(key) {
-      // console.log(this.items[key])
       if(this.items[key].component === 'eButton') {
         this.submitAnswer()
       }
@@ -130,6 +129,10 @@ export default {
           type: this.items[key].component,
           require: this.items[key].attributes.require
         }
+        if(this.items[key].attributes.defaultLabel) {
+          answer.valueLabel = this.items[key].attributes.defaultLabel
+        }
+        console.log(answer)
         this.answer[this.items[key].answerId] = answer
       }
     },

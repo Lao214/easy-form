@@ -10,7 +10,7 @@
           :id="'styled-checkbox-' + optionKey + '-' + index" 
           type="checkbox" 
           :checked="isSelected(item.label)" 
-          @change="updateSelectedValue(item.label)" 
+          @change="updateSelectedValue(item.label, item.valu)" 
           :value="item.label" 
           :disabled="isCheckboxDisabled(item.label)" 
         >
@@ -31,7 +31,8 @@ export default {
   props: ['optionKey', 'attributes', 'optionsIndex'],
   data() {
     return {
-      selectedOptions: {} // 用来存储选中的复选框
+      selectedOptions: {}, // 用来存储选中的复选框
+      selectedValu: []
     }
   },
   watch: {
@@ -63,22 +64,37 @@ export default {
     copyThis() {
       this.$emit('copyThis', this.optionKey)
     },
-    updateSelectedValue(label) {
+    updateSelectedValue(label, valu) {
       // 更新选中状态
       if (this.selectedOptions[label]) {
+        // 如果当前已选中，取消选中
         this.$set(this.selectedOptions, label, false)
+
+        // 从 selectedValu 中移除 valu
+        const index = this.selectedValu.indexOf(valu)
+        if (index > -1) {
+          this.selectedValu.splice(index, 1)
+        }
       } else {
+        // 如果当前未选中，且未达到最大选择限制
         if (Object.values(this.selectedOptions).filter(Boolean).length >= this.attributes.max) {
           return; // 达到最大选择限制，禁止选择
         }
+
+        // 设置为选中状态
         this.$set(this.selectedOptions, label, true)
+
+        // 将 valu 添加到 selectedValu
+        this.selectedValu.push(valu)
       }
 
       // 同步到外部组件
-      this.$emit('update:defaultLabel', Object.keys(this.selectedOptions).filter(label => this.selectedOptions[label]));
+      this.$emit('update:optionsDefaultValue', Object.keys(this.selectedOptions).filter(label => this.selectedOptions[label]))
+      // this.$emit('update:optionsDefaultValue', this.selectedValu)
 
       this.callBack();
     },
+
     isCheckboxDisabled(value) {
       const selectedCount = Object.values(this.selectedOptions).filter(Boolean).length;
       return selectedCount >= this.attributes.max && !this.selectedOptions[value];

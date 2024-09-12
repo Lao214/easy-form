@@ -24,10 +24,9 @@ export default {
       this.$emit('callBack', this.optionKey)
     },
     updateSelectedValue(newValue, newLab) {
-      this.callBack()
       this.attributes.defaultValue = newValue
       this.attributes.defaultLabel = newLab
-      console.log(this.attributes)
+      this.callBack()
     }
   }
 }
