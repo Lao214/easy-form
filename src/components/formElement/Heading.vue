@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
+  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
     <h1 style="margin: 0;text-align: center;">{{ attributes.title }}</h1>
     <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.subtitle }}</p>
     <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
@@ -34,49 +34,5 @@ export default {
 </script>
 
 <style scoped>
-.componentBorder {
-  width: 100%;
-  border: 2px solid #2c3e50;
-  padding: 8px 0px;
-  border-radius: 4px;
-  margin: .7rem 0px;
-  cursor: pointer;
-  position: relative;
-}
-
-.active {
-  border:2px solid #ea5524;
-}
-
-.componentBorder:hover {
-  border:2px solid #ea5524;
-}
-
-.floating-del-btn {
-    position: absolute;
-    right: -2.3rem;
-    top: 2.4rem;
-    width: 2rem;
-    height: 2rem;
-    background: #c91414;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.floating-btn {
-    position: absolute;
-    right: -2.3rem;
-    top: 0;
-    width: 2rem;
-    height: 2rem;
-    background: #383333;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import '../../assets/global.css';
 </style>

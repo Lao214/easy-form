@@ -5,7 +5,9 @@
                 <LeftBodyVue></LeftBodyVue>
             </el-col>
             <el-col :span="20">
-                
+                <div>
+                    
+                </div>
             </el-col>
         </el-row>
     </div>

@@ -22,18 +22,7 @@ export default {
 </script>
 
 <style>
-.componentBorder {
-  width: 100%;
-  /* border: 2px solid #2c3e50; */
-  padding: 8px 0px;
-  border-radius: 4px;
-  margin: .7rem 0px;
-  text-align: start;
-}
-
-.componentBorder:hover {
-  /* border: 2px solid #2881da; */
-}
+@import '../../assets/global.css';
 
 /* 自定义el-rate图标大小 */
 .el-rate .el-rate__item i{

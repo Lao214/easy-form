@@ -33,18 +33,8 @@ export default {
 </script>
 
 <style scoped>
-.componentBorder {
-  width: 100%;
-  /* border: 2px solid #2c3e50; */
-  padding: 8px 0px;
-  border-radius: 4px;
-  margin: .7rem 0px;
-  text-align: start;
-}
+@import '../../assets/global.css';
 
-.componentBorder:hover {
-  /* border: 2px solid #2881da; */
-}
 
 
 /* MAIN */

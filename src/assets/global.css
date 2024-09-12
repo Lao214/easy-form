@@ -1,0 +1,56 @@
+:root {
+    --primary-border-color: #2c3e50;
+    --active-border-color: #ea5524;
+    --delete-btn-bg: #c91414;
+    --btn-bg: #383333;
+    --btn-size: 2rem;
+    --border-radius: 4px;
+    --component-margin: 0.7rem;
+    --padding-y: 8px;
+}
+
+.componentBorder {
+    width: 100%;
+    padding: var(--padding-y) 0;
+    border-radius: var(--border-radius);
+    margin: var(--component-margin) 0;
+    text-align: start;
+}
+
+.componentBorderForm {
+    width: 100%;
+    border: 2px solid var(--primary-border-color);
+    padding: var(--padding-y) 0;
+    border-radius: var(--border-radius);
+    margin: var(--component-margin) 0;
+    text-align: start;
+    cursor: pointer;
+    position: relative;
+    transition: border 0.3s ease;
+}
+
+.componentBorderForm:hover, .active {
+    border: 2px solid var(--active-border-color);
+}
+
+.floating-btn, .floating-del-btn {
+    position: absolute;
+    right: -2.3rem;
+    width: var(--btn-size);
+    height: var(--btn-size);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating-btn {
+    top: 0;
+    background: var(--btn-bg);
+}
+
+.floating-del-btn {
+    top: 2.4rem;
+    background: var(--delete-btn-bg);
+}

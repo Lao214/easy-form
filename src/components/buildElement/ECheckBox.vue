@@ -5,7 +5,7 @@
     </p>
     <ul class="unstyled centered">
       <li v-for="(item, index) in attributes.radioOptions" :key="index" style="margin:10px;">
-        <input 
+        <input
           class="styled-checkbox" 
           :id="'styled-checkbox-' + optionKey + '-' + index" 
           type="checkbox" 
@@ -103,18 +103,7 @@ export default {
 </script>
 
 <style scoped>
-.componentBorder {
-  width: 100%;
-  /* border: 2px solid #2c3e50; */
-  padding: 8px 0px;
-  border-radius: 4px;
-  margin: .7rem 0px;
-  text-align: start;
-}
-
-.componentBorder:hover {
-  /* border: 2px solid #2881da; */
-}
+@import '../../assets/global.css';
 
 .styled-checkbox {
   position: absolute;

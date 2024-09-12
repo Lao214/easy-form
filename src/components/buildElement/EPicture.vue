@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" style="">
+  <div class="componentBorder">
     <div style="display:flex;flex-wrap:wrap;">
       <label style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:98%;text-align:center;">{{ attributes.label }}</label>
       <img :src="attributes.defaultValue" style="width:97%;margin: 0 auto">
@@ -25,16 +25,5 @@ export default {
 </script>
 
 <style scoped>
-.componentBorder {
-  width: 100%;
-  /* border: 2px solid #2c3e50; */
-  padding: 8px 0px;
-  border-radius: 4px;
-  margin: .7rem 0px;
-  text-align: start;
-}
-
-.componentBorder:hover {
-  /* border: 2px solid #2881da; */
-}
+@import '../../assets/global.css';
 </style>

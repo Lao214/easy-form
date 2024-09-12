@@ -24,6 +24,7 @@ module.exports = defineConfig({
       .end()
   },
   lintOnSave:false,
+  productionSourceMap: false,
   devServer: {
     port: '7217',
     client: {

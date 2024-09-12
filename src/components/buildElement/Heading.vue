@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder" style="">
+  <div class="componentBorder">
     <h1 style="margin: 0;text-align: center;">{{ attributes.title }}</h1>
     <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.subtitle }}</p>
   </div>
@@ -20,15 +20,5 @@ export default {
 </script>
 
 <style scoped>
-.componentBorder {
-  width: 100%;
-  /* border: 2px solid #2c3e50; */
-  /* padding: 8px 0px; */
-  border-radius: 4px;
-  /* margin: 8px 0px; */
-}
-
-.componentBorder:hover {
-  /* border: 2px solid #2881da; */
-}
+@import '../../assets/global.css';
 </style>

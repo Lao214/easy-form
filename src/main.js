@@ -6,6 +6,8 @@ import { Button, Select, Message, MessageBox, Avatar, Row, Col, Divider, Dialog,
 
 import './assets/icons/index'
 
+import './assets/global.css'
+
   // 国际化
   import VueI18n from 'vue-i18n'  //引入下载的vue-i18包
   import enLocale from '../src/locales/en.json'
