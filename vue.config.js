@@ -32,5 +32,12 @@ module.exports = defineConfig({
         runtimeErrors: false
       }
     }
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "@/assets/variables.scss";`
+      }
+    }
   }
 })

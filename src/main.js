@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store';
-import { Button, Select, Message, MessageBox, Avatar, Row, Col, Divider, Dialog, Rate, DatePicker,Option } from 'element-ui';
+import { Button, Select, Message, MessageBox, Avatar, Row, Col, Divider, Dialog, Rate, DatePicker, Option, Table, TableColumn } from 'element-ui';
 
 import './assets/icons/index'
 
@@ -36,6 +36,9 @@ Vue.component(Dialog.name, Dialog)
 Vue.component(Rate.name, Rate)
 Vue.component(DatePicker.name, DatePicker)
 Vue.component(Option.name, Option)
+Vue.component(Table.name, Table)
+Vue.component(TableColumn.name, TableColumn)
+
 Vue.config.productionTip = false
 Vue.prototype.$message = Message
 

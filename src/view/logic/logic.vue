@@ -268,16 +268,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .right-body {
-    min-height: 100vh;
-    height: auto;
-    background-color: #0a2e3e;
-    padding: 1rem;
-    box-sizing: border-box;
-    overflow-y: scroll;
-    color: #9398b8;
+    @include nav-body;
+    text-align: center;
 }
 
 .center-body {

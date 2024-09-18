@@ -8,4 +8,11 @@ export default {
       data: dataForm
     })
   },
+  getPageList(page, limit, searchObj) {
+    return request({
+      url: `/easy/BAnswer/getPageList/${page}/${limit}`,
+      method: 'get',
+      params: searchObj
+    })
+  }
 }

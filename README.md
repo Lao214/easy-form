@@ -16,4 +16,5 @@
 2024-09-12 解决eRadio不能有重复的value的问题<br>
 2024-09-12 解决eCheckBox不能有重复的value的问题<br>
 2024-09-12 global.css 全局样式文件使用 <br>
+2024-09-18 编写表单数据table,实现动态表头<br>
 

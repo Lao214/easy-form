@@ -552,13 +552,8 @@ export default {
 }
 
 .right-body {
-  min-height: 100vh;
-  height: auto;
-  background-color: #0a2e3e;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow-y: scroll;
-  color: #9398b8;
+  @include nav-body;
+  text-align: center;
 }
 
 .opName {
@@ -579,9 +574,9 @@ export default {
   width: 100%;
   height: 34px;
   border-radius: 4px;
-  border: none;  /* 去掉默认边框 */
+  border: none; /* 去掉默认边框 */
   outline: none; /* 去掉点击或输入时的边框 */
-  resize: none;  /* 去掉右下角的拖动调整大小的控件 */
+  resize: none; /* 去掉右下角的拖动调整大小的控件 */
   background-color: #35455c;
   color: #7f84a8;
   box-sizing: border-box;
@@ -616,7 +611,6 @@ export default {
   color: #2c2f47;
 }
 
-
 ::v-deep .el-input__inner {
   width: 100%;
   height: 34px;
@@ -626,60 +620,58 @@ export default {
   background-color: #2c3e5000;
 }
 
-
 .three-body {
- --uib-size: 105px;
- --uib-speed: 0.8s;
- --uib-color: #53b30e;
- position: relative;
- display: inline-block;
- height: var(--uib-size);
- width: var(--uib-size);
- animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+  --uib-size: 105px;
+  --uib-speed: 0.8s;
+  --uib-color: #53b30e;
+  position: relative;
+  display: inline-block;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
 }
 
 .three-body__dot {
- position: absolute;
- height: 100%;
- width: 30%;
+  position: absolute;
+  height: 100%;
+  width: 30%;
 }
 
 .three-body__dot:after {
- content: '';
- position: absolute;
- height: 0%;
- width: 100%;
- padding-bottom: 100%;
- background-color: var(--uib-color);
- border-radius: 50%;
+  content: '';
+  position: absolute;
+  height: 0%;
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: var(--uib-color);
+  border-radius: 50%;
 }
 
 .three-body__dot:nth-child(1) {
- bottom: 5%;
- left: 0;
- transform: rotate(60deg);
- transform-origin: 50% 85%;
+  bottom: 5%;
+  left: 0;
+  transform: rotate(60deg);
+  transform-origin: 50% 85%;
 }
 
 .three-body__dot:nth-child(1)::after {
- bottom: 0;
- left: 0;
- animation: wobble1 var(--uib-speed) infinite ease-in-out;
- animation-delay: calc(var(--uib-speed) * -0.3);
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite ease-in-out;
+  animation-delay: calc(var(--uib-speed) * -0.3);
 }
 
 .three-body__dot:nth-child(2) {
- bottom: 5%;
- right: 0;
- transform: rotate(-60deg);
- transform-origin: 50% 85%;
+  bottom: 5%;
+  right: 0;
+  transform: rotate(-60deg);
+  transform-origin: 50% 85%;
 }
 
 .three-body__dot:nth-child(2)::after {
- bottom: 0;
- left: 0;
- animation: wobble1 var(--uib-speed) infinite
-    calc(var(--uib-speed) * -0.15) ease-in-out;
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15) ease-in-out;
 }
 
 .three-body__dot:nth-child(3) {
@@ -782,9 +774,6 @@ export default {
 .switch input:checked + .slider:before {
   transform: translateX(1.6em);
 }
-
-
-
 
 .ra-items {
   display: flex;

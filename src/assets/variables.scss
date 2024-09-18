@@ -1,0 +1,15 @@
+
+
+$leftOrRightNavBackColor: #0a2e3e;
+
+@mixin nav-body {
+    color: #9398b8;
+    min-height: 100vh;
+    height: auto;
+    background-color: $leftOrRightNavBackColor;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+
