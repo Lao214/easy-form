@@ -2,11 +2,11 @@
   <div class="body">
     <el-row>
       <el-col :span="4">
-       <leftBody @addHeader=addHeader @addBasicComponents="addBasicComponents" @addRadio="addRadio" @addStar="addStar" @addSlider="addSlider"></leftBody>
+       <leftBody id="form-components" @addHeader=addHeader @addBasicComponents="addBasicComponents" @addRadio="addRadio" @addStar="addStar" @addSlider="addSlider"></leftBody>
       </el-col>
       <el-col :span="13">
         <div style="height: 100vh;background: #f3f3fd;padding: 1rem; overflow-y: scroll;box-sizing: border-box;">
-          <div class="adaptive-div">
+          <div id="form-exhibition" class="adaptive-div">
             <div v-show="isLoading" class="three-body">
               <div class="three-body__dot"></div>
               <div class="three-body__dot"></div>
@@ -24,10 +24,10 @@
       </el-col>
       <el-col :span="7">
         <div class="right-body">
-          <div class="opInputs">
+          <div id="save" class="opInputs">
             <el-button @click="saveForm()" class="save-btn" :loading="isLoading" type="success">保存表单</el-button>
           </div>
-          <div>
+          <div id="form-property">
             <div class="opName">
               组件名：{{ optionsName }} <br>
               <span v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' && optionsName !== 'ePicture' && optionsName !== 'eDivider'">
@@ -143,6 +143,8 @@ import eDescription from '@/components/formElement/EDescription.vue'
 import formApi from '@/api/formApi'
 import draggable from 'vuedraggable'
 import leftBody from '@/components/formDetails/LeftBody.vue'
+import { driver } from "driver.js"
+import "driver.js/dist/driver.css"
 
 export default {
   components: {
@@ -203,13 +205,90 @@ export default {
           'complexAttr': '详细地址',
           'complexVal': '广西科技大学',
         }
+      ],
+       // 引导
+       steps: [
+        {
+          element: '#form-components',
+          popover: {
+            title: "表单组件",
+            description: '点击表单组件可在中间生成您想要的组件',
+            position: 'right',
+            onNextClick: this.goSecondStep
+          }
+        },
+        {
+          element: '#form-property',
+          popover: {
+            title: "组件属性",
+            description: '点击表单中的组件，右侧会显示这个组件的属性，这里可以编辑组件属性',
+            position: 'center',
+            onNextClick: this.goThirdStep
+          }
+        },
+        {
+          element: '#form-exhibition',
+          popover: {
+            title: "表单组件展示区",
+            description: '左侧点击加入的组件会在此处展示',
+            position: 'right',
+            onNextClick: this.goFourthStep
+          }
+        },
+        {
+          element: '#save',
+          popover: {
+            title: "保存按钮",
+            description: '在离开页面之前记得点击保存哟～～',
+            position: 'right',
+            onNextClick: this.finishStep
+          }
+        }
       ]
     }
   },
   mounted() {
-    this.getFormByKey()
+    if(this.$route.query.key) {
+      this.getFormByKey()
+    }
+    if(this.$route.query.guide) {
+      this.driver = new driver({
+          // allowClose: false,
+          // popoverClass: 'driverjs-theme',
+          showProgress:true,
+          progressText:'{{current}}/{{total}}',
+          doneBtnText: '我已了解', // 结束按钮的文字
+          animate: true, // 动画
+          stageBackground: '#ffffff', // 突出显示元素的背景颜色
+          nextBtnText: '下一步', // 下一步按钮的文字
+          prevBtnText: '上一步', // 上一步按钮的文字
+          closeBtnText: '关闭', // 关闭按钮的文字
+          // overlayColor:'#f40',
+          steps: this.steps,
+          stagePadding:10,
+          onCloseClick:() => {
+            console.log('Close Button Clicked')
+            // Implement your own functionality here
+            this.driver.destroy();
+          },
+      })
+      this.driver.drive()
+    }
   },
   methods: {
+    goSecondStep() {
+      this.driver.moveNext()
+    },
+    goThirdStep() {
+      this.driver.moveNext()
+    },
+    goFourthStep() {
+      this.driver.moveNext()
+    },
+    finishStep() {
+      this.driver.moveNext()
+      this.$router.push('/home')
+    },
     // 开始拖拽事件
     onStart() {
       this.drag = true

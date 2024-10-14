@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="4">
         <div style="height: 95vh;background-color: #d3cfdd79;padding: 11px;">
-          <div class="createBtn" @click="createForm()">Create Form</div>
+          <div id="createForm" class="createBtn" @click="createForm()">Create Form</div>
           <el-divider></el-divider>
           <div class="MenuNodeTitle"> My Forms</div>
           <div class="MenuBtn"> <i class="fa fa-folder"/> All Forms</div>
@@ -56,7 +56,7 @@
             </div>
           </div>
         </div>
-        <div class="form-list">
+        <div id="formList" class="form-list">
           <div class="forms" v-for="(item,index) in formList" :key="index" >
             <div style="display: flex;align-items: center;">
                 <i class="fa fa-wpforms" style="font-size: 30px;" /> 
@@ -70,22 +70,22 @@
       </el-col>
     </el-row>
 
-    <el-dialog :visible.sync="dialogVisible" width="70%" :close-on-click-modal="false" >
-      <span style="color: #2c3e50;font-weight: 700;font-size: 2rem;">CREATE FORM</span>
-      <div style="margin-left:15%;text-align: start;">
-        <div  style="margin: 1rem;display: flex;">
-          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单名称：</span>
-          <input v-model="dataForm.formName" class="create-form-input">
-        </div>
-        <div style="margin: 1rem;display: flex;">
-          <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单类型：</span>
-          <div class="switch-field">
-            <input type="radio" id="radio-one" name="switch-one" v-model="selectedOption" :value="0" checked/>
-            <label for="radio-one">CLASSIC FORM</label>
-            <input type="radio" id="radio-two" name="switch-one" v-model="selectedOption" :value="1" />
-            <label for="radio-two">CARD FORM</label>
+    <el-dialog  id="createFormDialog" :visible.sync="dialogVisible" width="70%" :close-on-click-modal="false" >
+        <span style="color: #2c3e50;font-weight: 700;font-size: 2rem;">CREATE FORM</span>
+        <div style="margin-left:15%;text-align: start;">
+          <div  style="margin: 1rem;display: flex;">
+            <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单名称：</span>
+            <input v-model="dataForm.formName" class="create-form-input">
           </div>
-        </div>
+          <div style="margin: 1rem;display: flex;">
+            <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">表单类型：</span>
+            <div class="switch-field">
+              <input type="radio" id="radio-one" name="switch-one" v-model="selectedOption" :value="0" checked/>
+              <label for="radio-one">CLASSIC FORM</label>
+              <input type="radio" id="radio-two" name="switch-one" v-model="selectedOption" :value="1" />
+              <label for="radio-two">CARD FORM</label>
+            </div>
+          </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="createBtn" style="padding:0px 20px ;" type="primary" @click="confirmCreate()">CONFIRM CREATE</button>
@@ -97,6 +97,8 @@
 
 <script>
 import FormApi from '@/api/formApi'
+import { driver } from "driver.js"
+import "driver.js/dist/driver.css"
 
 export default {
   data() {
@@ -109,11 +111,64 @@ export default {
       selectedOption: 0,
       formName: '',
       sortType: 'SortByCreateTimeDesc',
-      formList: ''
+      formList: '',
+      // 引导
+      steps: [
+        {
+          element: '#createForm',
+          popover: {
+            title: "第一步",
+            description: '点击创建按钮',
+            position: 'right',
+            onNextClick: this.goSecondStep
+          }
+        },
+        {
+          element: '#createFormDialog',
+          popover: {
+            title: "第二步",
+            description: '输入表单名称，选择表单类型，进行创建',
+            position: 'center',
+            onNextClick: this.goThirdStep
+          }
+        },
+        {
+          element: '#formList',
+          popover: {
+            title: "第三步",
+            description: '创建后得到一条表单记录，点击edit按钮可编辑表单',
+            position: 'right',
+            onNextClick: this.finish
+          }
+        }
+      ]
     }
   },
   created() {
     this.getFormList()
+  },
+  mounted() {
+    this.driver = new driver({
+        // allowClose: false,
+        // popoverClass: 'driverjs-theme',
+        showProgress:true,
+        progressText:'{{current}}/{{total}}',
+        doneBtnText: '完成', // 结束按钮的文字
+        animate: true, // 动画
+        stageBackground: '#ffffff', // 突出显示元素的背景颜色
+        nextBtnText: '下一步', // 下一步按钮的文字
+        prevBtnText: '上一步', // 上一步按钮的文字
+        closeBtnText: '关闭', // 关闭按钮的文字
+        // overlayColor:'#f40',
+        steps: this.steps,
+        stagePadding:10,
+        onCloseClick:() => {
+          console.log('Close Button Clicked')
+          // Implement your own functionality here
+          this.driver.destroy();
+        },
+    })
+    this.driver.drive()
   },
   computed: {
     data() {
@@ -122,6 +177,21 @@ export default {
     }
   },
   methods: {
+    finish() {
+      // 结束引导
+      console.log('finish')
+      this.driver.moveNext()
+      this.$router.push('/formDetails?guide=guide')
+    },
+    goSecondStep() {
+      // 打开dialog
+      this.dialogVisible = true
+      this.driver.moveNext()
+    },
+    goThirdStep() {
+      this.dialogVisible = false
+      this.driver.moveNext()
+    },
     changeSort(sortType) {
       this.sortType = sortType
       this.getFormList()
