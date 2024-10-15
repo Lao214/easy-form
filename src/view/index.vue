@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getToken } from '@/utils/auth'
 import NavTop from '@/components/layout/NavTop.vue'
 
 export default {
@@ -21,22 +20,7 @@ export default {
       
     }
   },
-  mounted() {
-    var token = getToken()
-    console.log(token,'/view/index')
-    if(!token) {
-      this.$message({
-        message: '登录已过期，请重新登录',
-        type: 'warning'
-      })
-      this.$router.push({ path: '/' })
-    } else {
-      this.$store.dispatch('user/getInfo').then(() => {
-        this.username = this.$store.state.user.name
-      })
-    }
-  
-  }
+  created() {}
 }
 </script>
 

@@ -91,16 +91,26 @@
         <button class="createBtn" style="padding:0px 20px ;" type="primary" @click="confirmCreate()">CONFIRM CREATE</button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
 import FormApi from '@/api/formApi'
+import userApi from '@/api/user/userApi'
 import { driver } from "driver.js"
 import "driver.js/dist/driver.css"
+import { mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    data() {
+      // 根据selectedOption的值返回相应的data值
+      return this.selectedOption === 0 ? 0 : 1;
+    },
+    ...mapGetters([
+      'isFinishedLead'
+    ])
+  },
   data() {
     return {
       dialogVisible: false,
@@ -148,40 +158,68 @@ export default {
     this.getFormList()
   },
   mounted() {
-    this.driver = new driver({
-        // allowClose: false,
-        // popoverClass: 'driverjs-theme',
-        showProgress:true,
-        progressText:'{{current}}/{{total}}',
-        doneBtnText: '完成', // 结束按钮的文字
-        animate: true, // 动画
-        stageBackground: '#ffffff', // 突出显示元素的背景颜色
-        nextBtnText: '下一步', // 下一步按钮的文字
-        prevBtnText: '上一步', // 上一步按钮的文字
-        closeBtnText: '关闭', // 关闭按钮的文字
-        // overlayColor:'#f40',
-        steps: this.steps,
-        stagePadding:10,
-        onCloseClick:() => {
-          console.log('Close Button Clicked')
-          // Implement your own functionality here
-          this.driver.destroy();
-        },
+    this.$store.dispatch('user/getInfo').then(() => {
+      var isFinishedLead = this.isFinishedLead
+      if(isFinishedLead) {
+        isFinishedLead = JSON.parse(isFinishedLead)
+      }
+      if(!isFinishedLead.includes(1) && !isFinishedLead.includes('1')) {
+        this.driver = new driver({
+            showProgress:true,
+            progressText:'{{current}}/{{total}}',
+            animate: true, // 动画
+            stageBackground: '#ffffff', // 突出显示元素的背景颜色
+            nextBtnText: '下一步', // 下一步按钮的文字
+            prevBtnText: '上一步', // 上一步按钮的文字
+            doneBtnText: '完成', // 结束按钮的文字
+            popoverClass: 'driverjs-theme',
+            onPopoverRender: (popover, { config, state }) => {
+              const firstButton = document.createElement('button')
+              firstButton.innerText = '跳过'
+              popover.footerButtons.appendChild(firstButton)
+              firstButton.addEventListener('click', () => {
+                var nowFinished = this.$store.state.user.isFinishedLead
+                if(!nowFinished) {
+                  nowFinished = []
+                }
+                nowFinished.push(1)
+                userApi.updateFinishedStep(JSON.stringify(nowFinished)).then(res => {
+                  if(res.code === 200) {
+                    this.$router.push('/formDetails?guide=guide')
+                  }
+                })
+                this.driver.destroy()
+              })
+            },
+            highlightTab: true, // 是否高亮当前 tab
+            allowClose: false, // 用户是否可以关闭引导层
+            overlayClickNext: false, // 是否点击覆盖阴影时下一步
+            keyboardControl: false, // 是否允许键盘控制
+            steps: this.steps,
+            stagePadding:10,
+            onCloseClick:() => {
+              this.driver.destroy();
+            },
+        })
+        this.driver.drive()
+      }
     })
-    this.driver.drive()
-  },
-  computed: {
-    data() {
-      // 根据selectedOption的值返回相应的data值
-      return this.selectedOption === 0 ? 0 : 1;
-    }
   },
   methods: {
     finish() {
       // 结束引导
       console.log('finish')
       this.driver.moveNext()
-      this.$router.push('/formDetails?guide=guide')
+      var nowFinished = this.$store.state.user.isFinishedLead
+      if(!nowFinished) {
+        nowFinished = []
+      }
+      nowFinished.push(1)
+      userApi.updateFinishedStep(JSON.stringify(nowFinished)).then(res => {
+        if(res.code === 200) {
+          this.$router.push('/formDetails?guide=guide')
+        }
+      })
     },
     goSecondStep() {
       // 打开dialog
@@ -229,6 +267,76 @@ export default {
   }
 }
 </script>
+
+<style>
+/** 引导的css **/
+.driver-popover.driverjs-theme {
+    /* background-color: #fde047; */
+    background: #0b3C59;
+    color: #ffffff;
+    min-width: 20rem;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-title {
+    font-size: 20px;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-title,
+.driver-popover.driverjs-theme .driver-popover-description,
+.driver-popover.driverjs-theme .driver-popover-progress-text {
+    color: #ffffff;
+}
+  
+.driver-popover.driverjs-theme button {
+    flex: 1;
+    text-align: center;
+    background-color: #000;
+    color: #ffffff;
+    border: 2px solid #000;
+    text-shadow: none;
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 6px;
+}
+  
+.driver-popover.driverjs-theme button:hover {
+    background-color: #000;
+    color: #ffffff;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-navigation-btns {
+    justify-content: space-between;
+    gap: 3px;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-close-btn {
+    color: #9b9b9b;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-close-btn:hover {
+    color: #000;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-arrow-side-left.driver-popover-arrow {
+    border-left-color: #fff;
+    /* border-left-color: #fde047; */
+}
+  
+.driver-popover.driverjs-theme .driver-popover-arrow-side-right.driver-popover-arrow {
+    border-right-color: #fff;
+    /* border-right-color: #fde047; */
+}
+  
+.driver-popover.driverjs-theme .driver-popover-arrow-side-top.driver-popover-arrow {
+    /* border-top-color: #fde047; */
+    border-top-color: #fff;
+}
+  
+.driver-popover.driverjs-theme .driver-popover-arrow-side-bottom.driver-popover-arrow {
+    /* border-bottom-color: #fde047; */
+    border-bottom-color: #fff;
+}
+</style>
 
 <style scoped>
 .create-form-input {

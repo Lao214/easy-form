@@ -7,7 +7,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     buttons: [], // 新增
-    menus: '' // 新增
+    menus: '', // 新增
+    isFinishedLead: ''
   }
 }
 
@@ -33,6 +34,10 @@ const mutations = {
   // 新增
   SET_MENUS: (state, menus) => {
     state.menus = menus
+  },
+  // 新增
+  SET_FINISHED: (state, isFinishedLead) => {
+    state.isFinishedLead = isFinishedLead
   }
 }
 
@@ -73,6 +78,7 @@ const actions = {
             commit('SET_NAME', one.nickname)
             commit('SET_AVATAR', one.avatar)
             commit('SET_MENUS', one.authorityList)
+            commit('SET_FINISHED', one.isFinishedLead)
 
             // 修正：传递 one.menus 到 loadAsyncRoutes
             // dispatch('loadAsyncRoutes', one.menus).then(() => resolve(one)) // 确保异步操作完成

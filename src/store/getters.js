@@ -5,6 +5,7 @@ const getters = {
   
   // 新增
   buttons: state => state.user.buttons,
-  menus: state => state.user.menus
+  menus: state => state.user.menus,
+  isFinishedLead: state => state.user.isFinishedLead
 }
 export default getters
