@@ -14,7 +14,7 @@ export function login(loginForm) {
 
 export function logout() {
   return request({
-    url: '/security/logout',
+    url: '/easy/user/logout',
     method: 'get',
   })
 }
