@@ -437,7 +437,7 @@ export default {
 }
 
 .MenuBtn {
-    height: 40px;
+    min-height: 40px;
     line-height: 40px;
     font-size: 20px;
     font-weight: 500;

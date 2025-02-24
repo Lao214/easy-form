@@ -31,15 +31,12 @@
             <el-col :span="7">
                 <div class="right-body">
                     <div id="save" class="opInputs">
-                        <el-button @click="saveForm()" class="save-btn" :loading="isLoading"
-                            type="success">保存表单</el-button>
+                        <el-button @click="saveForm()" class="save-btn" :loading="isLoading" type="success">保存表单</el-button>
                     </div>
                     <div id="form-property">
                         <div class="opName">
                             组件名：{{ optionsName }} <br>
-                            <span
-                                v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' && optionsName !== 'ePicture' && optionsName !== 'eDivider'">
-                                是否必填：
+                            <span v-show="optionsName && optionsName !== 'Heading' && optionsName !== 'eDescription' && optionsName !== 'ePicture' && optionsName !== 'eDivider'"> 是否必填：
                                 <label class="switch">
                                     <input v-model="optionsRequire" @change="changeRequire(optionsRequire)"
                                         type="checkbox">

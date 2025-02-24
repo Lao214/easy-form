@@ -1,3 +1,4 @@
+import wsFriendsApi from '@/api/wsFriendsApi'
 import { login, getInfo, logout } from '../../api/userApi'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -9,7 +10,8 @@ const getDefaultState = () => {
     buttons: [], // 新增
     menus: '', // 新增
     isFinishedLead: '',
-    userId: ''
+    userId: '',
+    friendApplyCount: 0
   }
 }
 
@@ -42,6 +44,9 @@ const mutations = {
   },
   SET_USERID: (state, userId) => {
     state.userId = userId
+  },
+  SET_FRIENDAPPLYCOUNT: (state, friendApplyCount) => {
+    state.friendApplyCount = friendApplyCount
   }
 }
 
@@ -124,7 +129,21 @@ const actions = {
       commit('RESET_STATE')
       resolve()
     })
-  }
+  },
+
+  getMyFriendApplyCount({ commit }) {
+    return new Promise(resolve => {
+      if(!state.token) {
+        return
+      }
+      wsFriendsApi.getMyFriendApplyCount().then(response => {
+        console.log(response.data.count)
+        commit('SET_FRIENDAPPLYCOUNT', response.data.count)
+        resolve(response.data)
+      })
+    })
+  },
+
 }
 
 export default {

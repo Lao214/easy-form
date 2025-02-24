@@ -8,6 +8,10 @@
                 <div class="right">
                     {{ name }}
                 </div>
+                <div class="ring" @click="checkMyFriendsApply()">
+                    <span style="width: 1.2rem;height: 1.2rem;background: red;color: white;position: absolute;right: -.5rem;top: -.3rem;border-radius: 50%;">{{ friendApplyCount }}</span>
+                    <svg t="1739430697312" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2314" width="36" height="36"><path d="M581.9 774.3H428.7c-12.5 0-21.5 12.8-16.6 24.3 15.3 36.2 50.9 61.1 93.2 61.1 42.3 0 78-24.9 93.2-61.1 4.9-11.6-4-24.3-16.6-24.3zM788.4 679.1l-31.7-39c-14.6-24.4-26.8-51.2-31.7-80.5l-2.4-129.3c-2.4-97.6-68.3-185.5-161.1-209.9v-7.3c0-26.8-22-48.8-48.8-48.8-26.8 0-48.8 22-48.8 48.8v4.9c-95.2 24.4-163.5 112.3-161.1 212.3v122c-4.9 31.7-17.1 61-34.2 87.9l-29.3 34.2c-19.5 22-4.9 58.6 26.8 58.6H764c26.9 2.2 44-32 24.4-53.9zM441.4 404c-13.4 0-24.3-10.9-24.3-24.3s10.9-24.3 24.3-24.3 24.3 10.9 24.3 24.3-10.9 24.3-24.3 24.3z m72.3 144.6c-27.4 0-50.1-20.6-53.3-47.2-0.4-3.5 2.6-6.6 6.2-6.6h94.3c3.6 0 6.6 3 6.2 6.6-3.3 26.6-26 47.2-53.4 47.2zM585.9 404c-13.4 0-24.3-10.9-24.3-24.3s10.9-24.3 24.3-24.3 24.3 10.9 24.3 24.3-10.9 24.3-24.3 24.3z" fill="#1A1A1A" p-id="2315"></path></svg>
+                </div>
             </div>
             <div v-if="friendList.length" class="bottom">
                 <div v-for="(friend, index) in friendList" 
@@ -25,7 +29,7 @@
             </div>
             <div v-else class="info">
                 <div class="msg" @click="addFriend()">
-                    还没有好友~~~ +一个吧
+                    还没有好友~~ +一个吧
                 </div>
             </div>
         </div>
@@ -87,6 +91,22 @@
                 </div>
 
             </el-dialog>
+
+            <el-dialog title="新朋友" :visible.sync="dialogVisibleApplyList" :close-on-click-modal="false" width="47%">
+                <div style="overflow-y: auto;overflow: hidden;min-height: 7rem;max-height: 30vh;">
+                    <div v-for="(item,index) in applyList" :key="index" style="text-align: start;display: flex;align-items: center;padding: .5rem;border-bottom: .1rem solid #e6e6e6;">
+                        <img :src="item.avatar" style="width: 2.7rem;height: 2.7rem;border-radius: .2rem;" alt="">
+                        <div style="margin-left: .5rem;width: calc(100% - 3.2rem - 10rem);">
+                            <span style="font-size: 1.1rem;color: black;">{{ item.nickname }} <br></span>
+                            <span>{{ item.applyText }}</span>
+                        </div>
+                        <button v-if="item.status === 'pending'" class="apply-friends" @click="rejectApply(item, index)">拒绝</button>
+                        <button v-if="item.status === 'pending'" class="apply-friends" @click="agreeApply(item, index)">同意</button>
+                        <span v-if="item.status === 'blocked'" style="margin:0 .5rem;padding: .4rem 1rem;background: #c8c8c8;color: #0B3C59;display: inline-block;border-radius: 5px;border: none;" >已拒绝</span>
+                        <span v-if="item.status === 'accepted'" style="margin:0 .5rem;padding: .4rem 1rem;background: #c8c8c8;color: #0B3C59;display: inline-block;border-radius: 5px;border: none;" >已同意</span>
+                    </div>
+                </div>
+            </el-dialog>
         </div>
     </div>    
 </template>
@@ -102,7 +122,9 @@ export default {
             active: -1,
             friendList: [],
             dialogVisible: false,
+            dialogVisibleApplyList: false,
             searchList: [],
+            applyList: [],
             applyStatus: false,
             applyItem: {},
             applyText: ''
@@ -110,6 +132,7 @@ export default {
     },
     created() {
         this.$store.dispatch('user/getInfo')
+        this.$store.dispatch('user/getMyFriendApplyCount')
     },
     mounted() {
         this.getFriends()
@@ -119,7 +142,8 @@ export default {
             'isFinishedLead',
             'userId',
             'name',
-            'avatar'
+            'avatar',
+            'friendApplyCount'
         ])
     },
     methods: {
@@ -176,7 +200,31 @@ export default {
                     this.cancelApply()
                 }
             })
-        }
+        },
+        checkMyFriendsApply() {
+            this.dialogVisibleApplyList = true
+            wsFriendsApi.checkMyFriendsApply().then(res => {
+                if(res.code === 200) {
+                    this.applyList = res.data.list
+                }
+            })
+        },
+        rejectApply(item, index) {
+            wsFriendsApi.rejectFriends(item).then(res => {
+                if(res.code === 200) {
+                    // this.dialogVisibleApplyList = false
+                    this.applyList[index].status = 'blocked'
+                }
+            })
+        },
+        agreeApply(item, index) {
+            wsFriendsApi.agreeFriends(item).then(res => {
+                if(res.code === 200) {
+                    // this.dialogVisibleApplyList = false
+                      this.applyList[index].status = 'accepted'
+                }
+            })
+        },
     }
 }
 </script>
@@ -214,6 +262,12 @@ export default {
             font-size: 1.2rem;
             font-weight: bold;
             color: #333;
+        }
+
+        .ring {
+            margin-left: 2rem;
+            position: relative;
+            cursor: pointer;
         }
     }
 

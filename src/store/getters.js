@@ -8,6 +8,7 @@ const getters = {
   buttons: state => state.user.buttons,
   menus: state => state.user.menus,
   isFinishedLead: state => state.user.isFinishedLead,
-  userId: state => state.user.userId
+  userId: state => state.user.userId,
+  friendApplyCount: state => state.user.friendApplyCount
 }
 export default getters
