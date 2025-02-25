@@ -14,16 +14,12 @@
                 </div>
             </div>
             <div v-if="friendList.length" class="bottom">
-                <div v-for="(friend, index) in friendList" 
-                    :key="index" 
-                    class="friend" 
-                    :class="{ activeColor: isActive(index) }" 
-                    @click="setContact(index)">
+                <div v-for="(friend, index) in friendList" :key="index"  class="friend"  :class="{ activeColor: isActive(index) }"  @click="setContact(index)">
                     <div class="left">
-                        <!-- <img class="avatar" :src="`${api}/static/img/${friend.id}.jpg`" alt=""/> -->
+                        <img class="avatar" :src="friend.avatar" alt=""/>
                     </div>
                     <div class="right">
-                        {{ friend.username }}
+                        {{ friend.nickname }}
                     </div>
                 </div>
             </div>
@@ -160,6 +156,7 @@ export default {
             try {
                 const res = await wsFriendsApi.getFriends()
                 if (res.code === 200) {
+                    console.log('获取好友列表成功:', res)
                     this.friendList = res.data.list || []
                 } else {
                     console.error('获取好友列表失败:', res.message)
@@ -214,6 +211,11 @@ export default {
                 if(res.code === 200) {
                     // this.dialogVisibleApplyList = false
                     this.applyList[index].status = 'blocked'
+                    this.$store.dispatch('user/reduceMyFriendApplyCount', 1)
+                    this.$message({
+                        type: 'info',
+                        message: '已拒绝'
+                    })
                 }
             })
         },
@@ -221,7 +223,12 @@ export default {
             wsFriendsApi.agreeFriends(item).then(res => {
                 if(res.code === 200) {
                     // this.dialogVisibleApplyList = false
-                      this.applyList[index].status = 'accepted'
+                    this.applyList[index].status = 'accepted'
+                    this.$store.dispatch('user/reduceMyFriendApplyCount', 1)
+                    this.$message({
+                        type: 'success',
+                        message: '操作成功'
+                    })
                 }
             })
         },
@@ -232,10 +239,12 @@ export default {
 <style lang="scss" scoped>
 .contact {
     width: 100%;
-    max-width: 300px; // 限制最大宽度
+    max-width: 360px; // 限制最大宽度
+    min-width: 300px;
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
+    // margin-top: 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     .top {
@@ -272,6 +281,9 @@ export default {
     }
 
     .bottom {
+        min-height: 16rem;
+        max-height: 80vh;
+
         .friend {
             display: flex;
             align-items: center;

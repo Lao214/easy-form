@@ -23,9 +23,15 @@
                 </div>
             </el-col>
             <el-col :span="20">
-                <div v-show="showType === 'friend'">
-                    <Contact @set-contact="set"/>
-                    <Dialog :contact="contact" :msgList="msgList"/>
+                <div v-show="showType === 'friend'" style="width: 100%;">
+                    <el-row>
+                        <el-col :span="6">
+                            <Contact @set-contact="set" />
+                        </el-col>
+                        <el-col :span="18">
+                            <Dialog :contact="contact" :msgList="msgList" />
+                        </el-col>
+                    </el-row>
                 </div>
                 <div v-show="showType === 'form'">
                     <div class="list-head">

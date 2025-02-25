@@ -1,8 +1,9 @@
 <template>
     <div v-if="contact" class="dialog">
         <div class="top">
-            <div class="name">
-                {{ contact.username }}
+            <div class="name" style="display: flex;align-items: center;padding-left: 1rem;">
+                <img :src="contact.avatar" style="width: 2.6rem;height: 2.6rem;border-radius: .3rem;margin-right: .5rem;" alt=""/>
+                {{ contact.nickname }}
             </div>
         </div>
         <div class="middle" ref="chatBox" @mouseover="over" @mouseout="out">
@@ -21,8 +22,9 @@
         </div>
         <div class="line"></div>
         <div class="bottom">
-            <label>
+            <label style="width: calc(100% - 5rem);">
                 <textarea
+                    style="width: calc(100% - 5rem);"
                     class="messageText"
                     maxlength="256"
                     v-model="msg"
@@ -152,10 +154,11 @@ export default {
 
 <style lang="scss" scoped>
 .dialog {
-    width: 100%;
-    max-width: 400px;
+    width: 87%;
+    max-width: 960px;
     background: #fff;
     border-radius: 10px;
+    margin:2rem auto;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -164,6 +167,7 @@ export default {
         padding: 1rem;
         background: #f5f5f5;
         font-size: 1.2rem;
+        height: 2rem;
         font-weight: bold;
         text-align: center;
         border-bottom: 1px solid #e0e0e0;
@@ -173,7 +177,8 @@ export default {
         flex-grow: 1;
         overflow-y: auto;
         padding: 1rem;
-        max-height: 300px;
+        height: 70vh;
+        
 
         .msg {
             display: flex;
@@ -240,18 +245,22 @@ export default {
 
         .messageText {
             flex-grow: 1;
-            min-height: 40px;
+            height: 3.6rem;
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
             outline: none;
             resize: none;
+            box-sizing: border-box;
         }
 
         .send {
-            margin-left: 10px;
-            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            width: 5rem;
+            height: 3rem;
+            box-sizing: border-box;
+            // padding: 0.5rem 1rem;
             border: none;
             border-radius: 5px;
             background: #007AFF;

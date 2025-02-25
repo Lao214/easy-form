@@ -47,6 +47,12 @@ const mutations = {
   },
   SET_FRIENDAPPLYCOUNT: (state, friendApplyCount) => {
     state.friendApplyCount = friendApplyCount
+  },
+  REDUCE_MYAPPLYCOUNT: (state, count) => {
+    state.friendApplyCount -= count
+    if(state.friendApplyCount < 0) {
+      state.friendApplyCount = 0
+    }
   }
 }
 
@@ -141,6 +147,15 @@ const actions = {
         commit('SET_FRIENDAPPLYCOUNT', response.data.count)
         resolve(response.data)
       })
+    })
+  },
+
+  reduceMyFriendApplyCount({ commit }, count) {
+    return new Promise(resolve => {
+      if(!state.token) {
+        return
+      }
+      commit('REDUCE_MYAPPLYCOUNT', count)
     })
   },
 
