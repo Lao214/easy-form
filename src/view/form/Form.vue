@@ -29,7 +29,7 @@
                             <Contact @set-contact="set" />
                         </el-col>
                         <el-col :span="18">
-                            <Dialog :contact="contact" :msgList="msgList" />
+                            <Dialog :contact="contact"  :msgListProp="msgList" />
                         </el-col>
                     </el-row>
                 </div>
@@ -129,6 +129,7 @@
                     CREATE</button>
             </span>
         </el-dialog>
+
     </div>
 </template>
 
@@ -317,7 +318,22 @@ export default {
         // ws 相关方法
         set(user) {
             this.contact = user
-            wsMsgApi.pullMsg(this.contact.id, this.userId).then(res => {
+            var friendId = user.friendId
+            var friendUserId = user.userId
+            var toId = null
+            if(!this.userId) {
+                return
+            }
+            if(friendId && friendId === parseInt(this.userId)) {
+                toId = friendUserId
+            } else if (friendId && friendId !== parseInt(this.userId)) {
+                toId = friendId
+            } else {    
+                return
+            }
+            console.log('me:' , this.userId)
+            console.log('to:' , toId)
+            wsMsgApi.pullMsg(toId, this.userId).then(res => {
                 if (res.code === 200) {
                     this.msgList = res.data.data
                 }

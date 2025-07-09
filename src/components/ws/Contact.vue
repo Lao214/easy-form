@@ -147,6 +147,7 @@ export default {
             this.active = index
             const friendData = { ...this.friendList[index] }
             delete friendData.password
+            // console.log('setContact:', friendData)
             this.$emit('set-contact', friendData)
         },
         isActive(index) {

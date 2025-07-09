@@ -15,7 +15,7 @@ const service = axios.create({
 		'Content-Type': "application/json; charset=utf-8"//我们返回的是一个json数据
 	},
 	// baseURL:'https://grit-api.foxconnedu.com/'//api的url
-	baseURL: 'http://localhost:7219' //api的url
+  baseURL: process.env.VUE_APP_API_BASE_URL, // api 的基础url前缀
 })
 
 // 请求拦截器
@@ -23,8 +23,8 @@ service.interceptors.request.use(
   config => {
     // 在发送请求之前做些什么，比如添加 Token
     if (store.getters.token) {
-        config.headers['easy-token'] = getToken()
-      }
+      config.headers['easy-token'] = getToken()
+    }
     return config;
   },
   error => {
