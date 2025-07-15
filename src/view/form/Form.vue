@@ -7,7 +7,7 @@
                     <el-divider></el-divider>
                     <div class="MenuNodeTitle"> My Forms</div>
                     <div class="MenuBtn" @click="showType = 'form'"> <i class="fa fa-folder" /> All Forms</div>
-                    <div class="MenuBtn"> <i class="fa fa-plus" /> Create a new Foloder</div>
+                    <div class="MenuBtn" @click="createFolder()"> <i class="fa fa-plus" /> Create a new Folder</div>
                     <!-- <el-divider></el-divider>
                     <div class="MenuNodeTitle"> My Teams</div>
                     <div class="MenuBtn"> <i class="fa fa-users" /> My Team</div>
@@ -125,8 +125,43 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <button class="createBtn" style="padding:0px 20px ;" type="primary" @click="confirmCreate()">CONFIRM
-                    CREATE</button>
+                <button class="createBtn" style="padding:0px 20px ;" type="primary" @click="confirmCreate()">CONFIRM CREATE</button>
+            </span>
+        </el-dialog>
+
+        <el-dialog id="createFormDialogFolder" :visible.sync="dialogVisibleFolder" width="70%" :close-on-click-modal="false">
+            <span style="color: #2c3e50;font-weight: 700;font-size: 2rem;">CREATE FOLDER</span>
+            <div style="margin-left:15%;text-align: start;">
+                <div style="margin: 1rem;display: flex;">
+                    <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">名 称：</span>
+                    <input v-model="dataFormFolder.folderName" class="create-form-input">
+                </div>
+
+                <div  style="margin: 1rem;display: flex;">
+                    <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">添 加：</span>
+                    <div class="multi-select-container">
+                        <!-- 选项区 -->
+                        <div class="checkbox-list">
+                            <label  v-for="item in formList"  :key="item.id" class="checkbox-item">
+                                <input type="checkbox" :value="item.id" v-model="selectedValues"/>
+                                <span class="custom-checkbox"></span>
+                                <span class="label-text">{{ item.formName }}</span>
+                            </label>
+                        </div>
+
+                        <!-- 显示选中项 -->
+                        <!-- <div class="selected-list" v-if="selectedValues.length > 0">
+                            <div class="selected-title">已选中：</div>
+                            <div  v-for="val in selectedValues"  :key="val" class="selected-item">
+                                {{ getLabel(val) }}
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <button class="createBtn" style="padding:0px 20px ;" type="primary" @click="confirmCreateFolder()">CONFIRM CREATE</button>
             </span>
         </el-dialog>
 
@@ -137,6 +172,7 @@
 import FormApi from '@/api/formApi'
 import wsMsgApi from '@/api/wsMsgApi'
 import userApi from '@/api/user/userApi'
+import folderApi from '@/api/folderApi'
 import { driver } from "driver.js"
 import "driver.js/dist/driver.css"
 import { mapGetters } from 'vuex'
@@ -160,6 +196,13 @@ export default {
     },
     data() {
         return {
+            // 创建文件夹对话框 相关属性 start
+            dialogVisibleFolder: false,
+            dataFormFolder: {
+                folderName: ''
+            },
+            selectedValues: [],
+            // 创建文件夹对话框 相关属性 end
             dialogVisible: false,
             dataForm: {
                 formName: '',
@@ -168,7 +211,7 @@ export default {
             selectedOption: 0,
             formName: '',
             sortType: 'SortByCreateTimeDesc',
-            formList: '',
+            formList: [],
             showType: 'form',
             // 引导
             steps: [
@@ -257,6 +300,10 @@ export default {
         })
     },
     methods: {
+        getLabel(val) {
+            const item = this.options.find(o => o.value === val);
+            return item ? item.label : val;
+        },
         finish() {
             // 结束引导
             console.log('finish')
@@ -291,9 +338,24 @@ export default {
         createForm() {
             this.dialogVisible = true
         },
+        createFolder() {
+            this.dialogVisibleFolder = true
+        },
         confirmCreate() {
             this.dataForm.formType = this.selectedOption
             FormApi.saveForm(this.dataForm).then(res => {
+                if (res.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: 'Create Success'
+                    })
+                    this.dialogVisible = false
+                    this.getFormList()
+                }
+            })
+        },
+        confirmCreateFolder() {
+            folderApi.saveFolder(this.dataFormFolder).then(res => {
                 if (res.code === 200) {
                     this.$message({
                         type: 'success',
@@ -629,5 +691,89 @@ input:hover {
 
 .switch-field label:last-of-type {
     border-radius: 0 4px 4px 0;
+}
+
+/** 文件夹多选器样式 **/
+.multi-select-container {
+    /* max-width: 300px; */
+    width: 57%;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-left: 26px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-checkbox {
+    position: absolute;
+    left: 0;
+    top: 1px;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.checkbox-item input:checked ~ .custom-checkbox {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+.checkbox-item input:checked ~ .custom-checkbox::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.label-text {
+    margin-left: 8px;
+}
+
+.selected-list {
+    margin-top: 16px;
+}
+
+.selected-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.selected-item {
+    background: #f3f9ff;
+    border-left: 4px solid #409EFF;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
 }
 </style>
