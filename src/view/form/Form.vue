@@ -6,7 +6,9 @@
                     <div id="createForm" class="createBtn" @click="createForm()">Create Form</div>
                     <el-divider></el-divider>
                     <div class="MenuNodeTitle"> My Forms</div>
-                    <div class="MenuBtn" @click="showType = 'form'"> <i class="fa fa-folder" /> All Forms</div>
+                    <!-- @click="showType = 'form'" -->
+                    <div class="MenuBtn" @click="getFormList"> <i class="fa fa-folder" /> All Forms</div>
+                    <div class="MenuBtn" v-for="(item, index) in folderList" :key="index" @click="getThisFolderForm(item)"> <i class="fa fa-folder" /> {{ item.name }}</div>
                     <div class="MenuBtn" @click="createFolder()"> <i class="fa fa-plus" /> Create a new Folder</div>
                     <!-- <el-divider></el-divider>
                     <div class="MenuNodeTitle"> My Teams</div>
@@ -40,16 +42,11 @@
                                 <label class="radio">
                                     <!-- SortByCreateTimeDesc -->
                                     <input type="radio" checked name="radio">
-                                    <span class="name" @click="changeSort('SortByCreateTimeDesc')"> <i
-                                            class="fa fa-long-arrow-down"
-                                            style="font-weight: 600;font-size: 18px;margin-right: 2px;" /> Sort By
-                                        CreateTime</span>
+                                    <span class="name" @click="changeSort('SortByCreateTimeDesc')"> <i class="fa fa-long-arrow-down" style="font-weight: 600;font-size: 18px;margin-right: 2px;" /> Sort By CreateTime</span>
                                 </label>
                                 <label class="radio">
                                     <input type="radio" name="radio">
-                                    <span class="name" @click="changeSort('SortByCreateTimeAsc')"> <i
-                                            class="fa fa-long-arrow-up"
-                                            style="font-weight: 600;font-size: 18px;margin-right: 2px;" /> CreateTime</span>
+                                    <span class="name" @click="changeSort('SortByCreateTimeAsc')"> <i class="fa fa-long-arrow-up" style="font-weight: 600;font-size: 18px;margin-right: 2px;" /> CreateTime</span>
                                 </label>
                                 <label class="radio">
                                     <input type="radio" name="radio">
@@ -94,8 +91,7 @@
                         <div class="forms" v-for="(item, index) in formList" :key="index">
                             <div style="display: flex;align-items: center;">
                                 <i class="fa fa-wpforms" style="font-size: 30px;" />
-                                <span style="margin-left: 7px;line-height: 25px;">{{ item.formName }} <br> <a
-                                        style="color: #a1a1a1;font-size: 14px;">创建时间：{{ item.createTime }}</a></span>
+                                <span style="margin-left: 7px;line-height: 25px;">{{ item.formName }} <br> <a style="color: #a1a1a1;font-size: 14px;">创建时间：{{ item.createTime }}</a></span>
                             </div>
                             <div style="margin-right: 20px;">
                                 <span class="form-edit" @click="goToEdit(item.formKey)">Edit</span>
@@ -134,7 +130,7 @@
             <div style="margin-left:15%;text-align: start;">
                 <div style="margin: 1rem;display: flex;">
                     <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">名 称：</span>
-                    <input v-model="dataFormFolder.folderName" class="create-form-input">
+                    <input v-model="dataFormFolder.name" class="create-form-input">
                 </div>
 
                 <div  style="margin: 1rem;display: flex;">
@@ -158,6 +154,10 @@
                         </div> -->
                     </div>
                 </div>
+
+                <!-- <div  style="margin: 1rem;display: flex;">
+                    <span style="font-size: 20px;color: #2c3e50;font-weight: 500;width: 7rem;">公 开：</span>
+                </div> -->
 
             </div>
             <span slot="footer" class="dialog-footer">
@@ -191,7 +191,8 @@ export default {
         },
         ...mapGetters([
             'isFinishedLead',
-            'userId'
+            'userId',
+            "username"
         ])
     },
     data() {
@@ -199,7 +200,7 @@ export default {
             // 创建文件夹对话框 相关属性 start
             dialogVisibleFolder: false,
             dataFormFolder: {
-                folderName: ''
+                name: ''
             },
             selectedValues: [],
             // 创建文件夹对话框 相关属性 end
@@ -212,6 +213,7 @@ export default {
             formName: '',
             sortType: 'SortByCreateTimeDesc',
             formList: [],
+            folderList: [],
             showType: 'form',
             // 引导
             steps: [
@@ -250,6 +252,7 @@ export default {
     },
     created() {
         this.getFormList()
+        this.getFolderList()
     },
     mounted() {
         this.$store.dispatch('user/getInfo').then(() => {
@@ -300,6 +303,19 @@ export default {
         })
     },
     methods: {
+        getThisFolderForm(item) {
+            const dataForm = {
+                folderId: item.id,
+                sortType: this.sortType,
+                formName: this.formName
+            }
+            folderApi.getThisFolderForm(dataForm).then(res => {
+                if(res.code === 200) {
+                    this.formList = res.data.list
+                }
+                console.log(res)
+            })
+        },
         getLabel(val) {
             const item = this.options.find(o => o.value === val);
             return item ? item.label : val;
@@ -355,14 +371,24 @@ export default {
             })
         },
         confirmCreateFolder() {
+            this.dataFormFolder.formIds = this.selectedValues
+            this.dataFormFolder.formSum = this.selectedValues.length
             folderApi.saveFolder(this.dataFormFolder).then(res => {
                 if (res.code === 200) {
                     this.$message({
                         type: 'success',
                         message: 'Create Success'
                     })
-                    this.dialogVisible = false
+                    this.dialogVisibleFolder = false
                     this.getFormList()
+                }
+            })
+        },
+        getFolderList() {
+            folderApi.getFolderList().then(res => {
+                if(res.code === 200) {
+                    // console.log(res.data.list)
+                    this.folderList = res.data.list
                 }
             })
         },
