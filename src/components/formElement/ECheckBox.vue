@@ -3,20 +3,21 @@
     <label class="eva-label">
       <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
     </label>
-    <ul class="unstyled centered">
-      <li v-for="(item, index) in attributes.radioOptions" :key="index" style="margin:10px;">
+    <div class="checkbox-input-wrapper">
+      <label v-for="(item, index) in attributes.radioOptions" :key="index" :for="'checkbox-' + optionKey + '-' + index" class="label">
         <input 
-          class="styled-checkbox" 
-          :id="'styled-checkbox-' + optionKey + '-' + index" 
+          class="checkbox-input" 
+          :id="'checkbox-' + optionKey + '-' + index" 
           type="checkbox" 
           :checked="isSelected(item.label)" 
           @change="updateSelectedValue(item.label, item.valu)" 
           :value="item.label" 
           :disabled="isCheckboxDisabled(item.label)" 
         >
-        <label :for="'styled-checkbox-' + optionKey + '-' + index">{{ item.label }}</label>
-      </li>
-    </ul>
+        <div class="checkbox-design"></div>
+        <div class="label-text">{{ item.label }}</div>
+      </label>
+    </div>
     <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
@@ -110,67 +111,94 @@ export default {
 <style scoped>
 @import '../../assets/global.css';
 
-
-.styled-checkbox {
-  position: absolute;
-  opacity: 0;
-}
-.styled-checkbox + label {
-  position: relative;
+/* Match radio button style */
+.label {
+  display: flex;
+  align-items: center;
+  border-radius: .41rem;
+  padding: .4rem 1rem;
+  margin: .2rem 0;
   cursor: pointer;
-  padding: 0;
+  transition: .3s;
 }
-.styled-checkbox + label:before {
-  content: "";
-  margin-right: 10px;
-  display: inline-block;
-  vertical-align: text-top;
-  width: 20px;
-  height: 20px;
-  background: #e7e7e7;
+
+.label:hover,
+.label:focus-within,
+.label:active {
+  background: hsla(219, 55%, 80%, 0.293);
 }
-.styled-checkbox:hover + label:before {
-  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
-}
-.styled-checkbox:focus + label:before {
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
-}
-.styled-checkbox:checked + label:before {
-  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
-}
-.styled-checkbox:disabled + label {
-  color: #b8b8b8;
-  cursor: auto;
-}
-.styled-checkbox:disabled + label:before {
-  box-shadow: none;
-  background: #ddd;
-}
-.styled-checkbox:checked + label:after {
-  content: "";
+
+.checkbox-input {
   position: absolute;
-  left: 5px;
-  top: 9px;
-  background: white;
-  width: 2px;
-  height: 2px;
-  box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  z-index: -1;
+}
+
+/* Square checkbox design instead of circle */
+.checkbox-design {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.2rem; /* Slightly rounded corners for checkbox */
+  background: linear-gradient(to right bottom, hsl(154, 77%, 64%), hsl(225, 97%, 62%));
+  position: relative;
+}
+
+.checkbox-design::before {
+  content: '';
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  background: hsl(0, 0%, 90%);
+  transform: scale(1.1);
+  transition: .3s;
+}
+
+.checkbox-input:checked+.checkbox-design::before {
+  transform: scale(0);
+}
+
+/* Checkmark for checked state */
+.checkbox-input:checked+.checkbox-design::after {
+  content: '';
+  position: absolute;
+  left: 0.35rem;
+  top: 0.15rem;
+  width: 0.25rem;
+  height: 0.5rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
-.unstyled {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-.centered {
-  width: 91%;
-  margin: 0px 0px 0px 20px;
+.label-text {
+  color: hsl(0, 0%, 60%);
+  margin-left: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 18px;
   font-weight: 900;
+  transition: .3s;
 }
 
-/* 设置-webkit-transform-style为preserve-3d */
+.checkbox-input:checked~.label-text {
+  color: hsl(0, 0%, 40%);
+}
+
+.checkbox-input:disabled~.label-text {
+  color: #b8b8b8;
+  cursor: auto;
+}
+
+.checkbox-input-wrapper {
+  -webkit-transform-style: preserve-3d;
+  padding: 0 10px;
+}
+
 input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
