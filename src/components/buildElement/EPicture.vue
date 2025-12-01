@@ -1,7 +1,7 @@
 <template>
-  <div class="componentBorder">
-    <div style="display:flex;flex-wrap:wrap;">
-      <label style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:98%;text-align:center;">{{ attributes.label }}</label>
+  <div class="eva-container">
+    <div class="eva-row" style="justify-content: center;">
+      <label class="eva-label" style="text-align: center;">{{ attributes.label }}</label>
       <img :src="attributes.defaultValue" style="width:97%;margin: 0 auto">
     </div>
   </div>

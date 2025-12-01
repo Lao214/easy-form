@@ -1,10 +1,10 @@
 <template>
-  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
     <div :style="'width:98%;background-color:' + attributes.defaultValue + ';height:4px;margin: 10px auto;'"></div>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
   </div>

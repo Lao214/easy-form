@@ -1,5 +1,5 @@
 <template>
-  <div class="componentBorder">
+  <div class="eva-container">
     <div :style="'width:98%;background-color:' + attributes.defaultValue + ';height:4px;margin: 10px auto;'"></div>
   </div>
 </template>

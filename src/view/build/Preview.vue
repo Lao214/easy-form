@@ -1,23 +1,37 @@
 <template>
     <div class="body">
-        <div class="header">
-            <!-- {{ answerTotal }} -->
-        </div>
-        <div class="main">
-            <component v-for="(item, index) in items" :key="index" @callBack="callBack" :is="item.component"
-                :attributes="item.attributes" :option-key="index" />
-            <el-button :loading="submitloading" @click="submitAnswer()" type="success"
-                style="padding: 11px 27px;margin: 0 auto;">
-                提交
-            </el-button>
-        </div>
-        <div class="footer">
+        <el-row>
+            <el-col :span="4">
+                <leftBody></leftBody>
+            </el-col>
+            <el-col :span="10" style="padding: 1rem 2rem;"> 
+                <div class="phone-shell">
+                    <div class="phone-earpiece">
 
-        </div>
+                    </div>
+                    <div class="phone-screen">
+                        <div class="form-body">
+                            <component v-for="(item, index) in items" :key="index" @callBack="callBack" :is="item.component" :attributes="item.attributes" :option-key="index"/>
+                            <el-button type="success" style="padding: 11px 27px;margin: .5rem auto;">
+                                提交
+                            </el-button>
+                        </div>
+                    </div>
+                    <div class="phone-home-button">
+
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="10">
+                
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script>
+import LeftBody from '@/components/formDetails/LeftBody.vue'
+/** 问卷组件 **/
 import Heading from '@/components/buildElement/Heading.vue'
 import eDescription from '@/components/buildElement/EDescription.vue'
 import eRadio from '@/components/buildElement/ERadio.vue'
@@ -31,12 +45,12 @@ import ePicture from '@/components/buildElement/EPicture.vue'
 import eDate from '@/components/buildElement/EDate.vue'
 import eSelector from '@/components/buildElement/ESelector.vue'
 import eSlider from '@/components/buildElement/ESlider.vue'
-// import eButton from '@/components/buildElement/EButton.vue'
+/** API **/
 import formApi from '@/api/formApi'
-import answerApi from '@/api/answerApi'
 
 export default {
     components: {
+        LeftBody,
         Heading,
         eDescription,
         eRadio,
@@ -51,21 +65,15 @@ export default {
         eSelector,
         eSlider
     },
-    data() {
-        return {
-            items: [],
-            requires: [],
-            one: {},
-            answer: [],
-            answerNum: 0,
-            answerTotal: 0,
-            submitloading: false,
-            logic: '',
-            logicUI: '',
-        }
-    },
     created() {
         this.getFormByKey()
+    },
+    data() {
+        return {
+            key: this.$route.query.key,
+            items: [],
+            requires: []
+        }
     },
     methods: {
         getFormByKey() {
@@ -138,103 +146,87 @@ export default {
                 this.answer[this.items[key].answerId] = answer
             }
         },
-        submitAnswer() {
-            if (this.answer.length < 1) {
-                this.$message({
-                    type: 'info',
-                    message: '请填写问卷'
-                })
-                return
-            }
-            for (var i = 0; i < this.requires.length; i++) {
-                if (this.answer[this.requires[i]]) {
-                    if (this.answer[this.requires[i]].type === 'eCheckBox') {
-                        if (this.answer[this.requires[i]].value.length < 1) {
-                            this.$message({
-                                type: 'info',
-                                message: '第' + (this.requires[i] + 1) + '题还没回答'
-                            })
-                            return
-                        }
-                    }
-                } else {
-                    this.$message({
-                        type: 'info',
-                        message: '第' + (this.requires[i] + 1) + '题还没回答'
-                    })
-                    return
-                }
-            }
-            this.submitloading = true
-            this.answer.forEach(element => {
-                // 使用正则表达式进行全局替换
-                const regex = new RegExp(`{{${element.key}}}`, 'g');
-                this.logic = this.logic.replace(regex, element.value);
-            })
-            const dataAnswer = {
-                formKey: this.$route.query.key,
-                answerDetails: JSON.stringify(this.answer),
-                logic: this.logic ? this.logic : '',
-                logicUI: this.logicUI ? this.logicUI : '',
-                // formName: this.one.formName,
-                source: '其他'
-            }
-            answerApi.saveAnswer(dataAnswer).then(res => {
-                if (res.code === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '提交成功'
-                    })
-
-                    Object.entries(res.data.dataMap).forEach(([key, value]) => {
-                        // 使用正则表达式进行全局替换，将 {{resultX}} 替换为对应的值
-                        const regexR = new RegExp(`{{${key}}}`, 'g');
-                        this.logicUI = this.logicUI.replace(regexR, value);
-                    })
-
-                    // 暂时存储数据
-                    sessionStorage.setItem('feedback' + this.$route.query.key, this.logicUI)
-
-                    this.$router.push({
-                        path: '/succ',
-                        query: {
-                            key: this.$route.query.key
-                        }
-                    })
-
-                    this.submitloading = false
-                } else {
-                    this.submitloading = false
-                }
-            }).finally(() => {
-                this.submitloading = false
-            })
-        }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .body {
-    height: auto;
-    background: #a7ce74
+    background-color: #83bbe800;
+    text-align: center;
+    --radius: 8px;
+    --border: 4px;
+    --height: 2rem;
+    --speed: 0.25s;
 }
 
-.header {
-    height: 5vh
+.phone-shell {
+    width: 375px;
+    height: 667px;
+    border-radius: 1.7rem;
+    background: linear-gradient(145deg, #2c2c2c, #3a3a3a); /* 金属质感的深浅渐变 */
+    box-shadow:
+        inset 0 2px 6px rgba(255, 255, 255, 0.1), /* 内部高光 */
+        inset 0 -4px 8px rgba(0, 0, 0, 0.6),     /* 内部阴影 */
+        0 10px 20px rgba(0, 0, 0, 0.6),          /* 外部主要阴影 */
+        0 20px 40px rgba(0, 0, 0, 0.3),          /* 柔和外发光 */
+        0 0 12px rgba(80, 80, 80, 0.4);          /* 外壳的微微发光 */
+    border: 1px solid rgba(255, 255, 255, 0.1);   /* 微弱边框让外壳更清晰 */
 }
 
-.footer {
-    height: 5vh
-}
-
-.main {
-    width: 81vw;
-    max-width: 960px;
-    background: #fff;
+.phone-earpiece {
+    width: 20%; /* 稍微加宽，比例更自然 */
+    height: 0.35rem; /* 高度略提升，更符合真实听筒条 */
     margin: 0 auto;
-    padding: 1rem;
-    height: auto;
-    min-height: 100vh;
+    margin-top: 5%;
+    border-radius: 0.2rem;
+    background: linear-gradient(180deg, #4a4a4a, #1f1f1f); /* 深浅渐变制造金属条质感 */
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.2), /* 内部高光 */
+        inset 0 -1px 2px rgba(0, 0, 0, 0.5),      /* 内部阴影 */
+        0 1px 3px rgba(0, 0, 0, 0.4);             /* 外部轻微阴影 */
+}
+
+.phone-screen {
+    width: 87%;
+    height: 84%;
+    margin: .5rem auto;
+    background: #a7ce74;
+    border-radius: .15rem;
+    overflow: scroll;
+    padding: .7rem;
+}
+
+.form-body {
+    background: white;
+    border-radius: .1rem;
+    padding: .7rem;
+}
+
+.phone-home-button {
+    margin: 0.7rem auto;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #3a3a3a, #1a1a1a 70%, #000000 100%);
+    box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.1), /* 内部轻微高光 */
+        inset 0 -3px 6px rgba(0, 0, 0, 0.7),      /* 内部阴影 */
+        0 4px 8px rgba(0, 0, 0, 0.8);             /* 外部投影 */
+    border: 1px solid rgba(255, 255, 255, 0.08);  /* 边缘轻微反光 */
+    position: relative;
+}
+
+/* 模拟玻璃反光 */
+.phone-home-button::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15), transparent 70%);
+    pointer-events: none;
 }
 </style>

@@ -59,6 +59,11 @@ const router = new VueRouter({
               name:'share',
               component: () => import("../view/build/Share.vue")
             },
+            {
+              path: "/preview",
+              name:'preview',
+              component: () => import("../view/build/Preview.vue")
+            },
           ]
         },
       ]

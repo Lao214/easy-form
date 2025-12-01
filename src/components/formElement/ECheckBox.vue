@@ -1,8 +1,8 @@
 <template>
-  <div class="componentBorderForm" :class="{ active: optionsIndex === optionKey }" @click="callBack">
-    <p style="padding: 0px 16px; font-weight: 700">
-      <span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}
-    </p>
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+    <label class="eva-label">
+      <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+    </label>
     <ul class="unstyled centered">
       <li v-for="(item, index) in attributes.radioOptions" :key="index" style="margin:10px;">
         <input 
@@ -17,10 +17,10 @@
         <label :for="'styled-checkbox-' + optionKey + '-' + index">{{ item.label }}</label>
       </li>
     </ul>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
   </div>

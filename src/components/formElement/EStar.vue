@@ -1,11 +1,13 @@
 <template>
-  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+    <p class="eva-label">
+      <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+    </p>
     <el-rate :max="attributes.max" v-model="attributes.defaultValue" :icons="attributes.radioOptions" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="margin:10px 20px;"></el-rate>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
  </div>

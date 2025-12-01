@@ -1,7 +1,7 @@
 <template>
-  <div class="componentBorder">
-    <h1 style="margin: 0;text-align: center;">{{ attributes.title }}</h1>
-    <p style="margin: 0;text-align: center;color: #858585;">{{ attributes.subtitle }}</p>
+  <div class="eva-container">
+    <h1 class="eva-heading-title">{{ attributes.title }}</h1>
+    <p class="eva-heading-subtitle">{{ attributes.subtitle }}</p>
   </div>
 </template>
 
@@ -21,4 +21,15 @@ export default {
 
 <style scoped>
 @import '../../assets/global.css';
+
+.eva-heading-title {
+  margin: 0;
+  text-align: center;
+}
+
+.eva-heading-subtitle {
+  margin: 0;
+  text-align: center;
+  color: #858585;
+}
 </style>

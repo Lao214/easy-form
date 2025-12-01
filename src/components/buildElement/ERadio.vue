@@ -1,6 +1,8 @@
 <template>
-  <div class="componentBorder">
-    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
+  <div class="eva-container">
+    <label class="eva-label">
+      <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+    </label>
     <div class="radio-input-wrapper">
       <label v-for="(item,index) in attributes.radioOptions" :key="index" :for="optionKey + '-' + index" class="label">
         <input :value="item.label" :name="'value-radio' + optionKey" :id="optionKey + '-' + index" class="radio-input" type="radio" v-model="attributes.defaultValue" @change="updateSelectedValue(item.valu, item.label)">
@@ -35,8 +37,6 @@ export default {
 <style scoped>
 @import '../../assets/global.css';
 
-
-
 /* MAIN */
 /* =============================================== */
 .label {
@@ -48,7 +48,6 @@ export default {
   cursor: pointer;
   transition: .3s;
 }
-
 
 .label:hover,
 .label:focus-within,
@@ -106,6 +105,7 @@ export default {
 /* 设置-webkit-transform-style为preserve-3d */
 .radio-input-wrapper {
   -webkit-transform-style: preserve-3d;
+  padding: 0 10px; /* Added padding to align with label */
 }
 
 /* 或者设置-webkit-backface-visibility为hidden */

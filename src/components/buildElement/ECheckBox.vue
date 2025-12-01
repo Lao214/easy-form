@@ -1,8 +1,8 @@
 <template>
-  <div class="componentBorder">
-    <p style="padding: 0px 16px; font-weight: 700">
-      <span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}
-    </p>
+  <div class="eva-container">
+    <label class="eva-label">
+      <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+    </label>
     <ul class="unstyled centered">
       <li v-for="(item, index) in attributes.radioOptions" :key="index" style="margin:10px;">
         <input

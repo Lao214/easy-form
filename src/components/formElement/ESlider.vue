@@ -1,14 +1,16 @@
 <template>
-  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-    <div style="display:flex;flex-wrap:wrap;">
-      <label style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:94%;"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</label>
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+    <div class="eva-row">
+      <label class="eva-label">
+        <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+      </label>
       <input ref="rangeInput" class="sliderInput" type="range" v-model="attributes.defaultValue" :min="attributes.min" :max="attributes.max" :step="attributes.step" />
       <span class="sliderNum">{{ attributes.defaultValue }}</span>
     </div>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
   </div>

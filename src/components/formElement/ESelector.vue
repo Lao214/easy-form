@@ -1,16 +1,18 @@
 <template>
-  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-    <div style="display:flex;flex-wrap:wrap;">
-      <label style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:94%;"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</label>
-      <el-select  style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:44%;" v-model="attributes.defaultValue" @change="callBack()" filterable placeholder="请选择">
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+    <div class="eva-row">
+      <label class="eva-label">
+        <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+      </label>
+      <el-select class="eva-input-select" v-model="attributes.defaultValue" @change="callBack()" filterable placeholder="请选择">
         <el-option v-for="item in attributes.radioOptions" :key="item.valu" :label="item.label" :value="item.valu">
         </el-option>
       </el-select>
     </div>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
   </div>
@@ -40,4 +42,11 @@ export default {
 
 <style scoped>
 @import '../../assets/global.css';
+
+.eva-input-select {
+  margin-left: 7px;
+  margin-bottom: 7px;
+  font-weight: 600;
+  width: 44%;
+}
 </style>

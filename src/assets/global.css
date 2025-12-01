@@ -1,14 +1,126 @@
 :root {
+    /* Colors */
+    --primary-color: #152e3d;
     --primary-border-color: #2c3e50;
     --active-border-color: #ea5524;
-    --delete-btn-bg: #c91414;
+    --text-color: #333;
+    --label-color: #2c3e50;
+    --bg-white: #ffffff;
+    
+    /* Button Colors */
     --btn-bg: #383333;
+    --delete-btn-bg: #c91414;
+    --btn-text-color: #ffffff;
+
+    /* Dimensions */
     --btn-size: 2rem;
     --border-radius: 4px;
     --component-margin: 0.7rem;
     --padding-y: 8px;
+    --input-height: 32px;
 }
 
+/* Common Container Styles */
+.eva-container {
+    width: 100%;
+    background: var(--bg-white);
+    padding: var(--padding-y) 0;
+    border-radius: var(--border-radius);
+    margin: var(--component-margin) 0;
+    text-align: start;
+    box-sizing: border-box;
+    position: relative;
+    border: 2px solid transparent; /* Reserve space for border */
+    transition: border 0.3s ease;
+}
+
+/* Interactive Container (for form builder) */
+.eva-container-interactive {
+    cursor: pointer;
+    border: 2px solid var(--primary-border-color);
+}
+
+.eva-container-interactive:hover, 
+.eva-container-interactive.active {
+    border: 2px solid var(--active-border-color);
+}
+
+/* Common Flex Row */
+.eva-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+/* Labels */
+.eva-label {
+    margin-left: 7px;
+    margin-bottom: 7px;
+    font-weight: 600;
+    width: 94%;
+    color: var(--label-color);
+    display: block;
+}
+
+.eva-required {
+    color: red;
+    margin-right: 4px;
+}
+
+/* Inputs */
+.eva-input, .eva-textarea {
+    margin-left: 7px;
+    margin-bottom: 11px;
+    width: 94%;
+    border: 1.5px solid #425c77; /* Keeping original color for now, could be var */
+    border-radius: var(--border-radius);
+    padding-left: 7px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.eva-input {
+    height: var(--input-height);
+}
+
+.eva-textarea {
+    resize: vertical;
+    min-height: 5rem;
+    padding: 8px;
+}
+
+.eva-input:focus, .eva-textarea:focus {
+    border-color: var(--active-border-color);
+}
+
+/* Floating Buttons */
+.eva-btn-float {
+    position: absolute;
+    right: -2.3rem;
+    width: var(--btn-size);
+    height: var(--btn-size);
+    color: var(--btn-text-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.eva-btn-copy {
+    top: 0;
+    background: var(--btn-bg);
+}
+
+.eva-btn-delete {
+    top: 2.4rem;
+    background: var(--delete-btn-bg);
+}
+
+/* Legacy support (to be deprecated) */
 .componentBorder {
     width: 100%;
     padding: var(--padding-y) 0;

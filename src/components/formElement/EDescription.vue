@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-      <p style="margin: 4px;font-weight: 600;">{{ attributes.defaultValue }}</p>
-      <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+      <p class="eva-text-content">{{ attributes.defaultValue }}</p>
+      <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
         <i class="el-icon-document-copy"></i>
       </span>
-      <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+      <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
         <i class="el-icon-delete"></i>
       </span>
     </div>
@@ -38,4 +38,9 @@ export default {
 <style scoped>
 @import '../../assets/global.css';
 
+.eva-text-content {
+  margin: 4px;
+  font-weight: 600;
+  padding: 0 10px;
+}
 </style>

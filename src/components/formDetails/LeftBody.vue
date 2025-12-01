@@ -12,7 +12,7 @@
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoLogic()"> <i class="fa fa-meh-o" /> 反馈</div>
             <div class="MenuBtn" style="margin:1rem auto;" @click="gotoData()"> <i class="fa fa-table" /> 数据表格 </div>
             <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-bar-chart" /> 数据图表（未开放）</div>
-            <div class="MenuBtn" style="margin:1rem auto;"> <i class="fa fa-mobile" /> 手机浏览（未开放）</div>
+            <div class="MenuBtn" style="margin:1rem auto;" @click="gotoPreview()"> <i class="fa fa-mobile" /> 手机浏览</div>
             <div class="MenuBtn" style="margin:1rem auto;" @click="gobackDetails()" v-show="$route.path !== '/formDetails'"> <i class="el-icon-arrow-left" /> 返回表单详情</div>
         </div>
 
@@ -46,6 +46,12 @@ export default {
         }
     },
     methods: {
+        gotoPreview() {
+          if(this.$route.path === '/preview') {
+            return
+          }
+          this.$router.push({ path: '/preview', query: { key: this.$route.query.key } })
+        },
         gotoRelease() {
           window.open('/share?key=' + this.$route.query.key)
           // this.$router.push({ path: '/form/share', query: { key: this.$route.query.key, type: 'details'  } })

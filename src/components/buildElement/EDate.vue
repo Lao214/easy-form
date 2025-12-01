@@ -1,8 +1,10 @@
 <template>
-  <div class="componentBorder">
-    <div style="display:flex;flex-wrap:wrap;">
-      <label style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:94%;"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</label>
-      <el-date-picker style="margin-left: 7px;margin-bottom: 7px;font-weight: 600;width:44%;" v-model="attributes.defaultValue" @change="callBack()" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
+  <div class="eva-container">
+    <div class="eva-row">
+      <label class="eva-label">
+        <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+      </label>
+      <el-date-picker class="eva-input-select" v-model="attributes.defaultValue" @change="callBack()" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
     </el-date-picker>
     </div>
   </div>
@@ -27,4 +29,11 @@ export default {
 
 <style scoped>
 @import '../../assets/global.css';
+
+.eva-input-select {
+  margin-left: 7px;
+  margin-bottom: 7px;
+  font-weight: 600;
+  width: 44%;
+}
 </style>

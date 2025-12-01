@@ -1,6 +1,8 @@
 <template>
-  <div class="componentBorderForm" :class="optionsIndex === optionKey ? 'active' : ''" @click="callBack">
-    <p style=" padding: 0px 16px;font-weight: 700"><span v-if="attributes.require" style="color: red;">*</span>{{ attributes.label }}</p>
+  <div class="eva-container eva-container-interactive" :class="{ 'active': optionsIndex === optionKey }" @click="callBack">
+    <label class="eva-label">
+      <span v-if="attributes.require" class="eva-required">*</span>{{ attributes.label }}
+    </label>
     <div class="radio-input-wrapper">
       <label v-for="(item,index4) in attributes.radioOptions" :key="'kk' + index4" class="label">
         <input :value="item.label" :name="'value-radio' + optionKey" :id="optionKey + '-' + index4" class="radio-input" type="radio" v-model="attributes.defaultLabel" @change="updateSelectedValue(item.valu, item.label)">
@@ -8,10 +10,10 @@
         <div class="label-text">{{ item.label }}</div>
       </label>
     </div>
-    <span v-show="optionKey === optionsIndex" class="floating-btn" @click="copyThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-copy" @click.stop="copyThis()">
       <i class="el-icon-document-copy"></i>
     </span>
-    <span v-show="optionKey === optionsIndex" class="floating-del-btn" @click="delThis()">
+    <span v-show="optionKey === optionsIndex" class="eva-btn-float eva-btn-delete" @click.stop="delThis()">
       <i class="el-icon-delete"></i>
     </span>
   </div>
@@ -113,9 +115,8 @@ export default {
   color: hsl(0, 0%, 40%);
 }
 
-/* .radio-input-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-} */
-
+.radio-input-wrapper {
+  -webkit-transform-style: preserve-3d;
+  padding: 0 10px;
+}
 </style>
